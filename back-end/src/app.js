@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 
-const userRouter = require('./controller/user');
+const userRouter = require('./routes/user');
 
 //Instantiate main express app
 const app = express();
