@@ -29,6 +29,14 @@ class Configs {
     }
   }
 
+  get secret() {
+    return process.env.JWT_SECRET;
+  }
+
+  get sessionTimeout() {
+    return process.env.SESSION_TIMEOUT_MINS;
+  }
+
 }
 
 module.exports = Configs;

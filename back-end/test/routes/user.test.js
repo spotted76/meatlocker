@@ -52,7 +52,7 @@ test('test create a new valid user', async done => {
   await request
   .post('/api/user')
   .send(user)
-  .expect(200);
+  .expect(201);
 
   done();
 
@@ -108,7 +108,7 @@ test('test invalid request - duplicate user', async done => {
   await request
   .post('/api/user')
   .send(user)
-  .expect(200);
+  .expect(201);
 
   const res = await request
   .post('/api/user')
