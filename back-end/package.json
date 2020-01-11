@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "watch": "nodemon src/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "start": "NODE_ENV=production node src/index.js",
+    "watch": "NODE_ENV=development nodemon src/index.js",
+    "run_local": "NODE_ENV=development node src index.js",
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +20,12 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.8.6",
+    "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.9.1"
   }
 }

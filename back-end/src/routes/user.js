@@ -1,4 +1,7 @@
 const router = require('express').Router();
+const bcrypt = require('bcrypt');
+
+const User = require('../models/user');
 
 
 /*
@@ -7,9 +10,32 @@ const router = require('express').Router();
   //Creates a new user, stores the user in the database
 
 */
-router.post('/', (req, res) => {
-  console.log(req.body);
-  res.send('hello from user');
+router.post('/', async (req, res) => {
+
+  //Get the payload from the body, and try saving it in the database
+  const {body} = req;
+
+  //generate a new salt for the user
+  try {
+    const hashedPasswd = await bcrypt.hash(body.password, 1);
+
+    //Create a user, and store it off
+    const user = new User({
+      username: body.username,
+      name: body.name,
+      password: hashedPasswd
+    });
+
+    const newUser = await user.save();
+
+    res.status(200).end();
+
+  }
+  catch(err) {
+    res.status(400).json({error: 'Invalid User Creation Request'});
+  }
+
+
 });
 
 
