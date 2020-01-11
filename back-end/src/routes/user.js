@@ -13,7 +13,7 @@ const User = require('../models/user');
 router.post('/', async (req, res) => {
 
   //Get the payload from the body, and try saving it in the database
-  const {body} = req;
+  const { body } = req;
 
   //generate a new salt for the user
   try {
@@ -26,13 +26,13 @@ router.post('/', async (req, res) => {
       password: hashedPasswd
     });
 
-    const newUser = await user.save();
+    await user.save();
 
     res.status(201).end();
 
   }
   catch(err) {
-    res.status(400).json({error: 'Invalid User Creation Request'});
+    res.status(400).json({ error: 'Invalid User Creation Request' });
   }
 
 

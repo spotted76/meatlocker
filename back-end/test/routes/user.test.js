@@ -16,7 +16,6 @@ beforeAll( async () => {
   const config = new Config();
   dbaseHelper = new DbaseHelper(config.mongoURI);
 
-  console.log('before all called');
   try {
     await dbaseHelper.setup();
   }
@@ -27,7 +26,6 @@ beforeAll( async () => {
 });
 
 afterAll( async () => {
-  console.log('after all called');
   dbaseHelper.tearDown();
 });
 

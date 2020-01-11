@@ -18,8 +18,6 @@ loginRouter.post('/', async (req, res) => {
   //pull the body
   const { body } = req;
 
-  console.log(body);
-
   //first and foremost, attempt to find the user.
   const user = await User.findOne({ username: body.username });
 
@@ -42,7 +40,7 @@ loginRouter.post('/', async (req, res) => {
       }
     );
     
-    res.send({
+    res.status(200).json({
       token: token,
       username: user.username,
       name: user.name
