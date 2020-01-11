@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 
 
 const userRouter = require('./routes/user');
+const loginRouter = require('./routes/login');
 
 //Instantiate main express app
 const app = express();
@@ -18,6 +19,6 @@ app.use(bodyParser.json());
 
 //Setup routes
 app.use('/api/user', userRouter);
-
+app.use('/api/login', loginRouter);
 
 module.exports = app;

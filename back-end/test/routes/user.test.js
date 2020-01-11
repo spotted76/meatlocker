@@ -16,7 +16,6 @@ beforeAll( async () => {
   const config = new Config();
   dbaseHelper = new DbaseHelper(config.mongoURI);
 
-  console.log('before all called');
   try {
     await dbaseHelper.setup();
   }
@@ -27,7 +26,6 @@ beforeAll( async () => {
 });
 
 afterAll( async () => {
-  console.log('after all called');
   dbaseHelper.tearDown();
 });
 
@@ -52,7 +50,7 @@ test('test create a new valid user', async done => {
   await request
   .post('/api/user')
   .send(user)
-  .expect(200);
+  .expect(201);
 
   done();
 
@@ -108,7 +106,7 @@ test('test invalid request - duplicate user', async done => {
   await request
   .post('/api/user')
   .send(user)
-  .expect(200);
+  .expect(201);
 
   const res = await request
   .post('/api/user')

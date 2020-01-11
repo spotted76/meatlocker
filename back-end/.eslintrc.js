@@ -24,7 +24,7 @@ module.exports = {
         "error",
         "always"
       ],
-      "array-bracket-spacing": [
+      "object-curly-spacing": [
         "error",
         "always"
       ],
