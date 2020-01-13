@@ -16,12 +16,9 @@ class LoginServices {
 
     try {
       const resp = await axios.post(BASE_URI, { username, password });
-      console.log(resp.data);
 
       if (resp.data) {
         result = resp.data;
-
-        //Store the JWT in a cookie (for now, local storage)
       }
 
     }
