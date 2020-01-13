@@ -2,6 +2,8 @@
 import React from 'react';
 import { useInputField, resetField } from '../hooks/inputField';
 
+import LoginService from '../services/loginService';
+
 
 function Login() {
 
@@ -9,10 +11,15 @@ function Login() {
   const username = useInputField('text');
   const password = useInputField('password');
 
+  //Function that gets executed by the form submitting
   const onSubmit = (evt) => {
     evt.preventDefault();
     console.log(username.value);
     console.log(password.value);
+
+    //Send the login info to the server
+    LoginService.login( 
+      username.value, password.value);
 
     //Empty the fields
     resetField(username);
