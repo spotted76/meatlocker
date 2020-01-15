@@ -1,29 +1,31 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useInputField, resetField } from '../hooks/inputField';
 import Cookies from 'js-cookie';
+import { connect } from 'react-redux';
 
 import LoginService from '../services/loginService';
 import Config from '../utils/config';
+import { userAdd, userRemove } from '../reducers/userReducer';
 
 import  './dialogs.css';
 
-function Login() {
-
-  const [userToken, setUserToken] = useState(null);
+function Login(props) {
 
   const username = useInputField('text');
   const password = useInputField('password');
 
-  useEffect(() => {
+  const { userAdd : addUserToken } = props;
 
+  useEffect(() => {
 
     //Look at the cookies to see if the session can be retrieved
     const sessionData = Cookies.get(Config.sessionName);
     if ( sessionData ) {
 
       //ToDo:  Place the session data in a redux store
-      setUserToken(sessionData);
+      // setUserToken(sessionData);
+      addUserToken(sessionData);
 
     }
     else {
@@ -31,7 +33,7 @@ function Login() {
     }
 
 
-  },[setUserToken]);
+  },[addUserToken]);
 
 
   //Function that gets executed by the form submitting
@@ -48,7 +50,8 @@ function Login() {
       Cookies.set(Config.sessionName, session, { expires: Config.sessionDuration });
 
       //ToDo:  Place this in a redux data store
-      setUserToken(session);
+      // setUserToken(session);
+      addUserToken(session);
     }
     else {
       //TODO:  Put up an error message here
@@ -60,7 +63,7 @@ function Login() {
   };
 
   //User is logged in, no need to render
-  if ( userToken ) {
+  if ( props.tokenData ) {
     return null;
   }
 
@@ -93,4 +96,22 @@ function Login() {
   );
 }
 
-export default Login;
+//Grab the user data from the store, add it to props
+function mapStateToProps(state) {
+  const { userReducer } = state;
+
+  return {
+    tokenData: userReducer,
+  };
+
+}
+
+//Map dispatch calls to the properties
+const mapDispatchToProps = {
+  userAdd,
+  userRemove,
+};
+
+const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
+
+export default connectedLogin;
