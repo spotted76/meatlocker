@@ -1,21 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useInputField, resetField } from '../hooks/inputField';
 import Cookies from 'js-cookie';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import LoginService from '../services/loginService';
 import Config from '../utils/config';
-import { userAdd, userRemove } from '../reducers/userReducer';
+import { userAdd } from '../reducers/userReducer';
+
 
 import  './dialogs.css';
 
 function Login(props) {
 
+  //Custom hooks, used for input fields & validation
   const username = useInputField('text');
   const password = useInputField('password');
 
+  //Get the ability to add the logged in user to the state
   const { userAdd : addUserToken } = props;
+
+  //Used to determine if the effect has even run, should remove flicker
+  const [effectHasRun, setEffectHasRun] = useState(false);
 
   useEffect(() => {
 
@@ -32,6 +39,8 @@ function Login(props) {
       console.log('no cookie data');
     }
 
+    setEffectHasRun(true);
+
 
   },[addUserToken]);
 
@@ -39,8 +48,11 @@ function Login(props) {
   //Function that gets executed by the form submitting
   const onSubmit = async (evt) => {
     evt.preventDefault();
-    console.log(username.value);
-    console.log(password.value);
+
+    // This should not ever happen, required fields should cover it
+    if ( !username.value || !password.value) {
+      return;
+    }
 
     //Send the login info to the server
     const session = await LoginService.login( 
@@ -63,7 +75,7 @@ function Login(props) {
   };
 
   //User is logged in, no need to render
-  if ( props.tokenData ) {
+  if ( props.tokenData || !effectHasRun ) {
     return null;
   }
 
@@ -77,11 +89,11 @@ function Login(props) {
           <div className="inputs">
             <div className="auth_input">
               <label htmlFor="username">username: </label>
-              <input name="username" {...username} required />
+              <input name="username" id="username" data-testid="username_input" {...username} required />
             </div>
             <div className="auth_input">
               <label htmlFor="password">password: </label>
-              <input name="password" {...password} required />
+              <input name="password" id="password" data-testid="password_input" {...password} required />
             </div>
             <div className="auth_input">
               <button>Submit</button>
@@ -109,8 +121,12 @@ function mapStateToProps(state) {
 //Map dispatch calls to the properties
 const mapDispatchToProps = {
   userAdd,
-  userRemove,
 };
+
+Login.propTypes = {
+  userAdd: PropTypes.func,
+};
+
 
 const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
 

@@ -6,8 +6,6 @@ import store from './store';
 
 // import * as serviceWorker from './serviceWorker';
 
-console.log(store);
-
 ReactDOM.render(
     <Provider store={store}>
       <App />
