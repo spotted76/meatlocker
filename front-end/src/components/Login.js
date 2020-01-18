@@ -75,29 +75,27 @@ function Login(props) {
 
   return (
     <div>
-      <div className="auth_form">
-        <div className="authHeader">
+      <div className="input_form">
+        <div>
           <h2>Login</h2>
+          <hr></hr>
         </div>
+
         <form onSubmit={onSubmit}>
-          <div className="inputs">
-            <div className="auth_input">
+          <div className="input_box">
+            <div className="login_labels">
               <label htmlFor="username">username: </label>
-              <input name="username" id="username" data-testid="username_input" {...username} required />
-            </div>
-            <div className="auth_input">
               <label htmlFor="password">password: </label>
+            </div>
+            <div className="login_inputs">
+              <input name="username" id="username" data-testid="username_input" {...username} required />
               <input name="password" id="password" data-testid="password_input" {...password} required />
             </div>
-            <div className="auth_input">
-              <button>Submit</button>
-            </div>
           </div>
+          <button className="login_submit">submit</button>
         </form>
-        <div className="authFooter">
-          <p>create an account</p>
-        </div>
-      </div>
+
+      </div> {/* input_form */}
     </div>
   );
 }
