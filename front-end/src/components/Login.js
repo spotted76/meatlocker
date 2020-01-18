@@ -30,17 +30,12 @@ function Login(props) {
     const sessionData = Cookies.get(Config.sessionName);
     if ( sessionData ) {
 
-      //ToDo:  Place the session data in a redux store
-      // setUserToken(sessionData);
+      //Place the session data in a redux store
       addUserToken(sessionData);
 
     }
-    else {
-      console.log('no cookie data');
-    }
 
     setEffectHasRun(true);
-
 
   },[addUserToken]);
 
@@ -61,8 +56,7 @@ function Login(props) {
     if ( session ) {
       Cookies.set(Config.sessionName, session, { expires: Config.sessionDuration });
 
-      //ToDo:  Place this in a redux data store
-      // setUserToken(session);
+      //Place this in a redux data store
       addUserToken(session);
     }
     else {
