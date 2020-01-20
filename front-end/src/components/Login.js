@@ -92,7 +92,7 @@ function Login(props) {
               <input name="password" id="password" data-testid="password_input" {...password} required />
             </div>
           </div>
-          <button className="login_submit">submit</button>
+          <button className="login_submit">Submit</button>
         </form>
 
       </div> {/* input_form */}
