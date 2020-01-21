@@ -1,0 +1,31 @@
+.banner {
+  background-color: #960c11;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+
+.banner h1 {
+
+  font-family: 'Lobster', cursive;
+  font-size: 5em;
+  color: white;
+  padding-left: 5%;
+}
+
+.banner img {
+  padding-right: 5%;
+}
+
+.user_status_visible {
+  float: right;
+  padding-right: 1em;
+  color: darkred;
+  font-weight: 700;
+}
+
+.user_status_invisible {
+  display: none;
+}

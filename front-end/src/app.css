@@ -3,24 +3,3 @@
   margin-left:10%;
   margin-right:10%;
 }
-
-.banner {
-  background-color: #960c11;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  justify-content: space-between;
-}
-
-.banner h1 {
-
-  font-family: 'Lobster', cursive;
-  font-size: 5em;
-  color: white;
-  padding-left: 5%;
-}
-
-.banner img {
-  padding-right: 5%;
-}

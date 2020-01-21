@@ -26,11 +26,14 @@ function Login(props) {
 
   useEffect(() => {
 
+    console.log('Login effect');
+
     //Look at the cookies to see if the session can be retrieved
-    const sessionData = Cookies.get(Config.sessionName);
+    let sessionData = Cookies.get(Config.sessionName);
     if ( sessionData ) {
 
       //Place the session data in a redux store
+      sessionData = JSON.parse(sessionData);
       addUserToken(sessionData);
 
     }
@@ -69,7 +72,7 @@ function Login(props) {
   };
 
   //User is logged in, no need to render
-  if ( props.tokenData || !effectHasRun ) {
+  if ( props.userData || !effectHasRun ) {
     return null;
   }
 
@@ -105,7 +108,7 @@ function mapStateToProps(state) {
   const { userReducer } = state;
 
   return {
-    tokenData: userReducer,
+    userData: userReducer,
   };
 
 }
@@ -117,6 +120,7 @@ const mapDispatchToProps = {
 
 Login.propTypes = {
   userAdd: PropTypes.func,
+  userData: PropTypes.object
 };
 
 
