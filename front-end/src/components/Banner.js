@@ -28,7 +28,7 @@ function Banner(props) {
         <img src="https://img.icons8.com/plasticine/100/000000/steak.png" alt="steak" />
       </div>
       <div className={userStyle}>
-      <p>User:  {userData?.name}</p>
+        <p>User:  {userData?.name}</p>
       </div>
     </div>
   );

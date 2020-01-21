@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-import LoginService from './loginService';
+import LoginService from '../loginService';
 
 jest.mock('axios');
 

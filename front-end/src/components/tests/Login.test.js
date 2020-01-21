@@ -4,15 +4,15 @@ import { render, fireEvent, waitForDomChange } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
-import LoginService from '../services/loginService';
+import LoginService from '../../services/loginService';
 import Cookies from 'js-cookie';
 
 
 //Import login & store (store needed for redux);
-import Login from './Login';
-import store from '../store';
+import Login from '../Login';
+import store from '../../store';
 
-jest.mock('../services/loginService');
+jest.mock('../../services/loginService');
 jest.mock('js-cookie');
 
 beforeEach(() => {
@@ -120,7 +120,7 @@ test('it can retrieve a cookie',() => {
 
   
   //useEffect call within Login should retrieve the token
-  const mockToken = { data: 'mocked_token' };
+  const mockToken = JSON.stringify({ username: 'mocked_username' });
   Cookies.get.mockImplementation(() => {
     return mockToken;
   });

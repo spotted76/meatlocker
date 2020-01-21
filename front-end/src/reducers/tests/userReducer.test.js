@@ -1,5 +1,5 @@
 
-import reducer, { userAdd, userRemove, ADD_USER, REMOVE_USER } from './userReducer';
+import reducer, { userAdd, userRemove, ADD_USER, REMOVE_USER } from '../userReducer';
 
 
 test('test userAdd creator', () => {
