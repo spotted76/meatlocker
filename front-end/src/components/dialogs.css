@@ -1,0 +1,57 @@
+
+.input_form {
+  width: 25%;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.input_form div hr {
+  margin: .2rem;
+}
+
+.input_form h2 {
+  font-size: 2rem;
+  margin: 0;
+  padding-bottom: .2em;
+}
+
+.input_box {
+  display: flex;
+  height: 6em;
+}
+
+.login_labels {
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+  justify-content: space-evenly;
+}
+
+.login_labels label {
+  font-size: 1.3em;
+}
+
+.login_inputs {
+  display: flex;
+  flex-direction: column;
+  flex-grow:1;
+  padding-left: .5em;
+  padding-right: 1em;
+  justify-content: space-evenly;
+  
+}
+
+.login_inputs input {
+  border-radius: 5px;
+  height: 1.5em;
+}
+
+.login_submit {
+  margin: .5em;
+  font-size: 1rem;
+  height: 2rem;
+  float: right;
+}
+
+
+
