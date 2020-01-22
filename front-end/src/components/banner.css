@@ -20,12 +20,19 @@
 }
 
 .user_status_visible {
-  float: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   padding-right: 1em;
-  color: darkred;
+  color: #960c11;
   font-weight: 700;
+  visibility: visible;
+}
+
+.user_status_visible i {
+  margin-left: .4em;
 }
 
 .user_status_invisible {
-  display: none;
+  visibility: hidden;
 }

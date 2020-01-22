@@ -23,12 +23,13 @@ function Banner(props) {
 
   return (
     <div>
+      <div className={userStyle}>
+        <p>{userData?.name}</p>
+        <i className="fas fa-user-circle fa-2x"></i>
+      </div>
       <div className="banner">
         <h1>Meatlocker</h1>
         <img src="https://img.icons8.com/plasticine/100/000000/steak.png" alt="steak" />
-      </div>
-      <div className={userStyle}>
-        <p>User:  {userData?.name}</p>
       </div>
     </div>
   );
