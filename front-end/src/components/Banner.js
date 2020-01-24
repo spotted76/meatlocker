@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import './banner.css';
+import './styling/banner.css';
 
 function Banner(props) {
 
@@ -23,9 +23,19 @@ function Banner(props) {
 
   return (
     <div>
-      <div className={userStyle}>
-        <p>{userData?.name}</p>
-        <i className="fas fa-user-circle fa-2x"></i>
+      <div className='header'>
+        <ul>
+          <li className='menu_item'>
+            <div className={userStyle}>
+              {userData?.name}
+              <i className='fas fa-user-circle fa-2x'></i>
+            </div>
+            <ul className ='hidden_menu'>
+              <li>Admin Console</li>
+              <li>Logout</li>
+            </ul>
+          </li>
+        </ul>
       </div>
       <div className="banner">
         <h1>Meatlocker</h1>

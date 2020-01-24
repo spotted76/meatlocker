@@ -10,7 +10,7 @@ import Config from '../utils/config';
 import { userAdd } from '../reducers/userReducer';
 
 
-import  './dialogs.css';
+import  './styling/dialogs.css';
 
 function Login(props) {
 
