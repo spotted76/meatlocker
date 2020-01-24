@@ -27,8 +27,10 @@ function Banner(props) {
         <ul>
           <li className='menu_item'>
             <div className={userStyle}>
-              {userData?.name}
-              <i className='fas fa-user-circle fa-2x'></i>
+              <div className='glyph'>
+                {userData?.name}
+                <i className='fas fa-user-circle fa-2x'></i>
+              </div>
             </div>
             <ul className ='hidden_menu'>
               <li>Admin Console</li>

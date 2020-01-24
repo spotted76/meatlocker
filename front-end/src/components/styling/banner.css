@@ -80,3 +80,9 @@
 .user_status_invisible {
   visibility: hidden;
 }
+
+/* Helps to center text with an icon */
+.glyph {
+  display: flex;
+  align-items: center;
+}
