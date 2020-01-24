@@ -1,14 +1,22 @@
+
+/* Main Header Above the Banner, keeps space the same if logged in or not */
 .header {
   height: 55px;
   text-align: right;
 }
 
-
+/* Each menu item in the header */
 .menu_item {
   display: inline;
   position: relative;
 }
 
+/* Shows the hidden_menu on hover */
+.menu_item:hover .hidden_menu {
+  display: block;
+}
+
+/* Drop dowmn menu, anchored to the menu_item */
 .hidden_menu {
   display: none;
   position: absolute;
@@ -22,24 +30,20 @@
   border: #960c11;
 }
 
+/* Unique item under each hidden_menu */
 .hidden_menu  li {
   color: #960c11;
   padding: 15px;
 }
 
+/* Change background & radius when hovering over a hidden menu item */
 .hidden_menu  li:hover {
   background-color: rgb(245, 215, 215);
   border-radius: 5px;
 }
 
-.menu_item:hover .hidden_menu {
-  display: block;
-}
 
-/* .hidden_menu > li {
-  display: inline;
-} */
-
+/* Main Splash Banner */
 .banner {
   background-color: #960c11;
   height: 100px;
@@ -50,7 +54,6 @@
 }
 
 .banner h1 {
-
   font-family: 'Lobster', cursive;
   font-size: 5em;
   color: white;
@@ -61,10 +64,8 @@
   padding-right: 5%;
 }
 
+/* Refactor this..  This is text/icon for the menu item */
 .user_status_visible {
-  /* display: flex;
-  justify-content: flex-end;
-  align-items: center; */
   display: inline-block;
   padding-right: 1em;
   color: #960c11;
