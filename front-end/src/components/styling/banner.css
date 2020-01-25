@@ -9,49 +9,6 @@
   list-style: none;
 }
 
-/* Each menu item in the header */
-.menu_item {
-  display: inline;
-  position: relative;
-}
-
-/* Shows the hidden_menu on hover */
-.menu_item:hover .hidden_menu {
-  display: block;
-}
-
-/* Drop dowmn menu, anchored to the menu_item */
-.hidden_menu {
-  display: none;
-  position: absolute;
-  text-align: left;
-  padding: 0;
-  left: 0;
-  top:100%;
-  background-color: rgb(255, 255, 255);
-  border-radius: 5%;
-  width: 150%;
-  list-style: none;
-  border: #960c11;
-}
-
-/* Unique item under each hidden_menu */
-.hidden_menu ul {
-  padding: 0;
-}
-.hidden_menu  li {
-  color: #960c11;
-  padding: 15px;
-  list-style: none;
-}
-
-/* Change background & radius when hovering over a hidden menu item */
-.hidden_menu  li:hover {
-  background-color: rgb(245, 215, 215);
-  border-radius: 5px;
-}
-
-
 /* Main Splash Banner */
 .banner {
   background-color: #960c11;
@@ -84,11 +41,4 @@
 
 .menu_glyph_style i {
   margin-left: .4em;
-}
-
-
-/* Helps to center text with an icon */
-.glyph {
-  display: flex;
-  align-items: center;
 }

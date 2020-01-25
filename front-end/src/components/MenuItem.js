@@ -1,6 +1,8 @@
 
 import React from 'react';
 
+import './styling/menuitem.css';
+
 /* This is The main menu item, the children element to populate
    it with eis a type MenuGlyph.
 */
