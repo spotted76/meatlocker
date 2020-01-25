@@ -27,7 +27,7 @@
   text-align: left;
   padding: 0;
   left: 0;
-  top: 95%;
+  top:100%;
   background-color: rgb(255, 255, 255);
   border-radius: 5%;
   width: 150%;
@@ -74,7 +74,7 @@
 }
 
 /* Refactor this..  This is text/icon for the menu item */
-.user_status_visible {
+.menu_glyph_style {
   display: inline-block;
   padding-right: 1em;
   color: #960c11;
@@ -82,13 +82,10 @@
   visibility: visible;
 }
 
-.user_status_visible i {
+.menu_glyph_style i {
   margin-left: .4em;
 }
 
-.user_status_invisible {
-  visibility: hidden;
-}
 
 /* Helps to center text with an icon */
 .glyph {

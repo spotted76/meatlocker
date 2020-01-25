@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -10,26 +10,15 @@ import './styling/banner.css';
 function Banner(props) {
 
   const { userData } = props;
-  const [userStyle, setUserStyle] = useState('user_status_invisible');
-
-  //If there is a logged in user, display the name
-  useEffect(() => {
-
-    console.log('Banner Effect');
-
-    //set the css styling to apply to the className div
-    setUserStyle( !userData ? 'user_status_invisible' : 'user_status_visible');
-
-
-  }, [userData, userStyle]);
+  const visible = userData ? true : false;
 
   return (
     <div>
       <div className='header'>
         <ul>
           <li>
-            <MenuItem >
-              <MenuGlyph userStyle={userStyle}>
+            <MenuItem visible={visible}>
+              <MenuGlyph userStyle={'menu_glyph_style'}>
                 {userData?.name}
                 <i className='fas fa-user-circle fa-2x'></i>
               </MenuGlyph>

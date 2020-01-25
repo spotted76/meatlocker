@@ -7,6 +7,9 @@ import React from 'react';
 
 function MenuItem( props ) {
 
+  if ( !props.visible ) {
+    return null;
+  }
 
   return (
     <div className='menu_item'>
