@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { MenuItem, MenuGlyph, HiddenMenu } from './MenuItem';
+
 import './styling/banner.css';
 
 function Banner(props) {
@@ -25,17 +27,17 @@ function Banner(props) {
     <div>
       <div className='header'>
         <ul>
-          <li className='menu_item'>
-            <div className={userStyle}>
-              <div className='glyph'>
+          <li>
+            <MenuItem >
+              <MenuGlyph userStyle={userStyle}>
                 {userData?.name}
                 <i className='fas fa-user-circle fa-2x'></i>
-              </div>
-            </div>
-            <ul className ='hidden_menu'>
-              <li>Admin Console</li>
-              <li>Logout</li>
-            </ul>
+              </MenuGlyph>
+              <HiddenMenu>
+                <li>Admin Console</li>
+                <li>Logout</li>
+              </HiddenMenu>
+            </MenuItem>
           </li>
         </ul>
       </div>

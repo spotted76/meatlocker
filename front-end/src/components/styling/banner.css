@@ -5,6 +5,10 @@
   text-align: right;
 }
 
+.header > ul > li {
+  list-style: none;
+}
+
 /* Each menu item in the header */
 .menu_item {
   display: inline;
@@ -23,6 +27,7 @@
   text-align: left;
   padding: 0;
   left: 0;
+  top: 95%;
   background-color: rgb(255, 255, 255);
   border-radius: 5%;
   width: 150%;
@@ -31,9 +36,13 @@
 }
 
 /* Unique item under each hidden_menu */
+.hidden_menu ul {
+  padding: 0;
+}
 .hidden_menu  li {
   color: #960c11;
   padding: 15px;
+  list-style: none;
 }
 
 /* Change background & radius when hovering over a hidden menu item */
