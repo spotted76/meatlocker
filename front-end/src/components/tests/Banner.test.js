@@ -15,12 +15,10 @@ test('it has no logged in user', () => {
   const component = render(<Banner store={store} />);
   const { getByText, container } = component;
 
-  const invisibleDiv = container.querySelector('.user_status_invisible');
-  const visibleDiv = container.querySelector('.user_status_visible');
+  const menuItem = container.querySelector('.menu_item');
 
   expect(getByText('Meatlocker')).toBeDefined();
-  expect(invisibleDiv).toBeDefined();
-  expect(visibleDiv).toBeNull();
+  expect(menuItem).toBeNull();
   
 });
 
@@ -36,11 +34,10 @@ test('it has a logged in user', () => {
   const component = render(<Banner store={store} />);
   const { getByText, container } = component;
 
-  const invisibleDiv = container.querySelector('.user_status_invisible');
-  const visibleDiv = container.querySelector('.user_status_visible');
+  const menuItem = container.querySelector('.menu_item');
 
   expect(getByText('Meatlocker')).toBeDefined();
-  expect(invisibleDiv).toBeNull();
-  expect(visibleDiv).toBeDefined();
+  expect(menuItem).not.toBeNull();
+  expect(getByText('Test User')).toBeDefined();
   
 });

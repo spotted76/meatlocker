@@ -1,5 +1,6 @@
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './styling/menuitem.css';
 
@@ -19,6 +20,11 @@ function MenuItem( props ) {
     </div>
   );
 
+}
+
+MenuItem.propTypes = {
+  visible: PropTypes.bool,
+  children: PropTypes.arrayOf(PropTypes.element),
 };
 
 
@@ -28,16 +34,21 @@ function MenuItem( props ) {
 */
 function MenuGlyph(props) {
 
-  const { userStyle } = props;
+  const { glyphClass } = props;
 
   return (
-    <div className={userStyle}>
+    <div className={glyphClass}>
       <div className='glyph'>
         {props.children}
       </div>
     </div>
-  )
+  );
 }
+
+MenuGlyph.propTypes = {
+  glyphClass: PropTypes.string,
+  children: PropTypes.array,
+};
 
 /*
   This is the hidden menu under the MenuGlyph.  This menu will be displayed when the 
@@ -52,6 +63,10 @@ function HiddenMenu(props) {
     </div>
   );
 }
+
+HiddenMenu.propTypes = {
+  children: PropTypes.arrayOf(PropTypes.element),
+};
 
 
 

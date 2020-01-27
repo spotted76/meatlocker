@@ -18,7 +18,7 @@ function Banner(props) {
         <ul>
           <li>
             <MenuItem visible={visible}>
-              <MenuGlyph userStyle={'menu_glyph_style'}>
+              <MenuGlyph glyphClass={'menu_glyph_style'}>
                 {userData?.name}
                 <i className='fas fa-user-circle fa-2x'></i>
               </MenuGlyph>
