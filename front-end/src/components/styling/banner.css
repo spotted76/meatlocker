@@ -1,3 +1,15 @@
+
+/* Main Header Above the Banner, keeps space the same if logged in or not */
+.header {
+  height: 55px;
+  text-align: right;
+}
+
+.header > ul > li {
+  list-style: none;
+}
+
+/* Main Splash Banner */
 .banner {
   background-color: #960c11;
   height: 100px;
@@ -8,7 +20,6 @@
 }
 
 .banner h1 {
-
   font-family: 'Lobster', cursive;
   font-size: 5em;
   color: white;
@@ -19,20 +30,15 @@
   padding-right: 5%;
 }
 
-.user_status_visible {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+/* Refactor this..  This is text/icon for the menu item */
+.menu_glyph_style {
+  display: inline-block;
   padding-right: 1em;
   color: #960c11;
   font-weight: 700;
   visibility: visible;
 }
 
-.user_status_visible i {
+.menu_glyph_style i {
   margin-left: .4em;
-}
-
-.user_status_invisible {
-  visibility: hidden;
 }
