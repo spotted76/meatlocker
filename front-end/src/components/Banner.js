@@ -2,6 +2,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
+import Config from '../utils/config'
+import { userRemove } from '../reducers/userReducer';
 
 import { MenuItem, MenuGlyph, HiddenMenu } from './MenuItem';
 
@@ -11,6 +14,13 @@ function Banner(props) {
 
   const { userData } = props;
   const visible = userData ? true : false;
+
+  //Logs the user out of an active session
+  const logout = () => {
+    //Delete the cookie, and  log the user out of the  state
+    Cookies.remove(Config.sessionName);
+    props.userRemove();
+  }
 
   return (
     <div>
@@ -24,7 +34,7 @@ function Banner(props) {
               </MenuGlyph>
               <HiddenMenu>
                 <li>Admin Console</li>
-                <li>Logout</li>
+                <li onClick={logout}>Logout</li>
               </HiddenMenu>
             </MenuItem>
           </li>
@@ -50,5 +60,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-const ConnectedBanner = connect(mapStateToProps)(Banner);
+//Get the dispatch functions and map them to props
+const mapDispatchToProps = {
+  userRemove,
+}
+
+const ConnectedBanner = connect(mapStateToProps, mapDispatchToProps)(Banner);
 export default ConnectedBanner;
