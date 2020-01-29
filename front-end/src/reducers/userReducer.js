@@ -16,7 +16,7 @@ export function userAdd(userData)
 //action to remove a user from the store
 export function userRemove() {
   return {
-    type: REMOVE_USER
+    type: REMOVE_USER,
   };
 }
 
@@ -32,8 +32,10 @@ function reducer (state = null, action) {
   switch(action.type) {
     case ADD_USER: //New user data added, so just return it as the state
       return action.data;
+    case REMOVE_USER: 
+      return null;  // Set the state back to NULL
     default:
-      return state; // No user, so return null for the user data
+      return state; // Not handled here, so just return the state
   }
 
 }

@@ -81,8 +81,9 @@ function Login(props) {
       <div className="input_form">
         <div>
           <h2>Login</h2>
-          <hr></hr>
         </div>
+
+        <div id='line_div'></div>
 
         <form onSubmit={onSubmit}>
           <div className="input_box">
