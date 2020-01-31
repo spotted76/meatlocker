@@ -1,5 +1,4 @@
 
-const mongoose = require('mongoose');
 const categoryRouter = require('express').Router();
 const Category = require('../models/category');
 const Item = require('../models/Item');
@@ -13,8 +12,8 @@ Adds a new category object
 categoryRouter.post('/', async (req, res) => {
 
   //Determine if the user is authenticated
-  if ( !req.user ) {
-    res.status(401).json({ error: 'unauthenticated user' });
+  if ( !req.authUser ) {
+    return res.status(401).json({ error: 'unauthenticated user' });
   }
 
   //Ok, user has been authenticated, allow the post to be created
@@ -33,7 +32,7 @@ categoryRouter.post('/', async (req, res) => {
   catch(err) {
     console.log(err);
     console.log(`error occurred creating new category ${body.categoryName}`);
-    res.status(500).json({ error: `error encountered attempting to create category ${body.categoryName} ` });
+    return res.status(500).json({ error: `error encountered attempting to create category ${body.categoryName} ` });
   }
 
   //There are also 
@@ -57,7 +56,7 @@ categoryRouter.post('/', async (req, res) => {
     catch(err) {
       console.log(err);
       console.log(`failed to create new item ${body.item.name} for category ${body.categoryName}`);
-      res.status(500).json({ error: `failed to create new item ${body.item.name} for category ${body.categoryName}`})
+      return res.status(500).json({ error: `failed to create new item ${body.item.name} for category ${body.categoryName}` });
     }
   }
 

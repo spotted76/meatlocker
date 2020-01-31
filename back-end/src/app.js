@@ -3,6 +3,8 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const bearerToken = require('express-bearer-token');
+const authUser = require('./middleware/auth');
 
 
 const userRouter = require('./routes/user');
@@ -19,6 +21,10 @@ app.use(morgan('dev'));
 //Setup the body parser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//Setup any middleware
+app.use(bearerToken());
+app.use(authUser);
 
 //Setup routes
 app.use('/api/user', userRouter);
