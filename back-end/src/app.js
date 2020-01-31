@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
+const categoryRouter = require('./routes/category');
 
 //Instantiate main express app
 const app = express();
@@ -22,5 +23,6 @@ app.use(bodyParser.json());
 //Setup routes
 app.use('/api/user', userRouter);
 app.use('/api/login', loginRouter);
+app.use('/api/category', categoryRouter);
 
 module.exports = app;
