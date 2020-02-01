@@ -22,9 +22,6 @@ function authUser(req, res, next) {
       console.log(`invalid token:  ${err}`);
     }
   }
-  else {
-    console.log('no token');
-  }
 
   next();
 

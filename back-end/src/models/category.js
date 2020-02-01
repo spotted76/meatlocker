@@ -15,11 +15,17 @@ const categorySchema = new mongoose.Schema({
     required: false,
     unique: false
   },
+  categories:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+  }],
   items:[{
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Item'
   }]
 });
+
+categorySchema.plugin(validator);
 
 
 module.exports = mongoose.model('Category', categorySchema);

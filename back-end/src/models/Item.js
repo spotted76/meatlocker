@@ -17,8 +17,13 @@ const itemSchema = new mongoose.Schema({
   category: {
     type: mongoose.Types.ObjectId,
     ref: 'Category'
+  },
+  image: {
+    type: String,
   }
 });
+
+itemSchema.plugin(validator);
 
 
 module.exports = mongoose.model('Item', itemSchema);
