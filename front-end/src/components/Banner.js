@@ -25,6 +25,9 @@ function Banner(props) {
   return (
     <div>
       <div className='header'>
+        <div className='header_text'>
+          <p>Meatlocker</p>
+        </div>
         <ul>
           <li>
             <MenuItem visible={visible}>
@@ -34,15 +37,11 @@ function Banner(props) {
               </MenuGlyph>
               <HiddenMenu>
                 <li>Admin Console</li>
-                <li onClick={logout}>Logout</li>
+                <li onClick={logout}>Sign Out</li>
               </HiddenMenu>
             </MenuItem>
           </li>
         </ul>
-      </div>
-      <div className="banner">
-        <h1>Meatlocker</h1>
-        <img src="https://img.icons8.com/plasticine/100/000000/steak.png" alt="steak" />
       </div>
     </div>
   );

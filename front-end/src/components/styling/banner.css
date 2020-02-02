@@ -1,40 +1,38 @@
 
-/* Main Header Above the Banner, keeps space the same if logged in or not */
+:root {
+  --main-bg-color: #960c11;
+  --main-text-color: white;
+}
+
+/* Main Header, is not visible when the user is not logged in */
 .header {
-  height: 55px;
+  height: 4rem;
+  width: 100%;
   text-align: right;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--main-bg-color);
+}
+
+/* Main header text along the left side of the banner */
+.header_text {
+  color: var(--main-text-color);
+  font-family: 'Lobster', cursive;
+  font-size: 2em;
+  padding-left: 1em;
 }
 
 .header > ul > li {
   list-style: none;
 }
 
-/* Main Splash Banner */
-.banner {
-  background-color: #960c11;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  justify-content: space-between;
-}
-
-.banner h1 {
-  font-family: 'Lobster', cursive;
-  font-size: 5em;
-  color: white;
-  padding-left: 5%;
-}
-
-.banner img {
-  padding-right: 5%;
-}
 
 /* Refactor this..  This is text/icon for the menu item */
 .menu_glyph_style {
   display: inline-block;
   padding-right: 1em;
-  color: #960c11;
+  color: var(--main-text-color);
   font-weight: 700;
   visibility: visible;
 }
