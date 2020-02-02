@@ -23,7 +23,8 @@ router.post('/', async (req, res) => {
     const user = new User({
       username: body.username,
       name: body.name,
-      password: hashedPasswd
+      password: hashedPasswd,
+      isAdmin: body.isAdmin
     });
 
     await user.save();

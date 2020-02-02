@@ -32,7 +32,7 @@ loginRouter.post('/', async (req, res) => {
     const token = jwt.sign(
       {
         username: user.username,
-        id: user._id
+        id: user._id,
       },
       config.secret,
       {
@@ -43,7 +43,8 @@ loginRouter.post('/', async (req, res) => {
     res.status(200).json({
       token: token,
       username: user.username,
-      name: user.name
+      name: user.name,
+      isAdmin: user.isAdmin
     });
 
   }
