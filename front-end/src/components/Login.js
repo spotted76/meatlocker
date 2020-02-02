@@ -79,23 +79,14 @@ function Login(props) {
   return (
     <div>
       <div className="input_form">
-        <div>
-          <h2>Login</h2>
+
+        <div id="input_banner">
+          <p>Meatlocker</p>
         </div>
 
-        <div id='line_div'></div>
-
-        <form onSubmit={onSubmit}>
-          <div className="input_box">
-            <div className="login_labels">
-              <label htmlFor="username">username: </label>
-              <label htmlFor="password">password: </label>
-            </div>
-            <div className="login_inputs">
-              <input name="username" id="username" data-testid="username_input" {...username} required />
-              <input name="password" id="password" data-testid="password_input" {...password} required />
-            </div>
-          </div>
+        <form onSubmit={onSubmit} className="if_form">
+          <input name="username" id="username" data-testid="username_input" placeholder="username" {...username} required />
+          <input name="password" id="password" data-testid="password_input" placeholder="password" {...password} required />
           <button className="login_submit">Submit</button>
         </form>
 

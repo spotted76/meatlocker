@@ -10,6 +10,7 @@ import { MenuItem, MenuGlyph, HiddenMenu } from './MenuItem';
 
 import './styling/banner.css';
 
+
 function Banner(props) {
 
   const { userData } = props;
@@ -21,10 +22,30 @@ function Banner(props) {
     Cookies.remove(Config.sessionName);
     props.userRemove();
   }
-
+  
+  //Customizes the user menu based on privs
+  const buildUserMenu = (isAdmin) => {
+    let menuItems = [];
+    if ( isAdmin )
+    {
+      menuItems.push(<li key="admin" >AdminConsole</li>);
+    }
+    menuItems.push(<li key="logout" onClick={logout}>Sign Out</li>);
+    return menuItems;
+  }
+  
+  //Only display the banner if the user is logged in
+  if ( !visible ) 
+  {
+    return null;
+  }
+  
   return (
     <div>
       <div className='header'>
+        <div className='header_text'>
+          <p>Meatlocker</p>
+        </div>
         <ul>
           <li>
             <MenuItem visible={visible}>
@@ -33,16 +54,11 @@ function Banner(props) {
                 <i className='fas fa-user-circle fa-2x'></i>
               </MenuGlyph>
               <HiddenMenu>
-                <li>Admin Console</li>
-                <li onClick={logout}>Logout</li>
+                {buildUserMenu(userData.isAdmin)}
               </HiddenMenu>
             </MenuItem>
           </li>
         </ul>
-      </div>
-      <div className="banner">
-        <h1>Meatlocker</h1>
-        <img src="https://img.icons8.com/plasticine/100/000000/steak.png" alt="steak" />
       </div>
     </div>
   );

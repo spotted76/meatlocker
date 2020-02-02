@@ -13,11 +13,10 @@ beforeEach(() => {
 test('it has no logged in user', () => {
 
   const component = render(<Banner store={store} />);
-  const { getByText, container } = component;
+  const { container } = component;
 
   const menuItem = container.querySelector('.menu_item');
 
-  expect(getByText('Meatlocker')).toBeDefined();
   expect(menuItem).toBeNull();
   
 });
@@ -61,7 +60,7 @@ test('it logs you out', () => {
     expect(getByText('Test User')).toBeDefined();
 
     //Initiate a logout condition by selecting & clicking logout
-    const logout = getByText('Logout');
+    const logout = getByText('Sign Out');
     fireEvent.click(logout);
 
     //obtain the same .menu_item, and verify that is is not defined
