@@ -1,8 +1,6 @@
 
 const categoryRouter = require('express').Router();
 const Category = require('../models/category');
-const Item = require('../models/Item');
-
 
 
 //REST API /api/category/
@@ -22,7 +20,9 @@ categoryRouter.post('/', async (req, res) => {
   //Create the category
   const category = new Category({
     categoryName: body.categoryName,
-    description: body.description
+    description: body.description,
+    isMajor: body.isMajor,
+    parent: body.parent
   });
 
   let newCategory;
@@ -35,33 +35,23 @@ categoryRouter.post('/', async (req, res) => {
     return res.status(500).json({ error: `error encountered attempting to create category ${body.categoryName} ` });
   }
 
-  //There are also 
-  if ( body.item ) {
-    //Create a new item
-    const item = new Item({
-      name: body.item.name,
-      count: 0,
-      description: body.item.description,
-      category: newCategory._id
-    });
-
-    let newItem;
+  //If there is a parent category, make sure to update the parent
+  if ( body.parent ) {
     try {
-
-      //Create the new item, and update the associated category.
-      newItem = await item.save();
-      newCategory.items.push(newItem._id);
-      newCategory.save();
+      const parent = await Category.findById(body.parent);
+      parent.childCategories.push(newCategory._id);
+      await parent.save();
     }
     catch(err) {
       console.log(err);
-      console.log(`failed to create new item ${body.item.name} for category ${body.categoryName}`);
-      return res.status(500).json({ error: `failed to create new item ${body.item.name} for category ${body.categoryName}` });
+      console.log('error occurred updating parent category with new child');
+      return res.status(500).json({ error: 'error encountered updating parent category' });
     }
   }
 
+
   //All good englewood!
-  res.status(201).end();
+  res.status(201).json(newCategory);
 
 
 });
