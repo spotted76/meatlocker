@@ -55,7 +55,7 @@ test('Success - Can authenticate user', async done => {
     .send(loginReq)
     .expect(200);
 
-  expect(result.body.username).toBe(loginReq.username);
+  expect(result.body.username).toBe('unamelogin');  //Should be all lowercase
   
   done();
 });
