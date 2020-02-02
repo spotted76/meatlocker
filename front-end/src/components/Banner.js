@@ -21,7 +21,12 @@ function Banner(props) {
     Cookies.remove(Config.sessionName);
     props.userRemove();
   }
-
+  
+  if ( !visible ) 
+  {
+    return null;
+  }
+  
   return (
     <div>
       <div className='header'>

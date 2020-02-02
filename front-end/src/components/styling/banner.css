@@ -2,6 +2,7 @@
 :root {
   --main-bg-color: #960c11;
   --main-text-color: white;
+  --main-font: 'Roboto';
 }
 
 /* Main Header, is not visible when the user is not logged in */
@@ -25,6 +26,7 @@
 
 .header > ul > li {
   list-style: none;
+  display: inline;
 }
 
 
@@ -35,8 +37,13 @@
   color: var(--main-text-color);
   font-weight: 700;
   visibility: visible;
+  font-family: var(--main-font);
 }
 
 .menu_glyph_style i {
   margin-left: .4em;
+}
+
+.hidden_menu {
+  font-family: var(--main-font);
 }
