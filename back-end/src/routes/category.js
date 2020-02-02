@@ -53,8 +53,30 @@ categoryRouter.post('/', async (req, res) => {
   //All good englewood!
   res.status(201).json(newCategory);
 
-
 });
 
+//REST API /api/category/
+/*
+  Request to get a specific category based on the passed ID
+*/
+categoryRouter.get('/:id', async(req, res) => {
+
+  //Lookup the category based on the passed id
+  try {
+    const result = await Category.findById(req.params.id);
+    if ( result )
+    {
+      return res.status(200).json(result);
+    }
+
+    res.status(400).json({ error: `unable to locate category @ id: ${req.params.id}` });
+
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).json({ error: `error encountered attempting to retrieve id: ${req.params.id}` });
+  }
+
+});
 
 module.exports = categoryRouter;

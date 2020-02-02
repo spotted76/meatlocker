@@ -127,19 +127,127 @@ test('it creates a new secondary category', async () => {
 
   expect(res2.body.categoryName).toBe(testSub.categoryName);
 
+});
+
+test('it creates two secondary categories', async () => {
+
+  const testCat = {
+    categoryName: 'Prime Test Name',
+    description: 'This is a primary category',
+    isMajor: true,
+  };
+
+
+   //Mock out the call to verify
+   jwt.verify.mockImplementation(() => {
+     return {
+       username: 'testing_user',
+       id: 123456
+     };
+  });
+
+  let res = await request.post('/api/category')
+    .set('Authorization', 'Bearer abcdef')
+    .send(testCat)
+    .expect(201);
 
   //Now create a new category, a sub category 
-  // const testSub2 = {
-  //   categoryName: 'Sub Test 2 Name',
-  //   description: 'This is another sub category',
-  //   isMajor: false,
-  //   parent: res.body.id
-  // };
+  const testSub = {
+    categoryName: 'Sub Test Name',
+    description: 'This is a sub category',
+    isMajor: false,
+    parent: res.body.id
+  };
 
-  // const res3 = await request.post('/api/category')
-  // .set('Authorization', 'Bearer abcdef')
-  // .send(testSub2)
-  // .expect(201);
+  const res2 = await request.post('/api/category')
+  .set('Authorization', 'Bearer abcdef')
+  .send(testSub)
+  .expect(201);
 
+  expect(res2.body.categoryName).toBe(testSub.categoryName);
+
+
+  // Now create a new category, a sub category 
+  const testSub2 = {
+    categoryName: 'Sub Test 2 Name',
+    description: 'This is another sub category',
+    isMajor: false,
+    parent: res.body.id
+  };
+
+  await request.post('/api/category')
+  .set('Authorization', 'Bearer abcdef')
+  .send(testSub2)
+  .expect(201);
+
+  //Finally, attempt to retrieve the primary category, and verify the length of 
+  const primGet = await request.get(`/api/category/${res.body.id}`);
+
+  expect(primGet.body.childCategories.length).toBe(2);
+
+});
+
+test('it creates two levels of sub categories', async () => {
+
+  const testCat = {
+    categoryName: 'Prime Test Name',
+    description: 'This is a primary category',
+    isMajor: true,
+  };
+
+
+   //Mock out the call to verify
+   jwt.verify.mockImplementation(() => {
+     return {
+       username: 'testing_user',
+       id: 123456
+     };
+  });
+
+  let res = await request.post('/api/category')
+    .set('Authorization', 'Bearer abcdef')
+    .send(testCat)
+    .expect(201);
+
+  //Now create a new category, a sub category 
+  const testSub = {
+    categoryName: 'Sub Test Name',
+    description: 'This is a sub category',
+    isMajor: false,
+    parent: res.body.id
+  };
+
+  const res2 = await request.post('/api/category')
+  .set('Authorization', 'Bearer abcdef')
+  .send(testSub)
+  .expect(201);
+
+  expect(res2.body.categoryName).toBe(testSub.categoryName);
+
+
+  // Now create a sub category, and add it to the first sub-category
+  const testSub2 = {
+    categoryName: 'Sub Test 2 Name',
+    description: 'This is another sub category',
+    isMajor: false,
+    parent: res2.body.id
+  };
+
+  const res3 = await request.post('/api/category')
+  .set('Authorization', 'Bearer abcdef')
+  .send(testSub2)
+  .expect(201);
+
+  //Retrieve the secondary category, and verify the 3rd as a sub
+  const subCat = await request.get(`/api/category/${res2.body.id}`);
+
+  expect(subCat.body.childCategories[0]).toBe(res3.body.id);
+
+});
+
+test('it fails to retrieve a bogus id', async() => {
+
+  await request.get('/api/category/5a364020d16bc5458fa90879')
+  .expect(400);
 
 });
