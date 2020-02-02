@@ -21,10 +21,9 @@ beforeEach(() => {
 
 test('it can render the login dialog', () => {
 
-  const { getByText, getByLabelText } = render(<Login store={store} />);
-  expect(getByLabelText('username:')).toBeDefined();
-  expect(getByLabelText('password:')).toBeDefined();
-  expect(getByText('Login')).toBeDefined();
+  const component = render(<Login store={store} />);
+  expect(component.container.querySelectorAll('input').length).toBe(2);
+  expect(component.getByText('Submit')).toBeDefined();
 
 });
 
