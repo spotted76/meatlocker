@@ -1,12 +1,13 @@
 import React from 'react';
 import Login from './components/Login';
 import Banner from './components/Banner';
+import Configure from './components/Configure';
 
 import {
   BrowserRouter as Router,
   Switch,
   Route
-} from "react-router-dom";
+} from 'react-router-dom';
 
 import './app.css';
 
@@ -33,13 +34,5 @@ function App() {
   );
 }
 
-function Configure() {
-  return (
-    <div>
-    {console.log('Configure is visible' )}
-    <h1>Configure</h1>
-    </div>
-  );
-}
 
 export default App;
