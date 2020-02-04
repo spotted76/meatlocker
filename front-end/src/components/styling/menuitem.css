@@ -1,3 +1,7 @@
+:root {
+  --base-color: #960c11;
+}
+
 /* Each menu item in the header */
 .menu_item {
   display: inline;
@@ -21,7 +25,7 @@
   border-radius: 5%;
   width: 150%;
   list-style: none;
-  border: #960c11;
+  border: var(--base-color);
 }
 
 /* Unique item under each hidden_menu */
@@ -29,9 +33,15 @@
   padding: 0;
 }
 .hidden_menu  li {
-  color: #960c11;
+  color: var(--base-color);
   padding: 15px;
   list-style: none;
+  cursor: pointer;
+}
+
+.hidden_menu a { 
+  color: var(--base-color);
+  text-decoration: none;
 }
 
 /* Change background & radius when hovering over a hidden menu item */

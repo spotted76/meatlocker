@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import Config from '../utils/config'
 import { userRemove } from '../reducers/userReducer';
 
+import { Link } from "react-router-dom";
+
 import { MenuItem, MenuGlyph, HiddenMenu } from './MenuItem';
 
 import './styling/banner.css';
@@ -28,7 +30,7 @@ function Banner(props) {
     let menuItems = [];
     if ( isAdmin )
     {
-      menuItems.push(<li key="admin" >AdminConsole</li>);
+      menuItems.push(<li key="admin" ><Link to='/configure'>Configure</Link></li>);
     }
     menuItems.push(<li key="logout" onClick={logout}>Sign Out</li>);
     return menuItems;
@@ -44,7 +46,7 @@ function Banner(props) {
     <div>
       <div className='header'>
         <div className='header_text'>
-          <p>Meatlocker</p>
+          <Link to='/'><p>Meatlocker</p></Link>
         </div>
         <ul>
           <li>

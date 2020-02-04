@@ -5,6 +5,11 @@
   --main-font: 'Roboto';
 }
 
+/* Remove all outlines from links */
+a {
+  outline: none;
+}
+
 /* Main Header, is not visible when the user is not logged in */
 .header {
   height: 4rem;
@@ -22,6 +27,12 @@
   font-family: 'Lobster', cursive;
   font-size: 2em;
   padding-left: 1em;
+}
+
+/* Don't color any links in the drop downs */
+.header_text a {
+  color: var(--main-text-color);
+  text-decoration: none;
 }
 
 .header > ul > li {
