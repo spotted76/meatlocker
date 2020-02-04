@@ -251,3 +251,58 @@ test('it fails to retrieve a bogus id', async() => {
   .expect(400);
 
 });
+
+test('it retrieves all top level categories', async () => {
+
+  const testCat = {
+    categoryName: 'Prime Test Name',
+    description: 'This is a primary category',
+    isMajor: true,
+  };
+
+
+   //Mock out the call to verify
+   jwt.verify.mockImplementation(() => {
+     return {
+       username: 'testing_user',
+       id: 123456
+     };
+  });
+
+  let res = await request.post('/api/category')
+    .set('Authorization', 'Bearer abcdef')
+    .send(testCat)
+    .expect(201);
+
+  //Now create a new category, a sub category 
+  const testSub = {
+    categoryName: 'Sub Test Name',
+    description: 'This is a sub category',
+    isMajor: false,
+    parent: res.body.id
+  };
+
+  await request.post('/api/category')
+  .set('Authorization', 'Bearer abcdef')
+  .send(testSub)
+  .expect(201);
+
+  //Lastly, create a third, also a primary
+  const anotherPrimary = {
+    categoryName: 'Second Prime Test Name',
+    description: 'This is another primary category',
+    isMajor: true,
+  };
+
+  await request.post('/api/category')
+  .set('Authorization', 'Bearer abcdef')
+  .send(anotherPrimary)
+  .expect(201);
+
+  //Ok, now try to retrieve "all" major categories
+  const res4 = await request.get('/api/category')
+  .expect(200);
+
+  expect(res4.body.length).toBe(2);
+
+});
