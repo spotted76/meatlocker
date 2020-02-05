@@ -181,7 +181,8 @@ test('it creates two secondary categories', async () => {
   .expect(201);
 
   //Finally, attempt to retrieve the primary category, and verify the length of 
-  const primGet = await request.get(`/api/category/${res.body.id}`);
+  const primGet = await request.get(`/api/category/${res.body.id}`)
+  .set('Authorization', 'Bearer abcdef');
 
   expect(primGet.body.childCategories.length).toBe(2);
 
@@ -239,7 +240,8 @@ test('it creates two levels of sub categories', async () => {
   .expect(201);
 
   //Retrieve the secondary category, and verify the 3rd as a sub
-  const subCat = await request.get(`/api/category/${res2.body.id}`);
+  const subCat = await request.get(`/api/category/${res2.body.id}`)
+  .set('Authorization', 'Bearer abcdef');
 
   expect(subCat.body.childCategories[0]).toBe(res3.body.id);
 
@@ -248,6 +250,7 @@ test('it creates two levels of sub categories', async () => {
 test('it fails to retrieve a bogus id', async() => {
 
   await request.get('/api/category/5a364020d16bc5458fa90879')
+  .set('Authorization', 'Bearer abcdef')
   .expect(400);
 
 });
@@ -301,6 +304,7 @@ test('it retrieves all top level categories', async () => {
 
   //Ok, now try to retrieve "all" major categories
   const res4 = await request.get('/api/category')
+  .set('Authorization', 'Bearer abcdef')
   .expect(200);
 
   expect(res4.body.length).toBe(2);

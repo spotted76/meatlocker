@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const bearerToken = require('express-bearer-token');
 const authUser = require('./middleware/auth');
+const checkPrivs = require('./middleware/checkPrivs');
 
 
 const userRouter = require('./routes/user');
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 //Setup any middleware
 app.use(bearerToken());
 app.use(authUser);
+app.use(checkPrivs);
 
 //Setup routes
 app.use('/api/user', userRouter);
