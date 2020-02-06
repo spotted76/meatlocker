@@ -8,10 +8,19 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './app.css';
 
-function App() {
+function App(props) {
+
+
+  //If the user is not logged in, show the Login component
+  if ( !props.userData ) {
+    return (
+      <Login />
+    );
+  }
 
   return (
     <Router>
@@ -22,7 +31,7 @@ function App() {
         
         <Switch>
           <Route exact path='/'>
-            <Login />
+            <Placeholder />
           </Route>
           <Route path='/configure'>
             <Configure />
@@ -34,5 +43,20 @@ function App() {
   );
 }
 
+//For now, this is the "main" component page
+function Placeholder() {
+  return (
+    <h1>...Placeholder...</h1>
+  );
+}
 
-export default App;
+//Need to get access to user reducer to determine if logged in
+function mapStateToProps(state) {
+  const { userReducer } = state;
+  return {
+    userData: userReducer,
+  };
+}
+
+const connectedApp = connect(mapStateToProps)(App);
+export default connectedApp
