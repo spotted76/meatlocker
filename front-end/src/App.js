@@ -2,6 +2,8 @@ import React from 'react';
 import Login from './components/Login';
 import Banner from './components/Banner';
 import Configure from './components/Configure';
+import PropTypes from 'prop-types';
+
 
 import {
   BrowserRouter as Router,
@@ -10,13 +12,13 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+
 import './app.css';
 
 function App(props) {
 
-
   //If the user is not logged in, show the Login component
-  if ( !props.userData ) {
+  if ( !props.isLoggedIn ) {
     return (
       <Login />
     );
@@ -24,7 +26,7 @@ function App(props) {
 
   return (
     <Router>
-
+      
       <div className="main_div">
         {/* Banner Should always be visible */}
         <Banner /> 
@@ -50,13 +52,18 @@ function Placeholder() {
   );
 }
 
+//Set the PropTypes for the App
+App.propTypes = {
+  isLoggedIn: PropTypes.object
+};
+
 //Need to get access to user reducer to determine if logged in
 function mapStateToProps(state) {
   const { userReducer } = state;
   return {
-    userData: userReducer,
+    isLoggedIn: userReducer,
   };
 }
 
 const connectedApp = connect(mapStateToProps)(App);
-export default connectedApp
+export default connectedApp;

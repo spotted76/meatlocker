@@ -70,7 +70,7 @@ function Login(props) {
   };
 
   // User is logged in, no need to render
-  if ( props.userData || !effectHasRun ) {
+  if ( props.isLoggedIn || !effectHasRun ) {
     return null;
   }
 
@@ -98,7 +98,7 @@ function mapStateToProps(state) {
   const { userReducer } = state;
 
   return {
-    userData: userReducer,
+    isLoggedIn: userReducer,
   };
 
 }
@@ -110,7 +110,7 @@ const mapDispatchToProps = {
 
 Login.propTypes = {
   userAdd: PropTypes.func,
-  userData: PropTypes.object
+  isLoggedIn: PropTypes.object
 };
 
 
