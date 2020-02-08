@@ -24,7 +24,7 @@ export function addTopLevelCat(categoryData) {
   };
 }
 
-function reducer (state = [], action) {
+function reducer (state = null, action) {
   
   switch ( action.type ){
 

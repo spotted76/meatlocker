@@ -3,9 +3,10 @@ import axios from 'axios';
 
 class CategoryService {
 
-  constructor(baseURI, configs = null) {
+  constructor(baseURI) {
+    console.log('CategoryService constructor called');
     this.baseURI = baseURI;
-    this.configs = configs ? configs : undefined;
+    this.configs = {};
     this.error = false;
     this.loading = false;
     this.data = null;
@@ -28,6 +29,19 @@ class CategoryService {
       this.error = err;
     }
 
+  }
+
+  setAuthToken(token) {
+
+    const bearer = `Bearer ${token}`;
+
+    if ( ! this.configs.headers) {
+      this.configs.headers = {};
+    }
+
+    this.configs.headers = {
+      Authorization: bearer
+    };
   }
 
 }

@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import useFetch from '../hooks/useFetch';
 import CategoryService from '../services/categoryServices';
+import { setTopLevelCat } from '../reducers/majorCategoryReducer';
 
 import PropTypes from 'prop-types';
 
@@ -13,46 +13,30 @@ const CONFIGURE_REQUEST = '/api/category';
 
 function Configure(props) {
 
-  console.log('Confgure Object created');
-
   //Retrieve an authenticated user if one exists
-  const { user } = props;
-
-  //Construct a config option for the fetch object
-  let config = undefined;
-  if ( user ) {
-    const bearer = `Bearer ${user.token}`;
-    config = {
-      headers: {
-        Authorization: bearer
-      }
-    };
-  }
-
-  const [catService, setCatService] = 
-    useState(new CategoryService(CONFIGURE_REQUEST, config));
+  const { 
+    user, //Logged in user info
+    setTopLevelCat, // dispatch for top level category data
+    categoryData //Data stored in the top level category store 
+  } = props;
 
 
-  //Use custom hook to retrieve config data
-  // const [{ loading, error, data }, fetch] = useFetch(CONFIGURE_REQUEST, config);
-  const [actualData, setActualData] = useState(null);
+  //Retrieves category data
+  const [catService] = useState(new CategoryService(CONFIGURE_REQUEST));
+  catService.setAuthToken(user.token);
 
 
   useEffect(() => {
 
-    if (user.isAdmin) {
-
-      console.log('in the admin effect');
+    if (user.isAdmin && !categoryData) {
 
       const fetchPrimary = async () => {
-        // await fetch();
         await catService.fetchMajorCategories();
-        setActualData(catService.data);
+        setTopLevelCat(catService.data);
       };
       fetchPrimary();
     }
-
-  }, [user.isAdmin, catService]);
+  }, [user.isAdmin, catService, setTopLevelCat]);
 
   //If the user doesn't have permission, bounce them
   if (!user.isAdmin) {
@@ -63,28 +47,8 @@ function Configure(props) {
     );
   }
 
-  if (catService.loading) {
-    return (
-      <div>
-        {console.log("!!!!!!!!!!!LOADING")}
-      <h1>Loading...</h1>
-      </div>
-    );
-  }
-
-  if (catService.error) {
-    //Not sure, maybe a re-direct
-    console.log('Error encoutered....');
-    return null;
-  }
-
-  if (actualData) {
-    console.log('WTF', catService.data);
-  }
-
   return (
     <div>
-
       <h1>Configure Page</h1>
     </div>
   );
@@ -99,11 +63,15 @@ function mapStateToProps(state) {
   const { majorCategories, userReducer } = state;
   return {
     user: userReducer,
-    majorCategories
+    categoryData: majorCategories
   };
 }
 
+const mapDispatchToProps = {
+  setTopLevelCat
+};
 
-const connectedConfigure = connect(mapStateToProps)(Configure);
+
+const connectedConfigure = connect(mapStateToProps, mapDispatchToProps)(Configure);
 
 export default connectedConfigure;
