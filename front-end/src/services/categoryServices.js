@@ -4,7 +4,6 @@ import axios from 'axios';
 class CategoryService {
 
   constructor(baseURI) {
-    console.log('CategoryService constructor called');
     this.baseURI = baseURI;
     this.configs = {};
     this.error = false;
@@ -13,8 +12,6 @@ class CategoryService {
   }
 
   async fetchMajorCategories() {
-
-    console.log('did fetchMajor get called?', this);
 
     this.loading = true;
 

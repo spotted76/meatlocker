@@ -28,15 +28,23 @@ function Configure(props) {
 
   useEffect(() => {
 
+    console.log('configure effect run');
+
     if (user.isAdmin && !categoryData) {
 
       const fetchPrimary = async () => {
         await catService.fetchMajorCategories();
-        setTopLevelCat(catService.data);
+        if ( !catService.error ) {
+          setTopLevelCat(catService.data);
+        }
+        else {
+          //Need to add an alert here about loading & errors
+          console.log('An error occurred loading Category data');
+        }
       };
       fetchPrimary();
     }
-  }, [user.isAdmin, catService, setTopLevelCat]);
+  }, [user.isAdmin, catService, setTopLevelCat, categoryData]);
 
   //If the user doesn't have permission, bounce them
   if (!user.isAdmin) {
@@ -55,7 +63,9 @@ function Configure(props) {
 }
 
 Configure.propTypes = {
-  user: PropTypes.object
+  user: PropTypes.object,
+  setTopLevelCat: PropTypes.func,
+  categoryData: PropTypes.array
 };
 
 //Get the required state data out of the props
