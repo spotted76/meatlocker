@@ -1,0 +1,15 @@
+.configure_view {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.detail_view {
+  min-width: 300px;
+  width: 48%;
+}
+
+.category_view {
+  min-width: 300px;
+  width: 48%;
+}

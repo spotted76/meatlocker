@@ -1,0 +1,11 @@
+
+.mainContainer {
+  border: solid lightgray;
+  width: 100%;
+  min-height: 350px;
+}
+
+.buttonDiv {
+  display: flex;
+  flex-direction: row-reverse;
+}
