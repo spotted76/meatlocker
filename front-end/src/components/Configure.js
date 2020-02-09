@@ -22,7 +22,7 @@ function Configure(props) {
 
 
   //Retrieves category data
-  const [catService] = useState(new CategoryService(CONFIGURE_REQUEST));
+  const [catService] = useState(() =>new CategoryService(CONFIGURE_REQUEST));
   catService.setAuthToken(user.token);
 
 
