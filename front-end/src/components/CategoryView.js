@@ -9,6 +9,7 @@ import CategoryService from '../services/categoryServices';
 import { setTopLevelCat } from '../reducers/majorCategoryReducer';
 
 import Category from './Category';
+import CreateEdit from './CreateEdit';
 
 import PropTypes from 'prop-types';
 
@@ -36,6 +37,10 @@ function CategoryView(props) {
   //Retrieves category data
   const [catService] = useState(() =>new CategoryService(CATEGORY_URI));
   catService.setAuthToken(user.token);
+
+  //Determines visibility of modal create/edit dialogs
+  const [createEditVisible, setCreateEditVisible] = useState(false);
+  const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
 
 
   //Used to retrieve the initial top level categories
@@ -69,6 +74,13 @@ function CategoryView(props) {
     );
   }
 
+  //Method used to toggle the modal create/edit dialog
+  const toggleCreateEdit = (isEdit) => {
+    console.log('isEdit ', isEdit);
+    setIsEdit(isEdit);
+    setCreateEditVisible(!createEditVisible);
+  };
+
   return (
     <div className="category_view">
       <h2>Categories & Items</h2>
@@ -76,9 +88,10 @@ function CategoryView(props) {
         {populateCategoryView(categoryData)}
       </div>
       <div className={style.buttonDiv}>
-        <button>Create</button>
-        <button>Edit</button>
+        <button onClick={() => toggleCreateEdit(false)} >Create</button>
+        <button onClick={() => toggleCreateEdit(true)}>Edit</button>
       </div>
+      <CreateEdit visible={createEditVisible} toggle={toggleCreateEdit} isEdit={isEdit} /> {/* Hidden by default, this is a modal view */}
     </div>
   );
 }
