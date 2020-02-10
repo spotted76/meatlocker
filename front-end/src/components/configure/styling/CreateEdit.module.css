@@ -12,3 +12,24 @@
   width: 100vw;
   z-index: 999;
 }
+
+.inputForm {
+  background-color: white;
+  width: 35%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+}
+
+.formElements {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+}
+
+.buttonPanel {
+  display: flex;
+  flex-direction: row-reverse;
+}

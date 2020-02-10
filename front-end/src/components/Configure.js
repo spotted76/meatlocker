@@ -3,8 +3,8 @@
 import style from './styling/configure.css';
 
 import React from 'react';
-import CategoryView from './CategoryView';
-import DetailView from './DetailView';
+import CategoryView from './configure/CategoryView';
+import DetailView from './configure/DetailView';
 
 
 

@@ -6,9 +6,9 @@ function Category(props) {
   const { data } = props;
 
   return (
-    <div>
-      <p>{data.categoryName}</p>
-    </div>
+    <li>
+      {data.categoryName}
+    </li>
   );
 
 }

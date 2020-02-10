@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import CategoryService from '../services/categoryServices';
-import { setTopLevelCat } from '../reducers/majorCategoryReducer';
+import CategoryService from '../../services/categoryServices';
+import { setTopLevelCat } from '../../reducers/majorCategoryReducer';
 
 import Category from './Category';
 import CreateEdit from './CreateEdit';
@@ -85,7 +85,9 @@ function CategoryView(props) {
     <div className="category_view">
       <h2>Categories & Items</h2>
       <div className = {style.mainContainer}>
-        {populateCategoryView(categoryData)}
+        <ul>
+          {populateCategoryView(categoryData)}
+        </ul>
       </div>
       <div className={style.buttonDiv}>
         <button onClick={() => toggleCreateEdit(false)} >Create</button>
