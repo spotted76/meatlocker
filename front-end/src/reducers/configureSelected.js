@@ -1,16 +1,16 @@
 
 
-export const SET_SEL_CAT = 'SET_SELECTED_CATEGORY';
-export const UNSET_SEL_CAT = 'UNSET_SELECTED_CATEGORY';
+export const SET_CONFIG_SEL = 'CONFIG_SEL';
+export const UNSET_CONFIG_SEL = 'UNCONFIG_SEL';
 
 //function to dispatch a newly selected category item
-export function setSelCat(categoryId) {
+export function setConfigSel(selectionId, type) {
   console.log('i am dispatching');
   return {
-    type: SET_SEL_CAT,
+    type: SET_CONFIG_SEL,
     data: {
-      id: categoryId,
-      type: 'category'
+      id: selectionId,
+      type
     }
   };
 }
@@ -18,7 +18,7 @@ export function setSelCat(categoryId) {
 //function to dispatch an unset of a category item
 export function unsetSelCat() {
   return {
-    type: UNSET_SEL_CAT,
+    type: UNSET_CONFIG_SEL,
     data: null
   };
 }
@@ -26,15 +26,12 @@ export function unsetSelCat() {
 //Actual reducer to store the state
 function reducer (state = null, action) {
 
-  console.log('did I get in the reducer?');
-
   switch(action.type) {
 
-    case SET_SEL_CAT:
-      console.log('returning ', action.data);
+    case SET_CONFIG_SEL:
       return action.data;
 
-    case UNSET_SEL_CAT:
+    case UNSET_CONFIG_SEL:
       return action.data; 
 
     default:

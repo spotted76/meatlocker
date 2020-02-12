@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { setSelCat } from '../../reducers/configureSelected';
+import { setConfigSel } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
@@ -28,7 +28,7 @@ function CategoryView(props) {
   const { 
     user, //Logged in user info
     categoryData, //Data stored in the top level category store
-    setSelCat //Data to store what is current selected in the category view 
+    setConfigSel //Data to store what is current selected in the category view 
   } = props;
 
 
@@ -48,8 +48,7 @@ function CategoryView(props) {
   const categoryClicked = (evt) => {
     evt.stopPropagation();
     console.log('clickety click ', evt.target.id);
-    console.log(setSelCat);
-    setSelCat(evt.target.id);
+    setConfigSel(evt.target.id, 'category');
   };
 
     //If the user doesn't have permission, bounce them
@@ -95,7 +94,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  setSelCat
+  setConfigSel
 };
 
 
