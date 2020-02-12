@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/category
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRyaXBsZXkiLCJpZCI6IjVlMzcwOGRjZTgzNjczNDdlNGU1YjI4MCIsImlhdCI6MTU4MDg2NzY1MCwiZXhwIjoxNTgwODcxMjUwfQ.nTs9b943PFtT6zQHdZMWwq1mfAk7umE59hyCPVSUuBQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRyaXBsZXkiLCJpZCI6IjVlMzcwOGRjZTgzNjczNDdlNGU1YjI4MCIsImlhdCI6MTU4MTQ1NzE4MCwiZXhwIjoxNTgxNDYwNzgwfQ.Px8IYml6_2nz53bdADuxTTku9BujOifLrot4sP9iWOI
 content-type: application/json
 
 {
-    "categoryName": "Example Primary Category", 
-    "description": "This is a baseline category",
-    "isMajor": "true"
+    "categoryName": "Subcat Numba 2", 
+    "description": "This is a sibling sub category",
+    "isMajor": "false",
+    "parent": "5e3a208b81854242508dc76a"
 }

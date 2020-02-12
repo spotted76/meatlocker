@@ -4,6 +4,7 @@
 export const SET_MAJOR_CATS = 'SET_MAJOR_CATS';
 export const ADD_MAJOR_CAT = 'ADD_MAJOR_CAT';
 export const DEL_MAJOR_CAT = 'DEL_MAJOR_CAT';
+export const ADD_SUB_CAT = 'ADD_SUB_CAT';
 
 
 // Action to set the top level category data
@@ -24,6 +25,15 @@ export function addTopLevelCat(categoryData) {
   };
 }
 
+/* Adds a single sub category (At this point, there is no distinction betwen 
+  sub & major, but this may be useful in the future) */
+export function addSubCategory(categoryData) {
+  return {
+    type: ADD_SUB_CAT,
+    data: categoryData
+  };
+}
+
 function reducer (state = null, action) {
   
   switch ( action.type ){
@@ -34,6 +44,16 @@ function reducer (state = null, action) {
       // Add a new item, concat is called to return a new array
       return state.concat({
         ...action.data.categoryName,
+        isMajor: true,
+        childCategories : [...action.data.childCategories],
+        items: [...action.data.items]
+      });
+    case ADD_SUB_CAT:
+      return state.concat({
+        ...action.data.categoryName,
+        ...action.data.description,
+        isMajor: false,
+        ...action.data.parent,
         childCategories : [...action.data.childCategories],
         items: [...action.data.items]
       });

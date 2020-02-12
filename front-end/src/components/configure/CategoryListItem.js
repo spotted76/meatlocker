@@ -1,16 +1,16 @@
 
 import React from 'react';
 
-function Category(props) {
+function CategoryListItem(props) {
 
   const { data } = props;
 
   return (
-    <li>
+    <li id={data.id}>
       {data.categoryName}
     </li>
   );
 
 }
 
-export default Category;
+export default CategoryListItem;

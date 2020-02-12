@@ -82,7 +82,8 @@ categoryRouter.get('/:id', async(req, res) => {
 
   //Lookup the category based on the passed id
   try {
-    const result = await Category.findById(req.params.id);
+    const result = await Category.findById(req.params.id)
+      .populate('childCategories');
     if ( result )
     {
       return res.status(200).json(result);

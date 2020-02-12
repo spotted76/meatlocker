@@ -4,12 +4,14 @@ import { combineReducers, createStore } from 'redux';
 //Import each reducer
 import userReducer from './reducers/userReducer';
 import majorCategories from './reducers/majorCategoryReducer';
+import configureSelected from './reducers/configureSelected';
 
 
 //Combine all reducers into a single store
 const reducers = combineReducers({
   userReducer,
-  majorCategories
+  majorCategories,
+  configureSelected
 });
 
 const store = createStore(reducers);

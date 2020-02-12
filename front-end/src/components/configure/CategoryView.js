@@ -7,8 +7,9 @@ import { Redirect } from 'react-router-dom';
 
 import CategoryService from '../../services/categoryServices';
 import { setTopLevelCat } from '../../reducers/majorCategoryReducer';
+import { setSelCat } from '../../reducers/configureSelected';
 
-import Category from './Category';
+import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
 
 import PropTypes from 'prop-types';
@@ -19,7 +20,7 @@ function populateCategoryView (categoryData) {
 
   if (categoryData) {
     console.log(categoryData);
-    return categoryData.map(category => <Category key={category.id} data={category} />);
+    return categoryData.map(category => <CategoryListItem key={category.id} data={category} />);
   }
 
 }
@@ -30,7 +31,8 @@ function CategoryView(props) {
   const { 
     user, //Logged in user info
     setTopLevelCat, // dispatch for top level category data
-    categoryData //Data stored in the top level category store 
+    categoryData, //Data stored in the top level category store
+    setSelCat //Data to store what is current selected in the category view 
   } = props;
 
 
@@ -65,14 +67,6 @@ function CategoryView(props) {
   }, [user.isAdmin, catService, setTopLevelCat, categoryData]);
 
 
-  //If the user doesn't have permission, bounce them
-  if (!user.isAdmin) {
-    return (
-      <div>
-        <Redirect to="/" />
-      </div>
-    );
-  }
 
   //Method used to toggle the modal create/edit dialog
   const toggleCreateEdit = (isEdit) => {
@@ -81,11 +75,29 @@ function CategoryView(props) {
     setCreateEditVisible(!createEditVisible);
   };
 
+  //Method used to handle a category selection
+  const categoryClicked = (evt) => {
+    evt.stopPropagation();
+    console.log('clickety click ', evt.target.id);
+    console.log(setTopLevelCat);
+    console.log(setSelCat);
+    setSelCat(evt.target.id);
+  };
+
+    //If the user doesn't have permission, bounce them
+  if (!user.isAdmin) {
+    return (
+      <div>
+        <Redirect to="/" />
+      </div>
+    );
+  }
+
   return (
     <div className="category_view">
       <h2>Categories & Items</h2>
       <div className = {style.mainContainer}>
-        <ul>
+        <ul onClick={categoryClicked}>
           {populateCategoryView(categoryData)}
         </ul>
       </div>
@@ -106,15 +118,17 @@ CategoryView.propTypes = {
 
 //Get the required state data out of the props
 function mapStateToProps(state) {
-  const { majorCategories, userReducer } = state;
+  const { majorCategories, userReducer, configureSelected } = state;
   return {
     user: userReducer,
-    categoryData: majorCategories
+    categoryData: majorCategories,
+    selected: configureSelected
   };
 }
 
 const mapDispatchToProps = {
-  setTopLevelCat
+  setTopLevelCat,
+  setSelCat
 };
 
 
