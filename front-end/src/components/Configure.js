@@ -2,13 +2,54 @@
 
 import style from './styling/configure.css';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import CategoryView from './configure/CategoryView';
 import DetailView from './configure/DetailView';
-
+import CategoryService from '../services/categoryServices';
+import { setTopLevelCat } from '../reducers/majorCategoryReducer';
 
 
 function Configure(props) {
+
+  //URL to get category data
+  const CATEGORY_URI = '/api/category';
+  
+  //All variables required from props
+  const {
+    user,
+    categoryData,
+    setTopLevelCat
+  } = props;
+
+  //Retrieves category data
+  const [catService] = useState(() => new CategoryService(CATEGORY_URI));
+  catService.setAuthToken(user.token);
+
+
+    //Used to retrieve the initial top level categories
+    useEffect(() => {
+
+      console.log('Configure effect run');
+  
+      if (user.isAdmin && !categoryData) { //Only do this population when necessary
+  
+        console.log('actually fetching category data');
+
+        const fetchPrimary = async () => {
+          await catService.fetchMajorCategories();
+          if ( !catService.error ) {
+            setTopLevelCat(catService.data);
+          }
+          else {
+            //Need to add an alert here about loading & errors
+            console.log('An error occurred loading Category data');
+          }
+        };
+        fetchPrimary();
+      }
+    }, [user.isAdmin, catService, setTopLevelCat, categoryData]);
+
 
   return (
     <div>
@@ -21,4 +62,20 @@ function Configure(props) {
   );
 }
 
-export default Configure;
+//Get the required state data out of the props
+function mapStateToProps(state) {
+  const { majorCategories, userReducer } = state;
+  return {
+    user: userReducer,
+    categoryData: majorCategories,
+  };
+}
+
+//Any data that needs to be 'set in the store goes here
+const mapDispatchToProps = {
+  setTopLevelCat,
+};
+
+
+const connectedConfigure = connect(mapStateToProps, mapDispatchToProps)(Configure);
+export default connectedConfigure;

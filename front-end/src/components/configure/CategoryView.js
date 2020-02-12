@@ -5,8 +5,6 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import CategoryService from '../../services/categoryServices';
-import { setTopLevelCat } from '../../reducers/majorCategoryReducer';
 import { setSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
@@ -14,7 +12,6 @@ import CreateEdit from './CreateEdit';
 
 import PropTypes from 'prop-types';
 
-const CATEGORY_URI = '/api/category';
 
 function populateCategoryView (categoryData) {
 
@@ -30,42 +27,14 @@ function CategoryView(props) {
   //Retrieve an authenticated user if one exists
   const { 
     user, //Logged in user info
-    setTopLevelCat, // dispatch for top level category data
     categoryData, //Data stored in the top level category store
     setSelCat //Data to store what is current selected in the category view 
   } = props;
 
 
-  //Retrieves category data
-  const [catService] = useState(() =>new CategoryService(CATEGORY_URI));
-  catService.setAuthToken(user.token);
-
   //Determines visibility of modal create/edit dialogs
   const [createEditVisible, setCreateEditVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
-
-
-  //Used to retrieve the initial top level categories
-  useEffect(() => {
-
-    console.log('CategoryView effect run');
-
-    if (user.isAdmin && !categoryData) {
-
-      const fetchPrimary = async () => {
-        await catService.fetchMajorCategories();
-        if ( !catService.error ) {
-          setTopLevelCat(catService.data);
-        }
-        else {
-          //Need to add an alert here about loading & errors
-          console.log('An error occurred loading Category data');
-        }
-      };
-      fetchPrimary();
-    }
-  }, [user.isAdmin, catService, setTopLevelCat, categoryData]);
-
 
 
   //Method used to toggle the modal create/edit dialog
@@ -79,7 +48,6 @@ function CategoryView(props) {
   const categoryClicked = (evt) => {
     evt.stopPropagation();
     console.log('clickety click ', evt.target.id);
-    console.log(setTopLevelCat);
     console.log(setSelCat);
     setSelCat(evt.target.id);
   };
@@ -127,7 +95,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  setTopLevelCat,
   setSelCat
 };
 
