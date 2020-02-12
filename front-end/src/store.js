@@ -3,7 +3,7 @@ import { combineReducers, createStore } from 'redux';
 
 //Import each reducer
 import userReducer from './reducers/userReducer';
-import majorCategories from './reducers/majorCategoryReducer';
+import majorCategories from './reducers/categoryReducer';
 import configureSelected from './reducers/configureSelected';
 
 

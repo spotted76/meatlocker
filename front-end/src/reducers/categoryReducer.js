@@ -27,7 +27,7 @@ export function addTopLevelCat(categoryData) {
 
 /* Adds a single sub category (At this point, there is no distinction betwen 
   sub & major, but this may be useful in the future) */
-export function addSubCategory(categoryData) {
+export function addSubCat(categoryData) {
   return {
     type: ADD_SUB_CAT,
     data: categoryData
