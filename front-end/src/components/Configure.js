@@ -1,6 +1,6 @@
 
 
-import style from './styling/configure.css';
+import './styling/configure.css';
 
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';

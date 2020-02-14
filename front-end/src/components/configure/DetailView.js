@@ -1,30 +1,60 @@
 
 import style from './styling/DetailView.module.css';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+
+import CategoryStoreHelper from '../../utils/categoryStoreHelper';
 
 function DetailView (props) {
 
   //Stores what will be displayed by this detail view
-  const [detailItem, setDetailItem] = useState(null);
-
-  const value = detailItem ? detailItem : 'default';
+  const { configureSelected, majorCategories, user } = props;
 
   useEffect(() => {
 
-    console.log('DetailView Effect');
-    console.log(props.configureSelected);
-    setDetailItem(props.configureSelected);
+    if (configureSelected) {
 
+      const catHelper = new CategoryStoreHelper(majorCategories, user.token);
 
-  }, [props.configureSelected])
+      // console.log(configureSelected);
+
+      const detailRetrieve = async () => {
+
+        //First things first, retrieve the selected category/item
+        const detailedCategory = await catHelper.retrieveDetailedCategory(configureSelected.id);
+
+        console.log('Heres the deets', detailedCategory);
+
+        // Now retrieve all sub-category data associated with it
+        for( const subCat of detailedCategory.childCategories) {
+          console.log('retrieving sub-category data');
+          const subCatData = await catHelper.retrieveDetailedCategory(subCat);
+          console.log('subcatoegory data:  ', subCatData);
+        }
+
+      };detailRetrieve();
+
+    }
+
+  }, [configureSelected, majorCategories, user.token]);
+
+  const formatDetails = () => {
+
+    if ( configureSelected.type === 'category') {
+      //Return a category view
+    }
+    else {
+      //Return an item view
+    }
+
+  };
 
   return (
     <div className='detail_view'>
       <h2>Details</h2>
       <div className={style.mainContainer}>
-        <p>{value.id}</p>
+
       </div>
     </div>
   );
@@ -33,11 +63,12 @@ function DetailView (props) {
 //Get the redux state information
 const mapStateToProps = ((state) => {
 
-  const { configureSelected, majorCategories } = state;
+  const { configureSelected, majorCategories, userReducer } = state;
 
   return {
     configureSelected,
-    majorCategories
+    majorCategories,
+    user: userReducer
   };
 
 });

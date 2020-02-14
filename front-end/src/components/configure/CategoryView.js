@@ -1,7 +1,7 @@
 
 import style from './styling/CategoryView.module.css';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -28,8 +28,12 @@ function CategoryView(props) {
   const { 
     user, //Logged in user info
     categoryData, //Data stored in the top level category store
-    setConfigSel //Data to store what is current selected in the category view 
+    setConfigSel, //Data to store what is current selected in the category view 
+    detailSelected //Category or Element data that has been selected by the user
   } = props;
+
+  //Determine which set of category data should be displayed
+  const dataToDisplay = detailSelected ? detailSelected.childCategories : categoryData;
 
 
   //Determines visibility of modal create/edit dialogs
@@ -65,7 +69,7 @@ function CategoryView(props) {
       <h2>Categories & Items</h2>
       <div className = {style.mainContainer}>
         <ul onClick={categoryClicked}>
-          {populateCategoryView(categoryData)}
+          {populateCategoryView(dataToDisplay)}
         </ul>
       </div>
       <div className={style.buttonDiv}>
@@ -85,11 +89,12 @@ CategoryView.propTypes = {
 
 //Get the required state data out of the props
 function mapStateToProps(state) {
-  const { majorCategories, userReducer, configureSelected } = state;
+  const { majorCategories, userReducer, configureSelected,detailSelected } = state;
   return {
     user: userReducer,
     categoryData: majorCategories,
-    selected: configureSelected
+    selected: configureSelected,
+    detailSelected
   };
 }
 

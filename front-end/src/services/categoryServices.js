@@ -1,6 +1,8 @@
 
 import axios from 'axios';
 
+export const DEFAULT_URI = '/api/category';
+
 class CategoryService {
 
   constructor(baseURI) {
@@ -26,6 +28,23 @@ class CategoryService {
       this.error = err;
     }
 
+  }
+
+  async getDetailedCategory(id) {
+    this.loading = true;
+
+    const requestURI = `${this.baseURI}/${id}`;
+
+    try {
+      const result = await axios.get(requestURI, this.configs);
+      this.data = result.data;
+      this.loading = false;
+      this.error = false;
+    }
+    catch(err) {
+      this.loading = false;
+      this.error = err;
+    }
   }
 
   setAuthToken(token) {
