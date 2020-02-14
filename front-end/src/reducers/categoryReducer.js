@@ -34,7 +34,7 @@ export function addSubCat(categoryData) {
   };
 }
 
-function reducer (state = null, action) {
+function reducer (state = [], action) {
   
   switch ( action.type ){
 
@@ -43,17 +43,15 @@ function reducer (state = null, action) {
     case ADD_MAJOR_CAT:
       // Add a new item, concat is called to return a new array
       return state.concat({
-        ...action.data.categoryName,
+        ...action.data,
         isMajor: true,
         childCategories : [...action.data.childCategories],
         items: [...action.data.items]
       });
     case ADD_SUB_CAT:
       return state.concat({
-        ...action.data.categoryName,
-        ...action.data.description,
+        ...action.data,
         isMajor: false,
-        ...action.data.parent,
         childCategories : [...action.data.childCategories],
         items: [...action.data.items]
       });

@@ -4,18 +4,19 @@ import style from './styling/DetailView.module.css';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
+import { addSubCat } from '../../reducers/categoryReducer';
 import CategoryStoreHelper from '../../utils/categoryStoreHelper';
 
 function DetailView (props) {
 
   //Stores what will be displayed by this detail view
-  const { configureSelected, majorCategories, user } = props;
+  const { configureSelected, categoryData, user } = props;
 
   useEffect(() => {
 
     if (configureSelected) {
 
-      const catHelper = new CategoryStoreHelper(majorCategories, user.token);
+      const catHelper = new CategoryStoreHelper(categoryData, user.token);
 
       // console.log(configureSelected);
 
@@ -37,7 +38,7 @@ function DetailView (props) {
 
     }
 
-  }, [configureSelected, majorCategories, user.token]);
+  }, [configureSelected, categoryData, user.token]);
 
   const formatDetails = () => {
 
@@ -63,17 +64,22 @@ function DetailView (props) {
 //Get the redux state information
 const mapStateToProps = ((state) => {
 
-  const { configureSelected, majorCategories, userReducer } = state;
+  const { configureSelected, userReducer, majorCategories } = state;
 
   return {
     configureSelected,
-    majorCategories,
+    categoryData: majorCategories,
     user: userReducer
   };
 
 });
 
+//Map connected dipatch functions 
+const mapDispatchToProps = {
+  addSubCat
+};
 
 
-const connectedDetailView = connect(mapStateToProps,null)(DetailView);
+
+const connectedDetailView = connect(mapStateToProps,mapDispatchToProps)(DetailView);
 export default connectedDetailView;

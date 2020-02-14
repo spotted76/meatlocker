@@ -32,7 +32,7 @@ function Configure(props) {
 
       console.log('Configure effect run');
   
-      if (user.isAdmin && !categoryData) { //Only do this population when necessary
+      if (user.isAdmin && (categoryData.length === 0)) { //Only do this population when necessary
   
         console.log('actually fetching category data');
 
