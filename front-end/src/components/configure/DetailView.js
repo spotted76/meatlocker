@@ -10,35 +10,26 @@ import CategoryStoreHelper from '../../utils/categoryStoreHelper';
 function DetailView (props) {
 
   //Stores what will be displayed by this detail view
-  const { configureSelected, categoryData, user } = props;
+  const { configureSelected, categoryData, user, addSubCat } = props;
 
   useEffect(() => {
 
     if (configureSelected) {
 
-      const catHelper = new CategoryStoreHelper(categoryData, user.token);
+      console.log('Detail View Effect');
 
-      // console.log(configureSelected);
+      const catHelper = new CategoryStoreHelper(categoryData, user.token);
 
       const detailRetrieve = async () => {
 
-        //First things first, retrieve the selected category/item
-        const detailedCategory = await catHelper.retrieveDetailedCategory(configureSelected.id);
-
-        console.log('Heres the deets', detailedCategory);
-
-        // Now retrieve all sub-category data associated with it
-        for( const subCat of detailedCategory.childCategories) {
-          console.log('retrieving sub-category data');
-          const subCatData = await catHelper.retrieveDetailedCategory(subCat);
-          console.log('subcatoegory data:  ', subCatData);
-        }
+        const detailedCategory = await catHelper.retrieveFullPopulatedCategory(configureSelected.id, addSubCat);
+        console.log('detailed category', detailedCategory);
 
       };detailRetrieve();
 
     }
 
-  }, [configureSelected, categoryData, user.token]);
+  }, [configureSelected, categoryData, user.token, addSubCat]);
 
   const formatDetails = () => {
 
