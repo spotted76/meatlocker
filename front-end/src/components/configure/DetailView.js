@@ -1,7 +1,7 @@
 
 import style from './styling/DetailView.module.css';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 
 import { addSubCat } from '../../reducers/categoryReducer';
@@ -12,13 +12,16 @@ function DetailView (props) {
   //Stores what will be displayed by this detail view
   const { configureSelected, categoryData, user, addSubCat } = props;
 
+  //Grab a snapshot off the current category store, and use it to populate the store helper
+  const currStoreState = useRef();
+  currStoreState.current = [...categoryData];
+  
   useEffect(() => {
 
     if (configureSelected) {
-
+      // const catHelper = new CategoryStoreHelper(categoryData, user.token);
+      const catHelper = new CategoryStoreHelper(currStoreState.current, user.token);
       console.log('Detail View Effect');
-
-      const catHelper = new CategoryStoreHelper(categoryData, user.token);
 
       const detailRetrieve = async () => {
 
@@ -29,7 +32,7 @@ function DetailView (props) {
 
     }
 
-  }, [configureSelected, categoryData, user.token, addSubCat]);
+  }, [configureSelected, user.token, addSubCat]);
 
   const formatDetails = () => {
 

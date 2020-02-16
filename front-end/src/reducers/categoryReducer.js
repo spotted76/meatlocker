@@ -49,7 +49,6 @@ function reducer (state = [], action) {
         items: [...action.data.items]
       });
     case ADD_SUB_CAT:
-      console.log('WAS THE SUBCAT ADDED?????');
       return state.concat({
         ...action.data,
         isMajor: false,

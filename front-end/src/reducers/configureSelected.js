@@ -5,7 +5,6 @@ export const UNSET_CONFIG_SEL = 'UNCONFIG_SEL';
 
 //function to dispatch a newly selected category item
 export function setConfigSel(selectionId, type) {
-  console.log('i am dispatching');
   return {
     type: SET_CONFIG_SEL,
     data: {

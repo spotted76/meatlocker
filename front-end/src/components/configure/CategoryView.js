@@ -9,14 +9,18 @@ import { setConfigSel } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
+import CategoryStoreHelper from '../../utils/categoryStoreHelper';
+
 
 import PropTypes from 'prop-types';
 
 
 function populateCategoryView (categoryData) {
 
+  /**
+   * Helper function, maps cateogry data to a CategoryListItem component
+   */
   if (categoryData) {
-    console.log(categoryData);
     return categoryData.map(category => <CategoryListItem key={category.id} data={category} />);
   }
 
@@ -32,8 +36,13 @@ function CategoryView(props) {
     detailSelected //Category or Element data that has been selected by the user
   } = props;
 
-  //Determine which set of category data should be displayed
-  const dataToDisplay = detailSelected ? detailSelected.childCategories : categoryData;
+  //Use the cateogry helper to get only Major category data
+  const catHelper = new CategoryStoreHelper(categoryData, user.token);
+  const majorCategories = catHelper.retrieveMajorCategories();
+
+
+  //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
+  const dataToDisplay = detailSelected ? detailSelected.childCategories : majorCategories;
 
 
   //Determines visibility of modal create/edit dialogs
@@ -51,7 +60,6 @@ function CategoryView(props) {
   //Method used to handle a category selection
   const categoryClicked = (evt) => {
     evt.stopPropagation();
-    console.log('clickety click ', evt.target.id);
     setConfigSel(evt.target.id, 'category');
   };
 

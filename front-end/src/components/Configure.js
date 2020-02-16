@@ -31,10 +31,10 @@ function Configure(props) {
     useEffect(() => {
 
       console.log('Configure effect run');
-  
+ 
       if (user.isAdmin && (categoryData.length === 0)) { //Only do this population when necessary
   
-        console.log('actually fetching category data');
+        console.log('Fetching major category data for initial seeding');
 
         const fetchPrimary = async () => {
           await catService.fetchMajorCategories();

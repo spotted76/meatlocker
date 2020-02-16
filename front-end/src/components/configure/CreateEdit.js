@@ -18,8 +18,6 @@ function CreateEdit(props) {
   //Show or hide the dialog
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;
 
-  console.log(style);
-
   const onCreate = (evt) => {
     console.log('create');
     toggle();
