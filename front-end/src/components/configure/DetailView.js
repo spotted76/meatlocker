@@ -1,16 +1,18 @@
 
 import style from './styling/DetailView.module.css';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { addSubCat } from '../../reducers/categoryReducer';
 import CategoryStoreHelper from '../../utils/categoryStoreHelper';
+import DetailConfigure from './DetailConfigure';
 
 function DetailView (props) {
 
   //Stores what will be displayed by this detail view
   const { configureSelected, categoryData, user, addSubCat } = props;
+  const [detailedObj, setDetailedObj] = useState(null);
 
   //Grab a snapshot off the current category store, and use it to populate the store helper
   const currStoreState = useRef();
@@ -28,6 +30,8 @@ function DetailView (props) {
         const detailedCategory = await catHelper.retrieveFullPopulatedCategory(configureSelected.id, addSubCat);
         console.log('detailed category', detailedCategory);
 
+        setDetailedObj(detailedCategory);
+
       };detailRetrieve();
 
     }
@@ -36,12 +40,21 @@ function DetailView (props) {
 
   const formatDetails = () => {
 
-    if ( configureSelected.type === 'category') {
-      //Return a category view
-    }
-    else {
-      //Return an item view
-    }
+    if (detailedObj) {
+
+      if (configureSelected?.type === 'category') {
+        //Return a category view
+        console.log('THE DETAILED OBJ IS:  ', detailedObj);
+        return <DetailConfigure catData={detailedObj} />
+      }
+      else if (configureSelected?.type === 'item') {
+        //Return an item view
+      }
+      else {
+        console.log('returning null');
+        return null;
+      }
+  }
 
   };
 
@@ -49,7 +62,7 @@ function DetailView (props) {
     <div className='detail_view'>
       <h2>Details</h2>
       <div className={style.mainContainer}>
-
+        {formatDetails()}
       </div>
     </div>
   );
