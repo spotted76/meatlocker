@@ -28,8 +28,6 @@ function DetailView (props) {
       const detailRetrieve = async () => {
 
         const detailedCategory = await catHelper.retrieveFullPopulatedCategory(configureSelected.id, addSubCat);
-        console.log('detailed category', detailedCategory);
-
         setDetailedObj(detailedCategory);
 
       };detailRetrieve();
@@ -44,14 +42,12 @@ function DetailView (props) {
 
       if (configureSelected?.type === 'category') {
         //Return a category view
-        console.log('THE DETAILED OBJ IS:  ', detailedObj);
         return <DetailConfigure catData={detailedObj} />
       }
       else if (configureSelected?.type === 'item') {
         //Return an item view
       }
       else {
-        console.log('returning null');
         return null;
       }
   }

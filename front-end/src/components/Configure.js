@@ -34,8 +34,6 @@ function Configure(props) {
  
       if (user.isAdmin && (categoryData.length === 0)) { //Only do this population when necessary
   
-        console.log('Fetching major category data for initial seeding');
-
         const fetchPrimary = async () => {
           await catService.fetchMajorCategories();
           if ( !catService.error ) {

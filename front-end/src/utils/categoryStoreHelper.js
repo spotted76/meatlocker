@@ -43,7 +43,6 @@ class CategoryStoreHelper {
       await this.service.getDetailedCategory(id);
       if ( !this.service.error )
       {
-        // console.log('no result found, retreived:  ', this.service.data);
         updateStore(this.service.data);
         return this.service.data;
       }
@@ -85,9 +84,7 @@ class CategoryStoreHelper {
    */
   retrieveMajorCategories() {
 
-
     console.log('The store looks like:  ', this.store);
-
     return this.store.filter(category => category.isMajor);
 
   }

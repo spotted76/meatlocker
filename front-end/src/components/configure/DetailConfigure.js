@@ -1,21 +1,28 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { setDetailSelection } from '../../reducers/detailSelected';
+import { unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 
 function DetailConfigure(props) {
 
-  const { catData } = props;
+  const { catData, setDetailSelection, unsetSelCat } = props;
 
   //
-  const categoryClicked = () => {
-    console.log('sub-category clicked');
+  const categoryClicked = (evt) => {
+    //Sub-category clicked, so now, change the main configure view
+    //Set the item selected from the detail panel
+    setDetailSelection(evt.target.id, 'category');
+    unsetSelCat();
   };
 
   // Convert sub-categories information into react component
   const generateSubCategories = () => {
     if ( catData.childCategories.length ) {
-      return catData.childCategories.map(category => <CategoryListItem data={category} />);
+      return catData.childCategories.map(category => <CategoryListItem key={`dc_${category.id}`} data={category} />);
     }
   };
 
@@ -40,4 +47,11 @@ function DetailConfigure(props) {
 
 }
 
-export default DetailConfigure;
+const mapDispatchToProps = {
+  setDetailSelection,
+  unsetSelCat
+};
+
+const connectedDetailConfigure = connect(null, mapDispatchToProps)(DetailConfigure);
+
+export default connectedDetailConfigure;

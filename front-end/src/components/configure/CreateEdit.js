@@ -19,12 +19,10 @@ function CreateEdit(props) {
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;
 
   const onCreate = (evt) => {
-    console.log('create');
     toggle();
   };
 
   const onCancel = (evt) => {
-    console.log('cancel');
     toggle();
   };
 

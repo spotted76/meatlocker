@@ -1,7 +1,7 @@
 
 import style from './styling/CategoryView.module.css';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ import { setConfigSel } from '../../reducers/configureSelected';
 import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
 import CategoryStoreHelper from '../../utils/categoryStoreHelper';
+import { addSubCat } from '../../reducers/categoryReducer';
+
 
 
 import PropTypes from 'prop-types';
@@ -33,16 +35,43 @@ function CategoryView(props) {
     user, //Logged in user info
     categoryData, //Data stored in the top level category store
     setConfigSel, //Data to store what is current selected in the category view 
-    detailSelected //Category or Element data that has been selected by the user
+    detailSelected, //Category or Element data that has been selected by the user
+    addSubCat //Used to update the store with freshly retrieved subcategory data
   } = props;
 
+  //This is used to Show sub-category, or item detail.  If it's set, the top category
+  //Data is not displayed.
+  const [subDataItem, setSubDataItem] = useState(null);
+
   //Use the cateogry helper to get only Major category data
-  const catHelper = new CategoryStoreHelper(categoryData, user.token);
+  const catStoreRef = useRef();
+  catStoreRef.current = [...categoryData];
+
+
+  //Helper used to retrieve major/top level category information
+  const catHelper = new CategoryStoreHelper(catStoreRef.current, user.token);
   const majorCategories = catHelper.retrieveMajorCategories();
 
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
-  const dataToDisplay = detailSelected ? detailSelected.childCategories : majorCategories;
+  const dataToDisplay = subDataItem ? subDataItem.childCategories : majorCategories;
+
+  useEffect(() => {
+
+    if ( detailSelected ) {
+      //Request the detailed information that the user selected
+      let fullDetailSelected = {};
+      const subCatHelper = new CategoryStoreHelper(catStoreRef.current, user.token);
+
+      const asyncEffect = async() => {
+        fullDetailSelected =  await subCatHelper.retrieveFullPopulatedCategory(detailSelected.id, addSubCat);
+
+        setSubDataItem(fullDetailSelected);
+      }; asyncEffect();
+      
+    }
+
+  }, [detailSelected, addSubCat, user.token]);
 
 
   //Determines visibility of modal create/edit dialogs
@@ -52,7 +81,6 @@ function CategoryView(props) {
 
   //Method used to toggle the modal create/edit dialog
   const toggleCreateEdit = (isEdit) => {
-    console.log('isEdit ', isEdit);
     setIsEdit(isEdit);
     setCreateEditVisible(!createEditVisible);
   };
@@ -107,7 +135,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  setConfigSel
+  setConfigSel,
+  addSubCat
 };
 
 
