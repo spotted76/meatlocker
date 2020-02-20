@@ -12,7 +12,8 @@ import CreateEdit from './CreateEdit';
 import CategoryStoreHelper from '../../utils/categoryStoreHelper';
 import { addSubCat } from '../../reducers/categoryReducer';
 
-
+import useSWR from 'swr';
+import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
 
@@ -54,24 +55,40 @@ function CategoryView(props) {
 
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
-  const dataToDisplay = subDataItem ? subDataItem.childCategories : majorCategories;
+  // const dataToDisplay = subDataItem ? subDataItem.childCategories : majorCategories;
 
-  useEffect(() => {
+  //Only retrievee major category data if nothing is selected
+  const { data: allCategories, error: allCategoriesError } = useSWR( detailSelected ? null :  [DEFAULT_URI, user.token], retrieveWithToken);
+  console.log('ERROR:  ', allCategoriesError);
+  console.log('DATA ', allCategoriesError);
 
-    if ( detailSelected ) {
-      //Request the detailed information that the user selected
-      let fullDetailSelected = {};
-      const subCatHelper = new CategoryStoreHelper(catStoreRef.current, user.token);
+  //retrieve a user selected category from the detail pane
+  const selectedURI = `${DEFAULT_URI}/${detailSelected?.id}`;
+  console.log('looking for ', selectedURI)
+  const { data: selectedData, error: selectedError} = useSWR( detailSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
+  console.log('selected data', selectedData);
+  console.log('selecte error:  ', selectedError);
 
-      const asyncEffect = async() => {
-        fullDetailSelected =  await subCatHelper.retrieveFullPopulatedCategory(detailSelected.id, addSubCat);
+  //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
+  const dataToDisplay = selectedData ? selectedData.childCategories : allCategories;
 
-        setSubDataItem(fullDetailSelected);
-      }; asyncEffect();
+
+  // useEffect(() => {
+
+  //   if ( detailSelected ) {
+  //     //Request the detailed information that the user selected
+  //     let fullDetailSelected = {};
+  //     const subCatHelper = new CategoryStoreHelper(catStoreRef.current, user.token);
+
+  //     const asyncEffect = async() => {
+  //       fullDetailSelected =  await subCatHelper.retrieveFullPopulatedCategory(detailSelected.id, addSubCat);
+
+  //       setSubDataItem(fullDetailSelected);
+  //     }; asyncEffect();
       
-    }
+  //   }
 
-  }, [detailSelected, addSubCat, user.token]);
+  // }, [detailSelected, addSubCat, user.token]);
 
 
   //Determines visibility of modal create/edit dialogs
