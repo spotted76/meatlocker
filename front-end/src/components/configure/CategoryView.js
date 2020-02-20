@@ -1,7 +1,7 @@
 
 import style from './styling/CategoryView.module.css';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -9,8 +9,6 @@ import { setConfigSel } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
-import CategoryStoreHelper from '../../utils/categoryStoreHelper';
-import { addSubCat } from '../../reducers/categoryReducer';
 
 import useSWR from 'swr';
 import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
@@ -34,56 +32,22 @@ function CategoryView(props) {
   //Retrieve an authenticated user if one exists
   const { 
     user, //Logged in user info
-    categoryData, //Data stored in the top level category store
     setConfigSel, //Data to store what is current selected in the category view 
     detailSelected, //Category or Element data that has been selected by the user
-    addSubCat //Used to update the store with freshly retrieved subcategory data
   } = props;
 
-  //This is used to Show sub-category, or item detail.  If it's set, the top category
-  //Data is not displayed.
-  const [subDataItem, setSubDataItem] = useState(null);
 
-  //Use the cateogry helper to get only Major category data
-  const catStoreRef = useRef();
-  catStoreRef.current = [...categoryData];
+  //Retrieve Major category data, only if there is no user selection
+  const { data: allCategories, error: allCategoriesError } = 
+    useSWR( detailSelected ? null :  [DEFAULT_URI, user.token], retrieveWithToken);
 
-
-  //Helper used to retrieve major/top level category information
-  const catHelper = new CategoryStoreHelper(catStoreRef.current, user.token);
-  const majorCategories = catHelper.retrieveMajorCategories();
-
-
-  //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
-  // const dataToDisplay = subDataItem ? subDataItem.childCategories : majorCategories;
-
-  //Only retrievee major category data if nothing is selected
-  const { data: allCategories, error: allCategoriesError } = useSWR( detailSelected ? null :  [DEFAULT_URI, user.token], retrieveWithToken);
-
-  //retrieve a user selected category from the detail pane
+  //retrieve a user selected category from the detail pane if selected
   const selectedURI = `${DEFAULT_URI}/${detailSelected?.id}`;
-  const { data: selectedData, error: selectedError} = useSWR( detailSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
+  const { data: selectedData, error: selectedError} = 
+    useSWR( detailSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
   const dataToDisplay = selectedData ? selectedData.childCategories : allCategories;
-
-
-  // useEffect(() => {
-
-  //   if ( detailSelected ) {
-  //     //Request the detailed information that the user selected
-  //     let fullDetailSelected = {};
-  //     const subCatHelper = new CategoryStoreHelper(catStoreRef.current, user.token);
-
-  //     const asyncEffect = async() => {
-  //       fullDetailSelected =  await subCatHelper.retrieveFullPopulatedCategory(detailSelected.id, addSubCat);
-
-  //       setSubDataItem(fullDetailSelected);
-  //     }; asyncEffect();
-      
-  //   }
-
-  // }, [detailSelected, addSubCat, user.token]);
 
 
   //Determines visibility of modal create/edit dialogs
@@ -137,10 +101,9 @@ CategoryView.propTypes = {
 
 //Get the required state data out of the props
 function mapStateToProps(state) {
-  const { majorCategories, userReducer, configureSelected,detailSelected } = state;
+  const { userReducer, configureSelected,detailSelected } = state;
   return {
     user: userReducer,
-    categoryData: majorCategories,
     selected: configureSelected,
     detailSelected
   };
@@ -148,7 +111,6 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
   setConfigSel,
-  addSubCat
 };
 
 
