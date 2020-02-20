@@ -21,12 +21,8 @@ function DetailView (props) {
 
 
   //Retrieve the data selected in the main category view
-  console.log('DETAIL VIEW SELECTED:  ', configureSelected);
   const selectedURI = `${DEFAULT_URI}/${configureSelected?.id}`;
-  console.log('detail view looking for ', selectedURI)
   const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
-  console.log('detail selected data', selectedData);
-  console.log('detail selected error:  ', selectedError);
 
   
   /**

@@ -16,11 +16,11 @@ import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 import PropTypes from 'prop-types';
 
 
-function populateCategoryView (categoryData) {
-
   /**
    * Helper function, maps cateogry data to a CategoryListItem component
    */
+function populateCategoryView (categoryData) {
+
   if (categoryData) {
     return categoryData.map(category => <CategoryListItem key={category.id} data={category} />);
   }
@@ -29,7 +29,6 @@ function populateCategoryView (categoryData) {
 
 function CategoryView(props) {
 
-  //Retrieve an authenticated user if one exists
   const { 
     user, //Logged in user info
     setConfigSel, //Data to store what is current selected in the category view 
@@ -94,8 +93,7 @@ function CategoryView(props) {
 }
 
 CategoryView.propTypes = {
-  user: PropTypes.object,
-  setTopLevelCat: PropTypes.func,
+  user: PropTypes.object, 
   categoryData: PropTypes.array
 };
 
@@ -103,17 +101,16 @@ CategoryView.propTypes = {
 function mapStateToProps(state) {
   const { userReducer, configureSelected,detailSelected } = state;
   return {
-    user: userReducer,
-    selected: configureSelected,
-    detailSelected
+    user: userReducer, //User Auth info, including token
+    selected: configureSelected, //Sets a react store for the category or item selected
+    detailSelected //Sets the react store for the category or item selected from the detail panel
   };
 }
 
 const mapDispatchToProps = {
-  setConfigSel,
+  setConfigSel, //Dispatch function to change the store of what is selected from the CategoryView
 };
 
 
 const connectedCategoryView = connect(mapStateToProps, mapDispatchToProps)(CategoryView);
-
 export default connectedCategoryView;
