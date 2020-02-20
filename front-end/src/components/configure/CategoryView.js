@@ -59,15 +59,10 @@ function CategoryView(props) {
 
   //Only retrievee major category data if nothing is selected
   const { data: allCategories, error: allCategoriesError } = useSWR( detailSelected ? null :  [DEFAULT_URI, user.token], retrieveWithToken);
-  console.log('ERROR:  ', allCategoriesError);
-  console.log('DATA ', allCategoriesError);
 
   //retrieve a user selected category from the detail pane
   const selectedURI = `${DEFAULT_URI}/${detailSelected?.id}`;
-  console.log('looking for ', selectedURI)
   const { data: selectedData, error: selectedError} = useSWR( detailSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
-  console.log('selected data', selectedData);
-  console.log('selecte error:  ', selectedError);
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
   const dataToDisplay = selectedData ? selectedData.childCategories : allCategories;

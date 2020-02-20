@@ -4,9 +4,14 @@ import style from './styling/DetailView.module.css';
 import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
+import useSWR from 'swr';
+import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
+
+
 import { addSubCat } from '../../reducers/categoryReducer';
 import CategoryStoreHelper from '../../utils/categoryStoreHelper';
 import DetailConfigure from './DetailConfigure';
+import { configure } from '@testing-library/react';
 
 function DetailView (props) {
 
@@ -17,32 +22,42 @@ function DetailView (props) {
   //Grab a snapshot off the current category store, and use it to populate the store helper
   const currStoreState = useRef();
   currStoreState.current = [...categoryData];
+
+
+  //Retrieve the data selected in the main category view
+  console.log('DETAIL VIEW SELECTED:  ', configureSelected);
+  const selectedURI = `${DEFAULT_URI}/${configureSelected?.id}`;
+  console.log('detail view looking for ', selectedURI)
+  const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
+  console.log('detail selected data', selectedData);
+  console.log('detail selected error:  ', selectedError);
+
   
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (configureSelected) {
-      // const catHelper = new CategoryStoreHelper(categoryData, user.token);
-      const catHelper = new CategoryStoreHelper(currStoreState.current, user.token);
-      console.log('Detail View Effect');
+  //   if (configureSelected) {
+  //     // const catHelper = new CategoryStoreHelper(categoryData, user.token);
+  //     const catHelper = new CategoryStoreHelper(currStoreState.current, user.token);
+  //     console.log('Detail View Effect');
 
-      const detailRetrieve = async () => {
+  //     const detailRetrieve = async () => {
 
-        const detailedCategory = await catHelper.retrieveFullPopulatedCategory(configureSelected.id, addSubCat);
-        setDetailedObj(detailedCategory);
+  //       const detailedCategory = await catHelper.retrieveFullPopulatedCategory(configureSelected.id, addSubCat);
+  //       setDetailedObj(detailedCategory);
 
-      };detailRetrieve();
+  //     };detailRetrieve();
 
-    }
+  //   }
 
-  }, [configureSelected, user.token, addSubCat]);
+  // }, [configureSelected, user.token, addSubCat]);
 
   const formatDetails = () => {
 
-    if (detailedObj) {
+    if (selectedData) {
 
       if (configureSelected?.type === 'category') {
         //Return a category view
-        return <DetailConfigure catData={detailedObj} />
+        return <DetailConfigure catData={selectedData} />
       }
       else if (configureSelected?.type === 'item') {
         //Return an item view
