@@ -24,6 +24,10 @@ function DetailView (props) {
   const selectedURI = `${DEFAULT_URI}/${configureSelected?.id}`;
   const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
 
+  if ( selectedError ) {
+    console.log('error retrieving detailed data from DetailView');
+    //TODO:  Return null, generate an alert
+  }
   
   /**
    * Helper function, converts data to its proper component

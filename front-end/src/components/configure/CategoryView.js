@@ -1,11 +1,11 @@
 
 import style from './styling/CategoryView.module.css';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { setConfigSel } from '../../reducers/configureSelected';
+import { setConfigSel, unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
@@ -32,18 +32,26 @@ function CategoryView(props) {
   const { 
     user, //Logged in user info
     setConfigSel, //Data to store what is current selected in the category view 
-    detailSelected, //Category or Element data that has been selected by the user
+    unsetSelCat, //Clears the selected value from the category view
+    catId,
   } = props;
 
 
+  //Compare current URL vs previous, clear the details if it changes
+  const prevUriId = useRef();
+  if ( prevUriId.current !== catId) {
+    prevUriId.current = catId;
+    unsetSelCat();
+  }
+
   //Retrieve Major category data, only if there is no user selection
   const { data: allCategories, error: allCategoriesError } = 
-    useSWR( detailSelected ? null :  [DEFAULT_URI, user.token], retrieveWithToken);
+    useSWR( catId ? null :  [DEFAULT_URI, user.token], retrieveWithToken);
 
   //retrieve a user selected category from the detail pane if selected
-  const selectedURI = `${DEFAULT_URI}/${detailSelected?.id}`;
+  const selectedURI = `${DEFAULT_URI}/${catId}`;
   const { data: selectedData, error: selectedError} = 
-    useSWR( detailSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
+    useSWR( catId ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
   const dataToDisplay = selectedData ? selectedData.childCategories : allCategories;
@@ -52,7 +60,6 @@ function CategoryView(props) {
   //Determines visibility of modal create/edit dialogs
   const [createEditVisible, setCreateEditVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
-
 
   //Method used to toggle the modal create/edit dialog
   const toggleCreateEdit = (isEdit) => {
@@ -65,6 +72,11 @@ function CategoryView(props) {
     evt.stopPropagation();
     setConfigSel(evt.target.id, 'category');
   };
+
+  if ( allCategoriesError || selectedError ) {
+    console.log('retrieves failed');
+    //TODO:  Probably return null, and display an alert
+  }
 
     //If the user doesn't have permission, bounce them
   if (!user.isAdmin) {
@@ -99,16 +111,16 @@ CategoryView.propTypes = {
 
 //Get the required state data out of the props
 function mapStateToProps(state) {
-  const { userReducer, configureSelected,detailSelected } = state;
+  const { userReducer, configureSelected } = state;
   return {
     user: userReducer, //User Auth info, including token
     selected: configureSelected, //Sets a react store for the category or item selected
-    detailSelected //Sets the react store for the category or item selected from the detail panel
   };
 }
 
 const mapDispatchToProps = {
   setConfigSel, //Dispatch function to change the store of what is selected from the CategoryView
+  unsetSelCat, //Dispatch function to unset or deselct, clearing the detail view
 };
 
 

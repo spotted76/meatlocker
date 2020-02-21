@@ -35,7 +35,10 @@ function App(props) {
           <Route exact path='/'>
             <Placeholder />
           </Route>
-          <Route path='/configure'>
+          <Route exact path='/configure'>
+            <Configure />
+          </Route>
+          <Route path='/configure/category/:id'>
             <Configure />
           </Route>
         </Switch>
