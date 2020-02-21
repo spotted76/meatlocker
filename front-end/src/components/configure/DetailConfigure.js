@@ -1,9 +1,5 @@
 
 import React from 'react';
-import { connect } from 'react-redux';
-
-import { setDetailSelection } from '../../reducers/detailSelected';
-import { unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryLinkItem from './CategoryLinkItem';
 
@@ -39,12 +35,4 @@ function DetailConfigure(props) {
 
 }
 
-const mapDispatchToProps = {
-  setDetailSelection,
-  unsetSelCat
-};
-
-// const connectedDetailConfigure = connect(null, mapDispatchToProps)(DetailConfigure);
-
-// export default connectedDetailConfigure;
 export default DetailConfigure;
