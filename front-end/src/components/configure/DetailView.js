@@ -1,7 +1,7 @@
 
 import style from './styling/DetailView.module.css';
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import useSWR from 'swr';
@@ -13,11 +13,7 @@ import DetailConfigure from './DetailConfigure';
 function DetailView (props) {
 
   //Stores what will be displayed by this detail view
-  const { configureSelected, categoryData, user } = props;
-
-  //Grab a snapshot off the current category store, and use it to populate the store helper
-  const currStoreState = useRef();
-  currStoreState.current = [...categoryData];
+  const { configureSelected, user } = props;
 
 
   //Retrieve the data selected in the main category view
@@ -63,11 +59,10 @@ function DetailView (props) {
 //Get the redux state information
 const mapStateToProps = ((state) => {
 
-  const { configureSelected, userReducer, majorCategories } = state;
+  const { configureSelected, userReducer } = state;
 
   return {
     configureSelected,
-    categoryData: majorCategories,
     user: userReducer
   };
 
