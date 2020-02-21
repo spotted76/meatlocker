@@ -5,6 +5,7 @@ import store from '../../store';
 import Banner from '../Banner';
 import '@testing-library/jest-dom/extend-expect';
 import { render, fireEvent } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 beforeEach(() => {
 
@@ -12,12 +13,17 @@ beforeEach(() => {
 
 test('it has no logged in user', () => {
 
-  const component = render(<Banner store={store} />);
+  const component = render(
+    <Router>
+      <Banner store={store} />
+    </Router>
+  );
   const { container } = component;
 
-  const menuItem = container.querySelector('.menu_item');
+  //There should be nothing rendered, as there is no logged in user
+  const mainDiv = container.querySelector('.header');
 
-  expect(menuItem).toBeNull();
+  expect(mainDiv).toBeNull();
   
 });
 
@@ -30,14 +36,45 @@ test('it has a logged in user', () => {
   };
 
 
-  const component = render(<Banner store={store} />);
-  const { getByText, container } = component;
-
-  const menuItem = container.querySelector('.menu_item');
+  const component = render(
+    <Router>
+      <Banner store={store} />
+    </Router>  
+    );
+  const { getByText, container, queryByText } = component;
+  const mainDiv = container.querySelector('.header');
+  expect(mainDiv).toBeDefined();
 
   expect(getByText('Meatlocker')).toBeDefined();
+
+  const menuItem = container.querySelector('.menu_item');
   expect(menuItem).not.toBeNull();
+
   expect(getByText('Test User')).toBeDefined();
+
+  expect(queryByText('Configure')).toBeNull();
+
+  
+});
+
+test('it has an admin user in user', () => {
+
+  //Force some data into the store, so that there is a valid user
+  store.getState().userReducer = {
+    name: 'Test User',
+    isAdmin: true
+  };
+
+
+  const component = render(
+    <Router>
+      <Banner store={store} />
+    </Router>  
+    );
+  const { getByText, queryByText } = component;
+
+  expect(getByText('Test User')).toBeDefined();
+  expect(queryByText('Configure')).toBeDefined();
   
 });
 
@@ -49,7 +86,11 @@ test('it logs you out', () => {
     };
   
   
-    const component = render(<Banner store={store} />);
+    const component = render(
+      <Router>
+        <Banner store={store} />
+      </Router>
+    );
     const { getByText, container } = component;
   
     //Verify the user is logged in by Test User being visible
