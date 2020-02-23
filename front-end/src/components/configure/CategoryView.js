@@ -27,7 +27,8 @@ function populateCategoryView (categoryData) {
 
 }
 
-function CategoryView(props) {
+//Also export this function (non-connected to assist with unit testing)
+export function CategoryView(props) {
 
   const { 
     user, //Logged in user info
@@ -35,7 +36,6 @@ function CategoryView(props) {
     unsetSelCat, //Clears the selected value from the category view
     catId,
   } = props;
-
 
   //Compare current URL vs previous, clear the details if it changes
   const prevUriId = useRef();
