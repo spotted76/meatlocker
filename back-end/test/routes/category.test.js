@@ -243,7 +243,7 @@ test('it creates two levels of sub categories', async () => {
   const subCat = await request.get(`/api/category/${res2.body.id}`)
   .set('Authorization', 'Bearer abcdef');
 
-  expect(subCat.body.childCategories[0]).toBe(res3.body.id);
+  expect(subCat.body.childCategories[0].parent).toBe(res2.body.id);
 
 });
 
