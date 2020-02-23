@@ -27,6 +27,7 @@ function Login(props) {
   useEffect(() => {
 
     console.log('Login effect');
+    setEffectHasRun(true);
 
     //Look at the cookies to see if the session can be retrieved
     let sessionData = Cookies.get(Config.sessionName);
@@ -38,7 +39,6 @@ function Login(props) {
 
     }
 
-    setEffectHasRun(true);
 
   },[addUserToken]);
 
@@ -63,16 +63,14 @@ function Login(props) {
       addUserToken(session);
     }
     else {
-      //TODO:  Put up an error message here
+      //Reset fields (maybe just password?)
+      resetField(username);
+      resetField(password);
     }
-
-    //Empty the fields
-    resetField(username);
-    resetField(password);
   };
 
-  //User is logged in, no need to render
-  if ( props.userData || !effectHasRun ) {
+  // User is logged in, no need to render
+  if ( props.isLoggedIn || !effectHasRun ) {
     return null;
   }
 
@@ -100,7 +98,7 @@ function mapStateToProps(state) {
   const { userReducer } = state;
 
   return {
-    userData: userReducer,
+    isLoggedIn: userReducer,
   };
 
 }
@@ -112,10 +110,9 @@ const mapDispatchToProps = {
 
 Login.propTypes = {
   userAdd: PropTypes.func,
-  userData: PropTypes.object
+  isLoggedIn: PropTypes.object
 };
 
 
 const connectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
-
 export default connectedLogin;

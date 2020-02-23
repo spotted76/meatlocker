@@ -55,6 +55,25 @@ categoryRouter.post('/', async (req, res) => {
 
 });
 
+//REST API /api/category
+
+/**
+ * Request retrieves all top level categories
+ */
+categoryRouter.get('/', async(req, res) => {
+
+  try {
+    const result = await Category.find({ isMajor: true });
+    return res.status(200).json(result);
+  }
+  catch(err) {
+    console.log('error encountered retrieving all top-level categories');
+    console.log(err);
+    return res.status(500).json({ error: 'error encountered retrieving all top level categories ' });
+  }
+
+});
+
 //REST API /api/category/
 /*
   Request to get a specific category based on the passed ID
@@ -63,7 +82,7 @@ categoryRouter.get('/:id', async(req, res) => {
 
   //Lookup the category based on the passed id
   try {
-    const result = await Category.findById(req.params.id);
+    const result = await Category.findById(req.params.id).populate('childCategories');
     if ( result )
     {
       return res.status(200).json(result);

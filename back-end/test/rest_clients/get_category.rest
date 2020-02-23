@@ -1,0 +1,4 @@
+GET http://localhost:3001/api/category/5e3a208b81854242508dc76a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRyaXBsZXkiLCJpZCI6IjVlMzcwOGRjZTgzNjczNDdlNGU1YjI4MCIsImlhdCI6MTU4MTQ1NzE4MCwiZXhwIjoxNTgxNDYwNzgwfQ.Px8IYml6_2nz53bdADuxTTku9BujOifLrot4sP9iWOI
+content-type: application/json
+
