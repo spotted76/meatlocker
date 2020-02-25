@@ -10,7 +10,8 @@ import { setConfigSel, unsetSelCat } from '../../reducers/configureSelected';
 import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
 
-import useSWR from 'swr';
+import useSWR, { mutate }  from 'swr';
+import { putWithToken } from '../../services/categoryService';
 import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
@@ -34,6 +35,7 @@ export function CategoryView(props) {
     user, //Logged in user info
     setConfigSel, //Data to store what is current selected in the category view 
     unsetSelCat, //Clears the selected value from the category view
+    selected, //Actual value stored by setConfigSel
     catId,
   } = props;
 
@@ -61,8 +63,41 @@ export function CategoryView(props) {
   const [createEditVisible, setCreateEditVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
 
+  //Called from the hidden modal Create/Edit
+  const handleCreate = async (type, newObj) => {
+
+    //Ok, data returned, now fill in the rest of the object with 
+    //details known to the Category View
+    newObj.parent = catId ? catId : null;
+    newObj.isMajor = catId ? false : true;
+
+    if ( type === 'category' ) {
+      const result = await putWithToken(DEFAULT_URI, newObj, user.token)
+
+      let URIToMutate;
+      let dataToMutate;
+      //Now update the local SWR store
+      if ( catId ) {
+        URIToMutate = selectedURI;
+        dataToMutate = {
+          ...selectedData,
+          childCategories: selectedData.childCategories.concat(result)
+        }
+      }
+      else {
+        URIToMutate = DEFAULT_URI;
+        dataToMutate = allCategories.concat(result);
+      }
+
+      mutate([URIToMutate, user.token], dataToMutate);
+    }
+
+  };
+
+
   //Method used to toggle the modal create/edit dialog
   const toggleCreateEdit = (isEdit) => {
+
     setIsEdit(isEdit);
     setCreateEditVisible(!createEditVisible);
   };
@@ -97,9 +132,13 @@ export function CategoryView(props) {
       </div>
       <div className={style.buttonDiv}>
         <button onClick={() => toggleCreateEdit(false)} >Create</button>
-        <button onClick={() => toggleCreateEdit(true)}>Edit</button>
       </div>
-      <CreateEdit visible={createEditVisible} toggle={toggleCreateEdit} isEdit={isEdit} /> {/* Hidden by default, this is a modal view */}
+      <CreateEdit
+        visible={createEditVisible}
+        toggle={toggleCreateEdit}
+        isEdit={isEdit}
+        performAction={handleCreate}
+      /> {/* Hidden by default, this is a modal view */}
     </div>
   );
 }
