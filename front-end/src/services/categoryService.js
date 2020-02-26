@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 
-export async function putWithToken(URI, data, token) {
+export async function postWithToken(URI, data, token) {
 
   const bearer = `Bearer ${token}`;
 
@@ -12,8 +12,5 @@ export async function putWithToken(URI, data, token) {
   };
 
   const result = await axios.post(URI, data, configs);
-
-  console.log('put result:  ', result);
-
   return result.data;
 }

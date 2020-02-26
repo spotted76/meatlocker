@@ -11,7 +11,7 @@ import CategoryListItem from './CategoryListItem';
 import CreateEdit from './CreateEdit';
 
 import useSWR, { mutate }  from 'swr';
-import { putWithToken } from '../../services/categoryService';
+import { postWithToken } from '../../services/categoryService';
 import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
@@ -22,8 +22,17 @@ import PropTypes from 'prop-types';
    */
 function populateCategoryView (categoryData) {
 
-  if (categoryData) {
+  if (categoryData && categoryData.length > 0) {
+    console.log(categoryData);
     return categoryData.map(category => <CategoryListItem key={category.id} data={category} />);
+  }
+  else {
+    return (
+      <div>
+        <p>No Categories or Items</p>
+        <p>Select create to create a new Category or Item</p>
+      </div>
+    );
   }
 
 }
@@ -72,7 +81,7 @@ export function CategoryView(props) {
     newObj.isMajor = catId ? false : true;
 
     if ( type === 'category' ) {
-      const result = await putWithToken(DEFAULT_URI, newObj, user.token)
+      const result = await postWithToken(DEFAULT_URI, newObj, user.token)
 
       let URIToMutate;
       let dataToMutate;
