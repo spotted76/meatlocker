@@ -72,6 +72,10 @@ export function CategoryView(props) {
   const [createEditVisible, setCreateEditVisible] = useState(false);
   const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
 
+
+  const categoryBanner = selectedData ? selectedData.categoryName : 'Main Categories';
+
+
   //Called from the hidden modal Create/Edit
   const handleCreate = async (type, newObj) => {
 
@@ -133,14 +137,14 @@ export function CategoryView(props) {
 
   return (
     <div className="category_view">
-      <h2>Categories & Items</h2>
+      <h2>{categoryBanner}</h2>
       <div className = {style.mainContainer}>
         <ul onClick={categoryClicked}>
           {populateCategoryView(dataToDisplay)}
         </ul>
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit(false)} >Create</button>
+        <button onClick={() => toggleCreateEdit(false)} >New Category</button>
       </div>
       <CreateEdit
         visible={createEditVisible}
