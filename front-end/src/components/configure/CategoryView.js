@@ -108,7 +108,8 @@ const populateCategoryView = (categoryData) =>  {
       <CategoryListItem 
         key={category.id} 
         data={category} 
-        configClicked={setConfigSel} 
+        configClicked={setConfigSel}
+        selected={selected} 
       />);
   }
   else {

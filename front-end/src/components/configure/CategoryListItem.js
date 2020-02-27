@@ -6,17 +6,13 @@ import style from './styling/CategoryListItem.module.css';
 
 function CategoryListItem(props) {
 
-  const { data, configClicked } = props;
+  const { data, configClicked, selected } = props;
 
-  const selectCategory = (evt, id) => {
+  const liClassName = selected?.id === data.id ? `${style.mainLI} ${style.mainLI_selected}` : `${style.mainLI}`; 
 
-    // Make sure the click event goes no further
-    evt.stopPropagation();
-    console.log('blah', id);
-  };
 
   return (
-    <li className={style.mainLI} onClick={() => configClicked(data.id, 'category')}>
+    <li className={liClassName} onClick={() => configClicked(data.id, 'category')}>
       <div className={style.content}>
         {data.categoryName}
       </div>
