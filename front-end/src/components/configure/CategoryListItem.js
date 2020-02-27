@@ -2,10 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import style from './styling/CategoryListItem.module.css';
 
 function CategoryListItem(props) {
 
-  const { data } = props;
+  const { data, configClicked } = props;
 
   const selectCategory = (evt, id) => {
 
@@ -15,9 +16,14 @@ function CategoryListItem(props) {
   };
 
   return (
-    <li id={data.id}>
-      {/* {data.categoryName} <button onClick={(evt) => selectCategory(evt, data.id)}>select category</button> */}
-      {data.categoryName} <div><Link to={`/configure/category/${data.id}`}>select category</Link></div>
+    <li className={style.mainLI} onClick={() => configClicked(data.id, 'category')}>
+      <div className={style.content}>
+        {data.categoryName}
+      </div>
+      <div className={style.selectButton}>
+        <Link to={`/configure/category/${data.id}`}>select</Link>
+      </div>
+       
     </li>
   );
 

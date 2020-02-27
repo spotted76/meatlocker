@@ -17,25 +17,7 @@ import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 import PropTypes from 'prop-types';
 
 
-  /**
-   * Helper function, maps cateogry data to a CategoryListItem component
-   */
-function populateCategoryView (categoryData) {
 
-  if (categoryData && categoryData.length > 0) {
-    console.log(categoryData);
-    return categoryData.map(category => <CategoryListItem key={category.id} data={category} />);
-  }
-  else {
-    return (
-      <div>
-        <p>No Categories or Items</p>
-        <p>Select create to create a new Category or Item</p>
-      </div>
-    );
-  }
-
-}
 
 //Also export this function (non-connected to assist with unit testing)
 export function CategoryView(props) {
@@ -115,11 +97,30 @@ export function CategoryView(props) {
     setCreateEditVisible(!createEditVisible);
   };
 
-  //Method used to handle a category selection
-  const categoryClicked = (evt) => {
-    evt.stopPropagation();
-    setConfigSel(evt.target.id, 'category');
-  };
+  /**
+ * Helper function, maps cateogry data to a CategoryListItem component
+ */
+const populateCategoryView = (categoryData) =>  {
+
+  if (categoryData && categoryData.length > 0) {
+    console.log(categoryData);
+    return categoryData.map(category => 
+      <CategoryListItem 
+        key={category.id} 
+        data={category} 
+        configClicked={setConfigSel} 
+      />);
+  }
+  else {
+    return (
+      <div>
+        <p>No Categories or Items</p>
+        <p>Select create to create a new Category or Item</p>
+      </div>
+    );
+  }
+
+}
 
   if ( allCategoriesError || selectedError ) {
     console.log('retrieves failed');
@@ -139,7 +140,7 @@ export function CategoryView(props) {
     <div className="category_view">
       <h2>{categoryBanner}</h2>
       <div className = {style.mainContainer}>
-        <ul onClick={categoryClicked}>
+         <ul>
           {populateCategoryView(dataToDisplay)}
         </ul>
       </div>
