@@ -25,5 +25,19 @@ const itemSchema = new mongoose.Schema({
 
 itemSchema.plugin(validator);
 
+//Define a transform function, so that some of the document specific data is removed
+if ( !itemSchema.options.toJSON ) {
+  itemSchema.options.toJSON = {};
+}
+
+itemSchema.options.toJSON.transform =  (doc, ret) => {
+
+  // remove the _id of every document before returning the result
+  ret.id = ret._id;
+  delete ret._id;
+  delete ret.__v;
+  return ret;
+};
+
 
 module.exports = mongoose.model('Item', itemSchema);
