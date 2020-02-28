@@ -3,6 +3,7 @@
   --main-bg-color: #960c11;
   --main-text-color: white;
   --main-font: 'Roboto';
+  --selected-color: rgb(242, 231, 228);
 }
 
 /* Remove all outlines from links */

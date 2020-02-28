@@ -1,6 +1,8 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setConfigSel } from '../../reducers/configureSelected';
 
 import style from './styling/CategoryListItem.module.css';
 
@@ -25,4 +27,18 @@ function CategoryListItem(props) {
 
 }
 
-export default CategoryListItem;
+const mapStateToProps = (state) => {
+
+  const { configureSelected } = state;
+  return {
+    selected: configureSelected
+  }
+}
+
+const mapDispatchToProps = {
+  configClicked : setConfigSel
+}
+
+// export default CategoryListItem;
+const connectedCategoryListItem = connect(mapStateToProps, mapDispatchToProps)(CategoryListItem);
+export default connectedCategoryListItem;

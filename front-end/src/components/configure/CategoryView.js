@@ -26,7 +26,6 @@ export function CategoryView(props) {
     user, //Logged in user info
     setConfigSel, //Data to store what is current selected in the category view 
     unsetSelCat, //Clears the selected value from the category view
-    selected, //Actual value stored by setConfigSel
     catId,
   } = props;
 
@@ -108,8 +107,6 @@ const populateCategoryView = (categoryData) =>  {
       <CategoryListItem 
         key={category.id} 
         data={category} 
-        configClicked={setConfigSel}
-        selected={selected} 
       />);
   }
   else {

@@ -14,7 +14,7 @@
 }
 
 .mainLI_selected {
-  background-color: rgb(242, 231, 228);
+  background-color: var(--selected-color);
 }
 
 .mainLI:hover {
