@@ -10,7 +10,8 @@ function DetailConfigure(props) {
   // Convert sub-categories information into react component
   const generateSubCategories = () => {
     if ( catData.childCategories.length ) {
-      return catData.childCategories.map(category => <CategoryLinkItem key={`dc_${category.id}`} data={category} />);
+      // return catData.childCategories.map(category => <CategoryLinkItem key={`dc_${category.id}`} data={category} />);
+      return catData.childCategories.map(category => <li key={`dc_${category.id}`}>{category.categoryName}</li>);
     }
   };
 

@@ -7,7 +7,8 @@ function CategoryLinkItem(props) {
   const { data } = props;
 
   return (
-    <Link to={`/configure/category/${data.id}`}><p>{data.categoryName}</p></Link>
+    // <Link to={`/configure/category/${data.id}`}><p>{data.categoryName}</p></Link>
+    <li>{data.categoryName}</li>
   );
 
 }

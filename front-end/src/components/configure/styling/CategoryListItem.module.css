@@ -1,0 +1,52 @@
+
+
+.mainLI {
+  border: lightgray solid .15em;
+  height: 4em;
+  list-style-type: none;
+  /* margin-top: .2em; */
+  margin: .8em;
+  border-radius: 1%;
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 1px 2px #999;
+
+}
+
+.mainLI_selected {
+  background-color: var(--selected-color);
+}
+
+.mainLI:hover {
+  scale: 1.02;
+  cursor: pointer;
+}
+
+.mainLI:hover .selectButton {
+  visibility: visible;
+  opacity: 1;
+}
+
+.content {
+  flex-grow: 1;
+  padding-left: 1em;
+  font-family: var(--main-font);
+  font-weight: 500;
+  font-size: larger;
+}
+
+.selectButton {
+  background-color: var(--main-bg-color);
+  border-radius: 5%;
+  padding: .7em;
+  margin-right: 1em;
+  visibility: hidden;
+  opacity: 0;
+  transition: 500ms;
+}
+
+.selectButton > a {
+  text-decoration: none;
+  color: white;
+  padding: .7em 1em;
+}
