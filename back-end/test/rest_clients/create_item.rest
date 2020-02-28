@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/item
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRyaXBsZXkiLCJpZCI6IjVlMzcwOGRjZTgzNjczNDdlNGU1YjI4MCIsImlhdCI6MTU4MjkyNDcyNywiZXhwIjoxNTgyOTI4MzI3fQ.FF11MpMJWRn6cu-M3UhRK98yFDp8ctw3B5XUqY54IeU
+content-type: application/json
+
+{
+    "name": "Single Pack of Thighs", 
+    "description": "Still meat, only... less",
+    "category": "5e55a73a0e1e302510ef1a3c"
+}

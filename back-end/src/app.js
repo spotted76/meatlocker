@@ -8,9 +8,11 @@ const authUser = require('./middleware/auth');
 const checkPrivs = require('./middleware/checkPrivs');
 
 
+//Import all routes
 const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const categoryRouter = require('./routes/category');
+const itemRouter = require('./routes/item');
 
 //Instantiate main express app
 const app = express();
@@ -32,5 +34,6 @@ app.use(checkPrivs);
 app.use('/api/user', userRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/category', categoryRouter);
+app.use('/api/item', itemRouter);
 
 module.exports = app;
