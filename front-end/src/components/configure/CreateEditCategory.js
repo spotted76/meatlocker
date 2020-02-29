@@ -1,6 +1,6 @@
 
 
-import style from './styling/CreateEdit.module.css';
+import style from './styling/CreateEditCategory.module.css';
 import React, { useState, useRef } from 'react';
 import Select from 'react-select';
 
@@ -29,7 +29,7 @@ function CreateEdit(props) {
   const [type, setType] = useState(null);
  
 
-  const createEdit = isEdit ? 'Edit' : 'Create New';
+  const createEdit = isEdit ? 'Edit Category' : 'Create New Category';
   
   //Show or hide the dialog
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;
@@ -90,18 +90,15 @@ function CreateEdit(props) {
     <div className={ `${ mainDiv }`}>
       <div className={style.inputForm}>
         <div className={style.formElements}>
-        <h2>{createEdit}</h2>
-        <input ref={titleRef} placeholder='Enter a name' />
-        <Select
-          value={type}
-          onChange={(newValue) => setType(newValue)}
-          options={options}
-        />
-        <textarea ref={descriptionRef}  placeholder='Enter a description' />
-        <div className={style.buttonPanel}>
-          <button onClick={onOk}>Ok</button>
-          <button onClick={onCancel}>Cancel</button>
-        </div>
+          <div className={style.title}>
+            <h2>{createEdit}</h2>
+          </div>
+          <input ref={titleRef} placeholder='Category name' />
+          <textarea ref={descriptionRef} placeholder='Category description' />
+          <div className={style.buttonPanel}>
+            <button onClick={onOk}>Ok</button>
+            <button onClick={onCancel}>Cancel</button>
+          </div>
         </div>
       </div>
     </div>

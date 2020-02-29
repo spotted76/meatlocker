@@ -11,7 +11,26 @@
 .buttonDiv {
   display: flex;
   flex-direction: row-reverse;
+  margin-top: .8em;
 }
+
+.buttonDiv button {
+  display: inline-block;
+  border: none;
+  padding: .8rem .8rem;
+  width: 10em;
+  border-radius: 4%;
+  margin: 0;
+  margin-left: .5em;
+  text-decoration: none;
+  background: var(--main-bg-color);
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+
 
 ul {
   padding: 0;

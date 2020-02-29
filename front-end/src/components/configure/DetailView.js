@@ -9,7 +9,7 @@ import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 
 import DetailConfigure from './DetailConfigure';
-import CreateEdit from './CreateEdit';
+import CreateEditCategory from './CreateEditCategory';
 import { postWithToken } from '../../services/categoryService';
 
  
@@ -111,7 +111,7 @@ function DetailView (props) {
         <button onClick={() => toggleCreateEdit(false)} >New Item</button>
         <button>Edit Item</button>
       </div>
-      <CreateEdit
+      <CreateEditCategory
         visible={createEditVisible}
         toggle={toggleCreateEdit}
         isEdit={isEdit}

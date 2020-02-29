@@ -1,6 +1,7 @@
 
 :root {
   --main-bg-color: #960c11;
+  --muted-bg-color: #b1363a;
   --main-text-color: white;
   --main-font: 'Roboto';
   --selected-color: rgb(242, 231, 228);

@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 import { setConfigSel, unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
-import CreateEdit from './CreateEdit';
+import CreateEditCategory from './CreateEditCategory';
 
 import useSWR, { mutate }  from 'swr';
 import { postWithToken } from '../../services/categoryService';
@@ -144,8 +144,9 @@ const populateCategoryView = (categoryData) =>  {
       </div>
       <div className={style.buttonDiv}>
         <button onClick={() => toggleCreateEdit(false)} >New Category</button>
+        <button onClick={() => toggleCreateEdit(true)} >Edit Category</button>
       </div>
-      <CreateEdit
+      <CreateEditCategory
         visible={createEditVisible}
         toggle={toggleCreateEdit}
         isEdit={isEdit}
