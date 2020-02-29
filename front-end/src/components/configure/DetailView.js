@@ -5,13 +5,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import useSWR, { mutate } from 'swr';
-import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 
 import DetailConfigure from './DetailConfigure';
-import CreateEditCategory from './CreateEditCategory';
-import { postWithToken } from '../../services/categoryService';
-
+import CreateEditItem from './CreateEditItem';
+import { postWithToken } from '../../services/genericServices';
+import { DEFAULT_CAT_URI, DEFAULT_ITEM_URI, retrieveWithToken } from '../../services/fetchService';
  
 
 function DetailView (props) {
@@ -24,7 +23,7 @@ function DetailView (props) {
 
 
   //Retrieve the data selected in the main category view
-  const selectedURI = `${DEFAULT_URI}/${configureSelected?.id}`;
+  const selectedURI = `${DEFAULT_CAT_URI}/${configureSelected?.id}`;
   const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   if ( selectedError ) {
@@ -71,34 +70,34 @@ function DetailView (props) {
   };
 
   //Helper function to create a new sub-category
-  const createSubCategory = async (newObj) => {
+  const createNewItem = async (newObj) => {
 
     //Post the new object, and update the store
-    const result = await postWithToken(DEFAULT_URI, newObj, user.token);
+    const result = await postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
     const dataToMutate = {
       ...selectedData,
-      childCategories: selectedData.childCategories.concat(result)
+      items: selectedData.items.concat(result)
     }
     mutate([selectedURI, user.token], dataToMutate);
 
   }
 
   //Called from the hidden modal Create/Edit
-  const handleSubmit = async (type, newObj) => {
+  const handleSubmit = async (newObj) => {
 
     //Ok, data returned, now fill in the rest of the object with 
-    //details known to the Category View
-    newObj.parent = configureSelected.id;
-    newObj.isMajor = false;
+    //details known to the Detail View
+    newObj.category = configureSelected.id;
 
-    if (type === 'category') {
-      if (!isEdit) {
-        createSubCategory(newObj);
-      }
-      else {
-        console.log('This is an edit operation')
-      }
+    if (!isEdit) {
+      //Create new
+      createNewItem(newObj);
     }
+    else {
+      //Edit an item
+      CreateEditItem(newObj);
+    }
+
   };
 
   return (
@@ -107,11 +106,11 @@ function DetailView (props) {
       <div className={style.mainContainer}>
         {formatDetails()}
       </div>
-      <div>
+      <div className={style.buttonDiv}>
         <button onClick={() => toggleCreateEdit(false)} >New Item</button>
         <button>Edit Item</button>
       </div>
-      <CreateEditCategory
+      <CreateEditItem
         visible={createEditVisible}
         toggle={toggleCreateEdit}
         isEdit={isEdit}

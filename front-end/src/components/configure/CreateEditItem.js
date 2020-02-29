@@ -1,6 +1,6 @@
 
 
-import style from './styling/CreateEditCategory.module.css';
+import style from './styling/CreateEditItem.module.css';
 import React, { useState, useRef } from 'react';
 
 
@@ -25,9 +25,10 @@ function CreateEdit(props) {
   //Values used to store the field contents of the window
   const titleRef = useRef();
   const descriptionRef = useRef();
+  const count = useRef();
  
 
-  const createEdit = isEdit ? 'Edit Category' : 'Create New Category';
+  const createEdit = isEdit ? 'Edit Item' : 'Create New Item';
   
   //Show or hide the dialog
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;
@@ -49,11 +50,12 @@ function CreateEdit(props) {
     }
     
     //Retrieve all values, and construct an object
-    if (createAndClose)
+    if (createAndClose )
     {
-      //Create a new category
+      
       retObj = {
-        categoryName: titleRef.current.value,
+        name: titleRef.current.value,
+        count: !count.current.value ? 0 : count.current.value,
         description: descriptionRef.current.value
       };
 
@@ -75,6 +77,7 @@ function CreateEdit(props) {
     //Reset all fields
     titleRef.current.value = '';
     descriptionRef.current.value = '';
+    count.current.value = '';
   };
 
 
@@ -85,8 +88,9 @@ function CreateEdit(props) {
           <div className={style.title}>
             <h2>{createEdit}</h2>
           </div>
-          <input ref={titleRef} placeholder='Category name' />
-          <textarea ref={descriptionRef} placeholder='Category description' />
+          <input ref={titleRef} placeholder='Item name' />
+          <input ref={count} type="number" placeholder='number of items'></input>
+          <textarea ref={descriptionRef} placeholder='Item description' />
           <div className={style.buttonPanel}>
             <button onClick={onOk}>Ok</button>
             <button onClick={onCancel}>Cancel</button>
