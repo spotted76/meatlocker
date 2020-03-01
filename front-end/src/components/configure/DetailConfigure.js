@@ -7,11 +7,20 @@ function DetailConfigure(props) {
 
   const { catData } = props;
 
+  console.log(catData);
+
+
   // Convert sub-categories information into react component
   const generateSubCategories = () => {
     if ( catData.childCategories.length ) {
       // return catData.childCategories.map(category => <CategoryLinkItem key={`dc_${category.id}`} data={category} />);
       return catData.childCategories.map(category => <li key={`dc_${category.id}`}>{category.categoryName}</li>);
+    }
+  };
+
+  const generateItemData = () => {
+    if ( catData.items.length ) {
+      return catData.items.map(item => <li key={`item_${item.id}`}>{item.name}</li>);
     }
   };
 
@@ -29,7 +38,7 @@ function DetailConfigure(props) {
       </ul>
       <h3>items:  </h3>
       <ul>
-        
+        {generateItemData()}
       </ul>
     </div>
   );

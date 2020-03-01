@@ -54,7 +54,7 @@ export function CategoryView(props) {
   const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
 
 
-  const categoryBanner = selectedData ? selectedData.categoryName : 'Main Categories';
+  const categoryBanner = selectedData ? selectedData.categoryName : 'Category Browser';
 
 
   //Called from the hidden modal Create/Edit
@@ -65,7 +65,7 @@ export function CategoryView(props) {
     newObj.parent = catId ? catId : null;
     newObj.isMajor = catId ? false : true;
 
-    const result = await postWithToken(DEFAULT_URI, newObj, user.token)
+    const result = await postWithToken(DEFAULT_URI, newObj, user.token);
 
     let URIToMutate;
     let dataToMutate;

@@ -9,7 +9,7 @@ import useSWR, { mutate } from 'swr';
 
 import DetailConfigure from './DetailConfigure';
 import CreateEditItem from './CreateEditItem';
-import { postWithToken } from '../../services/genericServices';
+import { postWithToken, patchWithToken } from '../../services/genericServices';
 import { DEFAULT_CAT_URI, DEFAULT_ITEM_URI, retrieveWithToken } from '../../services/fetchService';
  
 
@@ -74,6 +74,14 @@ function DetailView (props) {
 
     //Post the new object, and update the store
     const result = await postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
+
+    //New object created, now update the associated category, need to patch the parent category
+    const patchURI = `${DEFAULT_CAT_URI}/${selectedData.id}`;
+    let itemIdList = selectedData.items.map(item => item.id);
+    itemIdList = itemIdList.concat(result.id);
+    await patchWithToken(patchURI, {items: itemIdList}, user.token);
+
+    //Add the new item to the existing category
     const dataToMutate = {
       ...selectedData,
       items: selectedData.items.concat(result)
@@ -102,7 +110,7 @@ function DetailView (props) {
 
   return (
     <div className='detail_view'>
-      <h2>Details</h2>
+      <h2>Category Details</h2>
       <div className={style.mainContainer}>
         {formatDetails()}
       </div>
