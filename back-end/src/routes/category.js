@@ -82,7 +82,7 @@ categoryRouter.get('/:id', async(req, res) => {
 
   //Lookup the category based on the passed id
   try {
-    const result = await Category.findById(req.params.id).populate('childCategories');
+    const result = await Category.findById(req.params.id).populate('childCategories').populate('items');
     if ( result )
     {
       return res.status(200).json(result);
@@ -94,6 +94,27 @@ categoryRouter.get('/:id', async(req, res) => {
   catch(err) {
     console.log(err);
     res.status(500).json({ error: `error encountered attempting to retrieve id: ${req.params.id}` });
+  }
+
+});
+
+/*
+  REST API /api/category/:id
+
+  Pathch, will replace a portion of the existing category data 
+  at :id
+*/
+categoryRouter.patch('/:id', async(req, res) => {
+
+
+  try {
+    const result = await Category.updateOne( { _id: req.params.id },  { items: req.body.items } );
+    const status = result.nModified > 0 ? 200 : 400;
+    res.status(status).end();
+  }
+  catch(err) {
+    console.log(`Error occured patching category ${req.params.id}`);
+    res.status(500).json({ error: `Error occured patching category ${req.params.id}` });
   }
 
 });

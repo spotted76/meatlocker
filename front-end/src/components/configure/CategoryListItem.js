@@ -19,7 +19,7 @@ function CategoryListItem(props) {
         {data.categoryName}
       </div>
       <div className={style.selectButton}>
-        <Link to={`/configure/category/${data.id}`}>select</Link>
+        <Link to={`/configure/category/${data.id}`}>subcategories</Link>
       </div>
        
     </li>

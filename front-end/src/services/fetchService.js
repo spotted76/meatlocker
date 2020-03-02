@@ -2,6 +2,8 @@
 import axios from 'axios';
 
 export const DEFAULT_URI = '/api/category';
+export const DEFAULT_CAT_URI = '/api/category';
+export const DEFAULT_ITEM_URI = '/api/item';
 
 
 /**

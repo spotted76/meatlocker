@@ -5,13 +5,12 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
 import useSWR, { mutate } from 'swr';
-import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 
 import DetailConfigure from './DetailConfigure';
-import CreateEdit from './CreateEdit';
-import { postWithToken } from '../../services/categoryService';
-
+import CreateEditItem from './CreateEditItem';
+import { postWithToken, patchWithToken } from '../../services/genericServices';
+import { DEFAULT_CAT_URI, DEFAULT_ITEM_URI, retrieveWithToken } from '../../services/fetchService';
  
 
 function DetailView (props) {
@@ -24,7 +23,7 @@ function DetailView (props) {
 
 
   //Retrieve the data selected in the main category view
-  const selectedURI = `${DEFAULT_URI}/${configureSelected?.id}`;
+  const selectedURI = `${DEFAULT_CAT_URI}/${configureSelected?.id}`;
   const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   if ( selectedError ) {
@@ -71,47 +70,55 @@ function DetailView (props) {
   };
 
   //Helper function to create a new sub-category
-  const createSubCategory = async (newObj) => {
+  const createNewItem = async (newObj) => {
 
     //Post the new object, and update the store
-    const result = await postWithToken(DEFAULT_URI, newObj, user.token);
+    const result = await postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
+
+    //New object created, now update the associated category, need to patch the parent category
+    const patchURI = `${DEFAULT_CAT_URI}/${selectedData.id}`;
+    let itemIdList = selectedData.items.map(item => item.id);
+    itemIdList = itemIdList.concat(result.id);
+    await patchWithToken(patchURI, {items: itemIdList}, user.token);
+
+    //Add the new item to the existing category
     const dataToMutate = {
       ...selectedData,
-      childCategories: selectedData.childCategories.concat(result)
+      items: selectedData.items.concat(result)
     }
     mutate([selectedURI, user.token], dataToMutate);
 
   }
 
   //Called from the hidden modal Create/Edit
-  const handleSubmit = async (type, newObj) => {
+  const handleSubmit = async (newObj) => {
 
     //Ok, data returned, now fill in the rest of the object with 
-    //details known to the Category View
-    newObj.parent = configureSelected.id;
-    newObj.isMajor = false;
+    //details known to the Detail View
+    newObj.category = configureSelected.id;
 
-    if (type === 'category') {
-      if (!isEdit) {
-        createSubCategory(newObj);
-      }
-      else {
-        console.log('This is an edit operation')
-      }
+    if (!isEdit) {
+      //Create new
+      createNewItem(newObj);
     }
+    else {
+      //Edit an item
+      CreateEditItem(newObj);
+    }
+
   };
 
   return (
     <div className='detail_view'>
-      <h2>Details</h2>
+      <h2>Category Details</h2>
       <div className={style.mainContainer}>
         {formatDetails()}
       </div>
-      <div>
+      <div className={style.buttonDiv}>
         <button onClick={() => toggleCreateEdit(false)} >New Item</button>
         <button>Edit Item</button>
       </div>
-      <CreateEdit
+      <CreateEditItem
         visible={createEditVisible}
         toggle={toggleCreateEdit}
         isEdit={isEdit}

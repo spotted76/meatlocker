@@ -8,10 +8,10 @@ import { Redirect } from 'react-router-dom';
 import { setConfigSel, unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
-import CreateEdit from './CreateEdit';
+import CreateEditCategory from './CreateEditCategory';
 
 import useSWR, { mutate }  from 'swr';
-import { postWithToken } from '../../services/categoryService';
+import { postWithToken } from '../../services/genericServices';
 import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
@@ -54,37 +54,36 @@ export function CategoryView(props) {
   const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
 
 
-  const categoryBanner = selectedData ? selectedData.categoryName : 'Main Categories';
+  const categoryBanner = selectedData ? selectedData.categoryName : 'Category Browser';
 
 
   //Called from the hidden modal Create/Edit
-  const handleCreate = async (type, newObj) => {
+  const handleCreate = async (newObj) => {
 
     //Ok, data returned, now fill in the rest of the object with 
     //details known to the Category View
     newObj.parent = catId ? catId : null;
     newObj.isMajor = catId ? false : true;
 
-    if ( type === 'category' ) {
-      const result = await postWithToken(DEFAULT_URI, newObj, user.token)
+    const result = await postWithToken(DEFAULT_URI, newObj, user.token);
 
-      let URIToMutate;
-      let dataToMutate;
-      //Now update the local SWR store
-      if ( catId ) {
-        URIToMutate = selectedURI;
-        dataToMutate = {
-          ...selectedData,
-          childCategories: selectedData.childCategories.concat(result)
-        }
+    let URIToMutate;
+    let dataToMutate;
+    //Now update the local SWR store
+    if (catId) {
+      URIToMutate = selectedURI;
+      dataToMutate = {
+        ...selectedData,
+        childCategories: selectedData.childCategories.concat(result)
       }
-      else {
-        URIToMutate = DEFAULT_URI;
-        dataToMutate = allCategories.concat(result);
-      }
-
-      mutate([URIToMutate, user.token], dataToMutate);
     }
+    else {
+      URIToMutate = DEFAULT_URI;
+      dataToMutate = allCategories.concat(result);
+    }
+
+    mutate([URIToMutate, user.token], dataToMutate);
+
 
   };
 
@@ -144,8 +143,9 @@ const populateCategoryView = (categoryData) =>  {
       </div>
       <div className={style.buttonDiv}>
         <button onClick={() => toggleCreateEdit(false)} >New Category</button>
+        <button onClick={() => toggleCreateEdit(true)} >Edit Category</button>
       </div>
-      <CreateEdit
+      <CreateEditCategory
         visible={createEditVisible}
         toggle={toggleCreateEdit}
         isEdit={isEdit}

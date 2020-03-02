@@ -1,0 +1,75 @@
+
+/* Hides the modal dialog overall */
+.hide {
+  display: none 
+}
+
+/* Main div that is the entire page */
+.mainDiv {
+  background-color: rgba(105, 112, 134, 0.75);
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 999;
+}
+
+/* 
+  BEGIN STYLING OF ACTUAL FORM
+*/
+.inputForm {
+  background-color: white;
+  width: 35%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+}
+
+.title {
+  background-color: var(--muted-bg-color);
+  height: 4em;
+  width: 95%;
+  align-self: center;
+}
+
+.title h2 {
+  color: white;
+  text-align: center;
+}
+
+input {
+  height: 2.2rem;
+  margin: 1em;
+  padding-left: .8em;
+  background-color: #f0f0f0;
+  font-family: var(--main-font);
+}
+
+textarea {
+  height: 6em;
+  margin: 1em;
+  padding-left: .8em;
+  background-color: #f0f0f0;
+  font-family: var(--main-font);
+  resize: none;
+}
+
+.formElements {
+  display: flex;
+  flex-direction: column;
+  margin: 1em;
+}
+
+.buttonPanel {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: .8em;
+}
+
+.buttonPanel button {
+  margin-left: .5em;
+  width: 10em;
+}

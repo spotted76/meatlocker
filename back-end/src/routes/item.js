@@ -14,7 +14,6 @@ itemRouter.post('/', async (req, res) => {
   const newItem = new Item(
     {
       ...item,
-      count: 0
       //TBD on the image
     }
   );
