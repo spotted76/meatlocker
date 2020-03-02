@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import useSWR, { mutate } from 'swr';
 
 
-import DetailConfigure from './DetailConfigure';
+import CategoryDetails from './CategoryDetails';
 import CreateEditItem from './CreateEditItem';
 import { postWithToken, patchWithToken } from '../../services/genericServices';
 import { DEFAULT_CAT_URI, DEFAULT_ITEM_URI, retrieveWithToken } from '../../services/fetchService';
@@ -40,7 +40,7 @@ function DetailView (props) {
 
       if (configureSelected?.type === 'category') {
         //Return a category view
-        return <DetailConfigure catData={selectedData} />
+        return <CategoryDetails catData={selectedData} />
       }
       else if (configureSelected?.type === 'item') {
         //Return an item view
