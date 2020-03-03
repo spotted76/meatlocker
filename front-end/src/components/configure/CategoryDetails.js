@@ -24,6 +24,32 @@ function DetailItem(props) {
   );
 }
 
+function Item(props) {
+
+  const { item } = props;
+  const count = item.count.toString().padStart(3, '');
+
+  const performEdit = () => {
+    console.log('performEdit');
+  }
+
+  const performDelete = () => {
+    console.log('performDelete');
+  }
+
+  return (
+    <li className={style.itemProper}>
+      <div>
+        ({count}) : {item.name}
+      </div>
+      <div className={style.item_icons}>
+        <i onClick={performEdit} className='far fa-edit' ></i>
+        <i onClick={performDelete} className='fas fa-times-circle'></i>
+      </div> 
+    </li>
+  );
+}
+
 function CategoryDetails(props) {
 
   const { catData } = props;
@@ -37,11 +63,19 @@ function CategoryDetails(props) {
       // return catData.childCategories.map(category => <CategoryLinkItem key={`dc_${category.id}`} data={category} />);
       return catData.childCategories.map(category => <li key={`dc_${category.id}`}>{category.categoryName}</li>);
     }
+    else {
+      return 'None';
+    }
   };
 
   const generateItemData = () => {
     if ( catData.items.length ) {
-      return catData.items.map(item => <li key={`item_${item.id}`}>{item.name}</li>);
+      // return catData.items.map(item => <li key={`item_${item.id}`}>{item.name}</li>);
+      return catData.items.map(item => <Item key={`item_${item.id}`} item={item} />);
+
+    }
+    else {
+      return 'None';
     }
   };
 
@@ -52,23 +86,7 @@ function CategoryDetails(props) {
       <DetailItem detailDesc={'Description:'} detailData={catData.description} />
       <DetailItem detailDesc={'Sub Categories:'} detailData={generateSubCategories()} />
       <DetailItem detailDesc={'Items:'} detailData={generateItemData()} />
-{/* 
-      <h3>name:  </h3>
-      <div className={style.freeText}>
-        {catData.categoryName}
-      </div> */}
-      {/* <h3>description:  </h3>
-        <div className={style.freeText}>
-      {catData.description}
-      </div> */}
-      {/* <h3>sub categories:  </h3>
-      <ul>
-        {generateSubCategories()}
-      </ul> */}
-      {/* <h3>items:  </h3>
-      <ul>
-        {generateItemData()}
-      </ul> */}
+
     </div>
   );
 

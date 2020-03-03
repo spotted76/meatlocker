@@ -89,7 +89,7 @@ function CreateEdit(props) {
             <h2>{createEdit}</h2>
           </div>
           <input ref={titleRef} placeholder='Item name' />
-          <input ref={count} type="number" placeholder='number of items'></input>
+          <input ref={count} type="number" min='0' placeholder='number of items'></input>
           <textarea ref={descriptionRef} placeholder='Item description' />
           <div className={style.buttonPanel}>
             <button onClick={onOk}>Ok</button>
