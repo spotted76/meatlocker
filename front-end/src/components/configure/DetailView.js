@@ -3,7 +3,6 @@ import style from './styling/DetailView.module.css';
 
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-
 import useSWR, { mutate } from 'swr';
 
 
@@ -19,12 +18,13 @@ function DetailView (props) {
   const { configureSelected, user } = props;
 
   const [createEditVisible, setCreateEditVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
+  const [itemForEdit, setItemForEdit] = useState(null); //Data stored if user is editing
 
 
   //Retrieve the data selected in the main category view
   const selectedURI = `${DEFAULT_CAT_URI}/${configureSelected?.id}`;
-  const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
+  const { data: selectedData, error: selectedError} = 
+    useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   if ( selectedError ) {
     console.log('error retrieving detailed data from DetailView');
@@ -40,7 +40,7 @@ function DetailView (props) {
 
       if (configureSelected?.type === 'category') {
         //Return a category view
-        return <CategoryDetails catData={selectedData} />
+        return <CategoryDetails catData={selectedData} handleEdit={toggleCreateEdit } />
       }
       else if (configureSelected?.type === 'item') {
         //Return an item view
@@ -63,9 +63,16 @@ function DetailView (props) {
   };
 
   //Method used to toggle the modal create/edit dialog
-  const toggleCreateEdit = (isEdit) => {
+  const toggleCreateEdit = (args = null) => {
 
-    setIsEdit(isEdit);
+    //Store off the object for edit
+    if ( args ) {
+      setItemForEdit( { ...args } );
+    }
+    else {
+      setItemForEdit(null); //Or nothing, if no arguments passed
+    }
+
     setCreateEditVisible(!createEditVisible);
   };
 
@@ -90,20 +97,23 @@ function DetailView (props) {
 
   }
 
+  //Edits an existing item
+  const editExistingItem = (itemDetails) => {
+    console.log(itemDetails);
+  }
+
   //Called from the hidden modal Create/Edit
   const handleSubmit = async (newObj) => {
 
-    //Ok, data returned, now fill in the rest of the object with 
-    //details known to the Detail View
-    newObj.category = configureSelected.id;
-
-    if (!isEdit) {
+    //This is a brand new item
+    if (!itemForEdit) {
       //Create new
+      newObj.category = configureSelected.id;
       createNewItem(newObj);
     }
     else {
-      //Edit an item
-      CreateEditItem(newObj);
+      //Edit an existing item
+      editExistingItem(newObj);
     }
 
   };
@@ -115,13 +125,13 @@ function DetailView (props) {
         {formatDetails()}
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit(false)} >New Item</button>
+        <button onClick={() => toggleCreateEdit()} >New Item</button>
         <button>Edit Item</button>
       </div>
       <CreateEditItem
         visible={createEditVisible}
         toggle={toggleCreateEdit}
-        isEdit={isEdit}
+        itemForEdit={itemForEdit}
         performAction={handleSubmit}
       /> {/* Hidden by default, this is a modal view */}
     </div>

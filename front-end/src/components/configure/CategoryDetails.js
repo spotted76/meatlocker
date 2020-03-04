@@ -26,16 +26,13 @@ function DetailItem(props) {
 
 function Item(props) {
 
-  const { item } = props;
+  const { item, handleEdit } = props;
   const count = item.count.toString().padStart(3, '');
 
-  const performEdit = () => {
-    console.log('performEdit');
-  }
 
   const performDelete = () => {
     console.log('performDelete');
-  }
+  };
 
   return (
     <li className={style.itemProper}>
@@ -43,7 +40,7 @@ function Item(props) {
         ({count}) : {item.name}
       </div>
       <div className={style.item_icons}>
-        <i onClick={performEdit} className='far fa-edit' ></i>
+        <i onClick={() => handleEdit(item)} className='far fa-edit' ></i>
         <i onClick={performDelete} className='fas fa-times-circle'></i>
       </div> 
     </li>
@@ -52,7 +49,7 @@ function Item(props) {
 
 function CategoryDetails(props) {
 
-  const { catData } = props;
+  const { catData, handleEdit } = props;
 
   console.log(catData);
 
@@ -71,7 +68,7 @@ function CategoryDetails(props) {
   const generateItemData = () => {
     if ( catData.items.length ) {
       // return catData.items.map(item => <li key={`item_${item.id}`}>{item.name}</li>);
-      return catData.items.map(item => <Item key={`item_${item.id}`} item={item} />);
+      return catData.items.map(item => <Item key={`item_${item.id}`} item={item} handleEdit={handleEdit} />);
 
     }
     else {

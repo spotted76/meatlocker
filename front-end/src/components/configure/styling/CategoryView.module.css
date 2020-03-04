@@ -1,11 +1,12 @@
 
 .mainContainer {
-  border: solid lightgray;
+  /* border: solid lightgray; */
   width: 100%;
   min-height: 350px;
   max-height: 350px;
   overflow-y: auto;
-  box-shadow: inset 1px 1px 3px #999;
+  scrollbar-width: none;
+  /* box-shadow: inset 1px 1px 3px #999; */
 }
 
 .buttonDiv {

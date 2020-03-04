@@ -17,7 +17,7 @@ function CreateEdit(props) {
   const {
     visible, //determines if panel is visible or not
     toggle, //method used to toggle that visibility
-    isEdit, //If this is an edit function, or a create/new
+    itemForEdit, //If this is an edit function, or a create/new
     performAction //Callback to perform creation or modification
   } = props;
 
@@ -28,7 +28,14 @@ function CreateEdit(props) {
   const count = useRef();
  
 
-  const createEdit = isEdit ? 'Edit Item' : 'Create New Item';
+  const createEdit = itemForEdit ? 'Edit Item' : 'Create New Item';
+
+  if ( itemForEdit ) {
+    console.log('is this logging:  ', itemForEdit);
+    titleRef.current.value = itemForEdit.name;
+    count.current.value  = itemForEdit.count;
+    descriptionRef.current.value = itemForEdit.description;
+  }
   
   //Show or hide the dialog
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;

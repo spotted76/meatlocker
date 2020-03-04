@@ -101,7 +101,6 @@ export function CategoryView(props) {
 const populateCategoryView = (categoryData) =>  {
 
   if (categoryData && categoryData.length > 0) {
-    console.log(categoryData);
     return categoryData.map(category => 
       <CategoryListItem 
         key={category.id} 
