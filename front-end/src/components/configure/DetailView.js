@@ -142,6 +142,10 @@ function DetailView (props) {
     console.log(deleteId);
     const delURI = `${DEFAULT_ITEM_URI}/${deleteId}`;
 
+    if ( !window.confirm('Are you sure you want to delete this item?')) {
+      return;
+    }
+
     try {
       await restServices.deleteWithToken(delURI, user.token);
 
