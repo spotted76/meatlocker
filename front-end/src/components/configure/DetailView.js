@@ -8,7 +8,7 @@ import useSWR, { mutate } from 'swr';
 
 import CategoryDetails from './CategoryDetails';
 import CreateEditItem from './CreateEditItem';
-import { postWithToken, patchWithToken } from '../../services/genericServices';
+import * as restServices from '../../services/genericServices';
 import { DEFAULT_CAT_URI, DEFAULT_ITEM_URI, retrieveWithToken } from '../../services/fetchService';
  
 
@@ -80,13 +80,13 @@ function DetailView (props) {
   const createNewItem = async (newObj) => {
 
     //Post the new object, and update the store
-    const result = await postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
+    const result = await restServices.postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
 
     //New object created, now update the associated category, need to patch the parent category
     const patchURI = `${DEFAULT_CAT_URI}/${selectedData.id}`;
     let itemIdList = selectedData.items.map(item => item.id);
     itemIdList = itemIdList.concat(result.id);
-    await patchWithToken(patchURI, {items: itemIdList}, user.token);
+    await restServices.patchWithToken(patchURI, {items: itemIdList}, user.token);
 
     //Add the new item to the existing category
     const dataToMutate = {
@@ -98,8 +98,26 @@ function DetailView (props) {
   }
 
   //Edits an existing item
-  const editExistingItem = (itemDetails) => {
+  const editExistingItem = async (itemDetails) => {
     console.log(itemDetails);
+
+    try {
+      const putURI = `${DEFAULT_ITEM_URI}/${itemDetails.id}`;
+      const editedItem = await restServices.putWithToken(putURI, itemDetails, user.token);
+
+      //Replace the data in the selected category to reflect the changed item
+      const dataToMutate = {
+        ...selectedData,
+        items: selectedData.items.map(item => item.id !== editedItem.id ? item : editedItem)
+      }
+      mutate([selectedURI, user.token], dataToMutate, false);
+      
+
+    }
+    catch(err) {
+      console.log('Error occurred updating item');
+    }
+    
   }
 
   //Called from the hidden modal Create/Edit
@@ -112,7 +130,9 @@ function DetailView (props) {
       createNewItem(newObj);
     }
     else {
-      //Edit an existing item
+      //Populate with original data
+      newObj.category = itemForEdit.category
+      newObj.id = itemForEdit.id
       editExistingItem(newObj);
     }
 

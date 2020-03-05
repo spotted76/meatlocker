@@ -35,3 +35,38 @@ export async function patchWithToken(URI, data, token) {
   return result.data;
 
 }
+
+/*
+  Generic put call, change this to have token be conditional
+*/
+export async function putWithToken(URI, data, token) {
+
+  const bearer = `Bearer ${token}`;
+
+  const configs = {
+    headers: {
+      Authorization: bearer
+    }
+  };
+
+  const result = await axios.put(URI, data, configs);
+  return result.data;
+
+}
+
+/*
+  Generic delete call, change this to have token be conditional
+*/
+export async function deleteWithToken(URI, data, token) {
+
+  const bearer = `Bearer ${token}`;
+
+  const configs = {
+    headers: {
+      Authorization: bearer
+    }
+  };
+
+  await axios.delete(URI, data, configs);
+
+}

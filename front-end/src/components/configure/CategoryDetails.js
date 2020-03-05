@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-import CategoryLinkItem from './CategoryLinkItem';
 import style from './styling/CategoryDetails.module.css';
 
 function DetailItem(props) {
@@ -50,8 +49,6 @@ function Item(props) {
 function CategoryDetails(props) {
 
   const { catData, handleEdit } = props;
-
-  console.log(catData);
 
 
   // Convert sub-categories information into react component
