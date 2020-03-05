@@ -57,7 +57,7 @@ export async function putWithToken(URI, data, token) {
 /*
   Generic delete call, change this to have token be conditional
 */
-export async function deleteWithToken(URI, data, token) {
+export async function deleteWithToken(URI, token) {
 
   const bearer = `Bearer ${token}`;
 
@@ -67,6 +67,6 @@ export async function deleteWithToken(URI, data, token) {
     }
   };
 
-  await axios.delete(URI, data, configs);
+  await axios.delete(URI, configs);
 
 }

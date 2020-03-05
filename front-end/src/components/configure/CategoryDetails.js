@@ -5,7 +5,7 @@ import style from './styling/CategoryDetails.module.css';
 
 function DetailItem(props) {
 
-  const { detailDesc, detailData } = props;
+  const { detailDesc, detailData, handleDelete } = props;
 
   return (
     <div className={style.detailItem}>
@@ -25,8 +25,8 @@ function DetailItem(props) {
 
 function Item(props) {
 
-  const { item, handleEdit } = props;
-  const count = item.count.toString().padStart(3, '');
+  const { item, handleEdit, handleDelete } = props;
+  const count = item.count;
 
 
   const performDelete = () => {
@@ -40,7 +40,7 @@ function Item(props) {
       </div>
       <div className={style.item_icons}>
         <i onClick={() => handleEdit(item)} className='far fa-edit' ></i>
-        <i onClick={performDelete} className='fas fa-times-circle'></i>
+        <i onClick={() => handleDelete(item.id)} className='fas fa-times-circle'></i>
       </div> 
     </li>
   );
@@ -48,7 +48,7 @@ function Item(props) {
 
 function CategoryDetails(props) {
 
-  const { catData, handleEdit } = props;
+  const { catData, handleEdit, handleDelete } = props;
 
 
   // Convert sub-categories information into react component
@@ -65,7 +65,7 @@ function CategoryDetails(props) {
   const generateItemData = () => {
     if ( catData.items.length ) {
       // return catData.items.map(item => <li key={`item_${item.id}`}>{item.name}</li>);
-      return catData.items.map(item => <Item key={`item_${item.id}`} item={item} handleEdit={handleEdit} />);
+      return catData.items.map(item => <Item key={`item_${item.id}`} item={item} handleEdit={handleEdit} handleDelete={handleDelete} />);
 
     }
     else {

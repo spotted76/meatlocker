@@ -40,7 +40,7 @@ function DetailView (props) {
 
       if (configureSelected?.type === 'category') {
         //Return a category view
-        return <CategoryDetails catData={selectedData} handleEdit={toggleCreateEdit } />
+        return <CategoryDetails catData={selectedData} handleEdit={toggleCreateEdit} handleDelete={handleDelete} />
       }
       else if (configureSelected?.type === 'item') {
         //Return an item view
@@ -93,7 +93,7 @@ function DetailView (props) {
       ...selectedData,
       items: selectedData.items.concat(result)
     }
-    mutate([selectedURI, user.token], dataToMutate);
+    mutate([selectedURI, user.token], dataToMutate, false);
 
   }
 
@@ -136,6 +136,30 @@ function DetailView (props) {
       editExistingItem(newObj);
     }
 
+  };
+
+  const handleDelete = async(deleteId) => {
+    console.log(deleteId);
+    const delURI = `${DEFAULT_ITEM_URI}/${deleteId}`;
+
+    try {
+      await restServices.deleteWithToken(delURI, user.token);
+
+      //Remove the data in the selected category to reflect the changed item
+      const dataToMutate = {
+        ...selectedData,
+        items: selectedData.items.filter(item => {
+          if ( item.id !== deleteId) {
+            return item;
+          }
+        })
+      }
+      mutate([selectedURI, user.token], dataToMutate, false);
+
+    }
+    catch(err) {
+      console.log(`Error occurred deleting item ${deleteId}`);
+    }
   };
 
   return (
