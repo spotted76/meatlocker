@@ -106,9 +106,9 @@ categoryRouter.get('/:id', async(req, res) => {
 */
 categoryRouter.patch('/:id', async(req, res) => {
 
-
   try {
-    const result = await Category.updateOne( { _id: req.params.id },  { items: req.body.items } );
+    // const result = await Category.updateOne( { _id: req.params.id },  { items: req.body.items } );
+    const result = await Category.updateOne( { _id: req.params.id },  req.body );
     const status = result.nModified > 0 ? 200 : 400;
     res.status(status).end();
   }
@@ -118,5 +118,6 @@ categoryRouter.patch('/:id', async(req, res) => {
   }
 
 });
+
 
 module.exports = categoryRouter;

@@ -74,4 +74,41 @@ itemRouter.get('/:id', async (req, res) => {
 
 });
 
+/*
+  REST API /api/item/:id
+
+  POST, will replace the existing item whilesale with the item 
+  int the request object 
+
+*/
+itemRouter.put('/:id', async(req, res) => {
+
+  try {
+    const updatedItem = await Item.findByIdAndUpdate(req.params.id, req.body, { new : true });
+    res.status(200).json(updatedItem);
+  }
+  catch(err) {
+    console.log(`Error occurred updating item ${req.params.id}`);
+    res.status(500).json({ error: `Error occurred updating item ${req.params.id}` });
+  }
+
+});
+
+/*
+  REST API /api/item/:id
+  DELETE, will delete the item with the passed id
+*/
+itemRouter.delete('/:id', async(req, res) => {
+
+  try {
+    await Item.findByIdAndDelete(req.params.id);
+    res.status(200).end();
+  }
+  catch(err) {
+    console.log(`Error encountered deleted item ${req.params.id}`);
+    res.status(500).json( { error: `Error encountered deleted item ${req.params.id}` });
+  }
+
+});
+
 module.exports = itemRouter;
