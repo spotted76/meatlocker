@@ -29,10 +29,6 @@ function Item(props) {
   const count = item.count;
 
 
-  const performDelete = () => {
-    console.log('performDelete');
-  };
-
   return (
     <li className={style.itemProper}>
       <div>

@@ -183,8 +183,7 @@ function DetailView (props) {
         {formatDetails()}
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit()} >New Item</button>
-        <button>Edit Item</button>
+        <button class={style.newItem} disabled={configureSelected ? false : true} onClick={() => toggleCreateEdit()} >Add Item</button>
       </div>
       <CreateEditItem
         visible={createEditVisible}
