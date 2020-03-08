@@ -27,6 +27,11 @@
   opacity: 1;
 }
 
+.mainLI:hover .item_icons {
+  visibility: visible;
+  opacity: 1;
+}
+
 .content {
   flex-grow: 1;
   padding-left: 1em;
@@ -50,4 +55,17 @@
   color: white;
   padding: .7em 1em;
   font-size: .8em;
+}
+
+.item_icons {
+  visibility: hidden;
+  padding-right: .8em;
+}
+
+.item_icons i {
+  padding-left: .5em;
+}
+
+.item_icons:hover {
+  cursor: pointer;
 }

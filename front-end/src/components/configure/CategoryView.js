@@ -11,8 +11,8 @@ import CategoryListItem from './CategoryListItem';
 import CreateEditCategory from './CreateEditCategory';
 
 import useSWR, { mutate }  from 'swr';
-import { postWithToken } from '../../services/genericServices';
-import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
+import { postWithToken, patchWithToken } from '../../services/genericServices';
+import { DEFAULT_URI, retrieveWithToken, DEFAULT_CAT_URI } from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
 
@@ -51,14 +51,14 @@ export function CategoryView(props) {
 
   //Determines visibility of modal create/edit dialogs
   const [createEditVisible, setCreateEditVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
+  const [itemForEdit, setItemForEdit] = useState(null); //Determines if modal dialog is edit or create
 
 
   const categoryBanner = selectedData ? selectedData.categoryName : 'Category Browser';
 
 
   //Called from the hidden modal Create/Edit
-  const handleCreate = async (newObj) => {
+  const createNewCategory = async (newObj) => {
 
     //Ok, data returned, now fill in the rest of the object with 
     //details known to the Category View
@@ -87,11 +87,44 @@ export function CategoryView(props) {
 
   };
 
+  //Edit/patch details on an existing category object
+  const editExistingCategory = async (categoryObj) => {
+
+    //Patch the category with the update information
+    const URIToMutate = `${DEFAULT_CAT_URI}/${categoryObj.id}`;
+    delete categoryObj.id;
+
+    await patchWithToken(URIToMutate, categoryObj, user.token);
+
+    //Re-fetch the data
+    mutate([URIToMutate, user.token]);
+
+  };
+
+  //When user clicks ok on create/edit dialog, this is called
+  const performAction = (categoryObj) => {
+
+    if ( !itemForEdit ) {
+      createNewCategory(categoryObj);
+    }
+    else {
+      editExistingCategory(categoryObj);
+    }
+
+  };
+
 
   //Method used to toggle the modal create/edit dialog
-  const toggleCreateEdit = (isEdit) => {
+  const toggleCreateEdit = (itemForEdit = null) => {
 
-    setIsEdit(isEdit);
+    if ( itemForEdit ) 
+    {
+      setItemForEdit({ ...itemForEdit });
+    }
+    else {
+      setItemForEdit(null);
+    }
+
     setCreateEditVisible(!createEditVisible);
   };
 
@@ -104,7 +137,8 @@ const populateCategoryView = (categoryData) =>  {
     return categoryData.map(category => 
       <CategoryListItem 
         key={category.id} 
-        data={category} 
+        data={category}
+        handleEdit={toggleCreateEdit}
       />);
   }
   else {
@@ -141,14 +175,14 @@ const populateCategoryView = (categoryData) =>  {
         </ul>
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit(false)} >New Category</button>
+        <button onClick={() => toggleCreateEdit()} >New Category</button>
         <button onClick={() => toggleCreateEdit(true)} >Edit Category</button>
       </div>
       <CreateEditCategory
         visible={createEditVisible}
         toggle={toggleCreateEdit}
-        isEdit={isEdit}
-        performAction={handleCreate}
+        itemForEdit={itemForEdit}
+        performAction={performAction}
       /> {/* Hidden by default, this is a modal view */}
     </div>
   );
