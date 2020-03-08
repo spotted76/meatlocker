@@ -106,17 +106,19 @@ categoryRouter.get('/:id', async(req, res) => {
 */
 categoryRouter.patch('/:id', async(req, res) => {
 
-
   try {
-    const result = await Category.updateOne( { _id: req.params.id },  { items: req.body.items } );
+    // const result = await Category.updateOne( { _id: req.params.id },  { items: req.body.items } );
+    const result = await Category.updateOne( { _id: req.params.id },  req.body );
     const status = result.nModified > 0 ? 200 : 400;
     res.status(status).end();
   }
   catch(err) {
+    console.log(err);
     console.log(`Error occured patching category ${req.params.id}`);
     res.status(500).json({ error: `Error occured patching category ${req.params.id}` });
   }
 
 });
+
 
 module.exports = categoryRouter;

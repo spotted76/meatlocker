@@ -3,13 +3,12 @@ import style from './styling/DetailView.module.css';
 
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-
 import useSWR, { mutate } from 'swr';
 
 
-import DetailConfigure from './DetailConfigure';
+import CategoryDetails from './CategoryDetails';
 import CreateEditItem from './CreateEditItem';
-import { postWithToken, patchWithToken } from '../../services/genericServices';
+import * as restServices from '../../services/genericServices';
 import { DEFAULT_CAT_URI, DEFAULT_ITEM_URI, retrieveWithToken } from '../../services/fetchService';
  
 
@@ -19,12 +18,13 @@ function DetailView (props) {
   const { configureSelected, user } = props;
 
   const [createEditVisible, setCreateEditVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
+  const [itemForEdit, setItemForEdit] = useState(null); //Data stored if user is editing
 
 
   //Retrieve the data selected in the main category view
   const selectedURI = `${DEFAULT_CAT_URI}/${configureSelected?.id}`;
-  const { data: selectedData, error: selectedError} = useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
+  const { data: selectedData, error: selectedError} = 
+    useSWR( configureSelected ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   if ( selectedError ) {
     console.log('error retrieving detailed data from DetailView');
@@ -40,7 +40,7 @@ function DetailView (props) {
 
       if (configureSelected?.type === 'category') {
         //Return a category view
-        return <DetailConfigure catData={selectedData} />
+        return <CategoryDetails catData={selectedData} handleEdit={toggleCreateEdit} handleDelete={handleDelete} />
       }
       else if (configureSelected?.type === 'item') {
         //Return an item view
@@ -63,9 +63,16 @@ function DetailView (props) {
   };
 
   //Method used to toggle the modal create/edit dialog
-  const toggleCreateEdit = (isEdit) => {
+  const toggleCreateEdit = (args = null) => {
 
-    setIsEdit(isEdit);
+    //Store off the object for edit
+    if ( args ) {
+      setItemForEdit( { ...args } );
+    }
+    else {
+      setItemForEdit(null); //Or nothing, if no arguments passed
+    }
+
     setCreateEditVisible(!createEditVisible);
   };
 
@@ -73,39 +80,100 @@ function DetailView (props) {
   const createNewItem = async (newObj) => {
 
     //Post the new object, and update the store
-    const result = await postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
+    const result = await restServices.postWithToken(DEFAULT_ITEM_URI, newObj, user.token);
 
     //New object created, now update the associated category, need to patch the parent category
     const patchURI = `${DEFAULT_CAT_URI}/${selectedData.id}`;
     let itemIdList = selectedData.items.map(item => item.id);
     itemIdList = itemIdList.concat(result.id);
-    await patchWithToken(patchURI, {items: itemIdList}, user.token);
+    await restServices.patchWithToken(patchURI, {items: itemIdList}, user.token);
 
     //Add the new item to the existing category
     const dataToMutate = {
       ...selectedData,
       items: selectedData.items.concat(result)
     }
-    mutate([selectedURI, user.token], dataToMutate);
+    mutate([selectedURI, user.token], dataToMutate, false);
 
+  }
+
+  //Edits an existing item
+  const editExistingItem = async (itemDetails) => {
+    console.log(itemDetails);
+
+    try {
+      const putURI = `${DEFAULT_ITEM_URI}/${itemDetails.id}`;
+      const editedItem = await restServices.putWithToken(putURI, itemDetails, user.token);
+
+      //Replace the data in the selected category to reflect the changed item
+      const dataToMutate = {
+        ...selectedData,
+        items: selectedData.items.map(item => item.id !== editedItem.id ? item : editedItem)
+      }
+      mutate([selectedURI, user.token], dataToMutate, false);
+      
+
+    }
+    catch(err) {
+      console.log('Error occurred updating item');
+    }
+    
   }
 
   //Called from the hidden modal Create/Edit
   const handleSubmit = async (newObj) => {
 
-    //Ok, data returned, now fill in the rest of the object with 
-    //details known to the Detail View
-    newObj.category = configureSelected.id;
-
-    if (!isEdit) {
+    //This is a brand new item
+    if (!itemForEdit) {
       //Create new
+      newObj.category = configureSelected.id;
       createNewItem(newObj);
     }
     else {
-      //Edit an item
-      CreateEditItem(newObj);
+      //Populate with original data
+      newObj.category = itemForEdit.category
+      newObj.id = itemForEdit.id
+      editExistingItem(newObj);
     }
 
+  };
+
+  //Deletes a single item from the Detail View
+  const handleDelete = async(deleteId) => {
+    console.log(deleteId);
+    const delURI = `${DEFAULT_ITEM_URI}/${deleteId}`;
+
+    if ( !window.confirm('Are you sure you want to delete this item?')) {
+      return;
+    }
+
+    try {
+      await restServices.deleteWithToken(delURI, user.token);
+
+      //New object created, now update the associated category, need to patch the parent category
+      const patchURI = `${DEFAULT_CAT_URI}/${selectedData.id}`;
+
+      //Translate items into item ids, excluding the deleted item id
+      let itemIdList = selectedData.items
+        .map(item => item.id)
+        .filter(item => item !== deleteId);
+      await restServices.patchWithToken(patchURI, {items: itemIdList}, user.token);
+
+      //Remove the item from the cached selected category to reflect the removed item
+      const dataToMutate = {
+        ...selectedData,
+        items: selectedData.items.filter(item => {
+          if ( item.id !== deleteId) {
+            return item;
+          }
+        })
+      }
+      mutate([selectedURI, user.token], dataToMutate, false);
+
+    }
+    catch(err) {
+      console.log(`Error occurred deleting item ${deleteId}`);
+    }
   };
 
   return (
@@ -115,13 +183,12 @@ function DetailView (props) {
         {formatDetails()}
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit(false)} >New Item</button>
-        <button>Edit Item</button>
+        <button class={style.newItem} disabled={configureSelected ? false : true} onClick={() => toggleCreateEdit()} >Add Item</button>
       </div>
       <CreateEditItem
         visible={createEditVisible}
         toggle={toggleCreateEdit}
-        isEdit={isEdit}
+        itemForEdit={itemForEdit}
         performAction={handleSubmit}
       /> {/* Hidden by default, this is a modal view */}
     </div>

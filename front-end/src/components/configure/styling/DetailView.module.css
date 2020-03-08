@@ -1,11 +1,12 @@
 
 .mainContainer {
-  border: solid lightgray;
+  /* border: solid lightgray; */
   width: 100%;
   min-height: 350px;
   max-height: 350px;
   overflow-y: auto;
-  box-shadow: inset 1px 1px 2px #999;
+  scrollbar-width: none;
+  /* box-shadow: inset 1px 1px 2px #999; */
 }
 
 .mainContainer > div {
@@ -18,7 +19,7 @@
   margin-top: .8em;
 }
 
-.buttonDiv button {
+.newItem {
   display: inline-block;
   border: none;
   padding: .8rem .8rem;
@@ -28,6 +29,22 @@
   margin-left: .5em;
   text-decoration: none;
   background: var(--main-bg-color);
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+}
+
+.newItem:disabled {
+  display: inline-block;
+  border: none;
+  padding: .8rem .8rem;
+  width: 10em;
+  border-radius: 4%;
+  margin: 0;
+  margin-left: .5em;
+  text-decoration: none;
+  background: lightgray;
   color: #ffffff;
   font-size: 1rem;
   cursor: pointer;
