@@ -138,6 +138,7 @@ function DetailView (props) {
 
   };
 
+  //Deletes a single item from the Detail View
   const handleDelete = async(deleteId) => {
     console.log(deleteId);
     const delURI = `${DEFAULT_ITEM_URI}/${deleteId}`;
@@ -149,7 +150,16 @@ function DetailView (props) {
     try {
       await restServices.deleteWithToken(delURI, user.token);
 
-      //Remove the data in the selected category to reflect the changed item
+      //New object created, now update the associated category, need to patch the parent category
+      const patchURI = `${DEFAULT_CAT_URI}/${selectedData.id}`;
+
+      //Translate items into item ids, excluding the deleted item id
+      let itemIdList = selectedData.items
+        .map(item => item.id)
+        .filter(item => item !== deleteId);
+      await restServices.patchWithToken(patchURI, {items: itemIdList}, user.token);
+
+      //Remove the item from the cached selected category to reflect the removed item
       const dataToMutate = {
         ...selectedData,
         items: selectedData.items.filter(item => {

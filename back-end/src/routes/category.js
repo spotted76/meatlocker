@@ -113,6 +113,7 @@ categoryRouter.patch('/:id', async(req, res) => {
     res.status(status).end();
   }
   catch(err) {
+    console.log(err);
     console.log(`Error occured patching category ${req.params.id}`);
     res.status(500).json({ error: `Error occured patching category ${req.params.id}` });
   }
