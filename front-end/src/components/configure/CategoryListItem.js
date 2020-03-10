@@ -23,7 +23,7 @@ function CategoryListItem(props) {
       </div>
       <div className={style.item_icons}>
           <Link to={`/configure/category/${data.id}`}><i className="fas fa-sort-amount-down"></i></Link>
-          <i className='far fa-edit' onClick={() => handleEdit(data)}></i>
+          <i className='far fa-edit' onClick={(evt) => handleEdit(evt, data)}></i>
           <i className='fas fa-times-circle'></i>
       </div>
       {/* <div className={style.selectButton}>

@@ -42,7 +42,7 @@ export function CategoryView(props) {
 
   //retrieve a user selected category from the detail pane if selected
   const selectedURI = `${DEFAULT_URI}/${catId}`;
-  const { data: selectedData, error: selectedError} = 
+  const { data: selectedData, error: selectedError } = 
     useSWR( catId ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
@@ -91,13 +91,47 @@ export function CategoryView(props) {
   const editExistingCategory = async (categoryObj) => {
 
     //Patch the category with the update information
+    let categoryId = categoryObj.id;
     const URIToMutate = `${DEFAULT_CAT_URI}/${categoryObj.id}`;
-    delete categoryObj.id;
+    delete categoryObj.id; //delete for the patch call
 
     await patchWithToken(URIToMutate, categoryObj, user.token);
 
-    //Re-fetch the data
+    //Re-fetch the data for the category, since it may not be selected
     mutate([URIToMutate, user.token]);
+
+    //Replace the updated category with the new category information
+    const categoryData = dataToDisplay.map(category => {
+      if ( category.id !== categoryId) {
+        return category;
+      }
+      else {
+        return {
+          ...category,
+          categoryName : categoryObj.categoryName,
+          description : categoryObj.description
+        };
+      }
+    });
+
+
+    //Also update the local category that is currently displaying all category cards
+
+    if ( catId ) {
+      //Need to update the child category data
+      const updatedSelection = {
+        ...selectedData,
+        childCategories: [...categoryData]
+      };
+
+      mutate([selectedURI, user.token], updatedSelection, false);
+    
+    }
+    else {
+      //Update the main category data
+      mutate([DEFAULT_URI, user.token], categoryData, false);
+    }
+
 
   };
 
@@ -115,10 +149,13 @@ export function CategoryView(props) {
 
 
   //Method used to toggle the modal create/edit dialog
-  const toggleCreateEdit = (itemForEdit = null) => {
+  const toggleCreateEdit = (evt, itemForEdit = null) => {
 
-    if ( itemForEdit ) 
-    {
+    if ( evt ) { //This allows the user to edit a category w/out selecting it
+      evt.stopPropagation();
+    }
+
+    if ( itemForEdit ) {
       setItemForEdit({ ...itemForEdit });
     }
     else {
@@ -175,8 +212,7 @@ const populateCategoryView = (categoryData) =>  {
         </ul>
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit()} >New Category</button>
-        <button onClick={() => toggleCreateEdit(true)} >Edit Category</button>
+        <button onClick={(evt) => toggleCreateEdit(evt)} >New Category</button>
       </div>
       <CreateEditCategory
         visible={createEditVisible}

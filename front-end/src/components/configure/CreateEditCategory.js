@@ -73,12 +73,12 @@ function CreateEdit(props) {
     
     if ( createAndClose ) {
       clear();
-      toggle();
+      toggle(null);
     }
   };
 
   const onCancel = (evt) => {
-    toggle();
+    toggle(null);
     clear();
   };
 
