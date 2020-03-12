@@ -31,6 +31,7 @@ export function CategoryView(props) {
     user, //Logged in user info
     setConfigSel, //Data to store what is current selected in the category view 
     unsetSelCat, //Clears the selected value from the category view
+    selected, //Currently selected category
     catId,
   } = props;
 
@@ -139,38 +140,59 @@ export function CategoryView(props) {
 
   };
 
-    //Performs the deletion on the category
-    const deleteCategory = async(evt, categoryId) => {
+  //Performs the deletion on the category
+  const deleteCategory = async (evt, categoryId) => {
 
-      console.log(categoryId);
+    console.log(categoryId);
 
-      evt.stopPropagation();
+    evt.stopPropagation();
 
-      if ( !window.confirm('Deleting this category will delete all subcategory & item data') ) {
-        return;
+    if (!window.confirm('Deleting this category will delete all subcategory & item data')) {
+      return;
+    }
+
+    try {
+      const itemsToDelete = await deleteWithToken(`${DEFAULT_CAT_URI}/${categoryId}`, user.token);
+      console.log('received items to delete:  ', itemsToDelete);
+
+      // remove selected if selected
+      if (categoryId === selected?.id) {
+        unsetSelCat();
       }
 
-      try {
-        const itemsToDelete = await deleteWithToken(`${DEFAULT_CAT_URI}/${categoryId}`, user.token);
-        console.log('received items to delete:  ', itemsToDelete);
-
-        //Now delete all the items
-        if ( itemsToDelete ) {
-          await postWithToken(`${DEFAULT_ITEM_URI}/deletemany`, { itemIds: itemsToDelete }, user.token);
-        }
-
-        // //TODO - remove selected if selected
-        // if ( categoryId === configureSelected?.id) {
-        //   unsetSelCat();
-        // }
-
-      }
-      catch(err) {
-        console.log(err);
-        //TODO:  Throw up an error alert
+      //Now delete all the items
+      if (itemsToDelete && itemsToDelete.length) {
+        await postWithToken(`${DEFAULT_ITEM_URI}/deletemany`, { itemIds: itemsToDelete }, user.token);
       }
 
-    };
+      //lastly, remove the category for the currently display category data
+      const categoryData = dataToDisplay.filter(category => category.id !== categoryId);
+
+      //Also update the local category that is currently displaying all category cards
+
+      if (catId) {
+        //Need to update the child category data
+        const updatedSelection = {
+          ...selectedData,
+          childCategories: [...categoryData]
+        };
+
+        mutate([selectedURI, user.token], updatedSelection, false);
+
+      }
+      else {
+        //Update the main category data
+        mutate([DEFAULT_URI, user.token], categoryData, false);
+      }
+
+
+    }
+    catch (err) {
+      console.log(err);
+      //TODO:  Throw up an error alert
+    }
+
+  };
 
   //When user clicks ok on create/edit dialog, this is called
   const performAction = (categoryObj) => {
@@ -225,7 +247,7 @@ const populateCategoryView = (categoryData) =>  {
     );
   }
 
-}
+};
 
   if ( allCategoriesError || selectedError ) {
     console.log('retrieves failed');
