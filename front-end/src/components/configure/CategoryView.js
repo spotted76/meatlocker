@@ -11,8 +11,13 @@ import CategoryListItem from './CategoryListItem';
 import CreateEditCategory from './CreateEditCategory';
 
 import useSWR, { mutate }  from 'swr';
-import { postWithToken } from '../../services/genericServices';
-import { DEFAULT_URI, retrieveWithToken } from '../../services/fetchService';
+import { postWithToken, patchWithToken, deleteWithToken } from '../../services/genericServices';
+import { 
+  DEFAULT_URI, 
+  retrieveWithToken, 
+  DEFAULT_CAT_URI, 
+  DEFAULT_ITEM_URI 
+} from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
 
@@ -26,6 +31,7 @@ export function CategoryView(props) {
     user, //Logged in user info
     setConfigSel, //Data to store what is current selected in the category view 
     unsetSelCat, //Clears the selected value from the category view
+    selected, //Currently selected category
     catId,
   } = props;
 
@@ -42,7 +48,7 @@ export function CategoryView(props) {
 
   //retrieve a user selected category from the detail pane if selected
   const selectedURI = `${DEFAULT_URI}/${catId}`;
-  const { data: selectedData, error: selectedError} = 
+  const { data: selectedData, error: selectedError } = 
     useSWR( catId ?  [selectedURI, user.token] : null, retrieveWithToken);
 
   //Show child categories from the selected sub-catory, otherwise, if nothing selected, show only Major Categories
@@ -51,14 +57,14 @@ export function CategoryView(props) {
 
   //Determines visibility of modal create/edit dialogs
   const [createEditVisible, setCreateEditVisible] = useState(false);
-  const [isEdit, setIsEdit] = useState(false); //Determines if modal dialog is edit or create
+  const [itemForEdit, setItemForEdit] = useState(null); //Determines if modal dialog is edit or create
 
 
   const categoryBanner = selectedData ? selectedData.categoryName : 'Category Browser';
 
 
   //Called from the hidden modal Create/Edit
-  const handleCreate = async (newObj) => {
+  const createNewCategory = async (newObj) => {
 
     //Ok, data returned, now fill in the rest of the object with 
     //details known to the Category View
@@ -75,7 +81,7 @@ export function CategoryView(props) {
       dataToMutate = {
         ...selectedData,
         childCategories: selectedData.childCategories.concat(result)
-      }
+      };
     }
     else {
       URIToMutate = DEFAULT_URI;
@@ -87,11 +93,134 @@ export function CategoryView(props) {
 
   };
 
+  //Edit/patch details on an existing category object
+  const editExistingCategory = async (categoryObj) => {
+
+    //Patch the category with the update information
+    let categoryId = categoryObj.id;
+    const URIToMutate = `${DEFAULT_CAT_URI}/${categoryObj.id}`;
+    delete categoryObj.id; //delete for the patch call
+
+    await patchWithToken(URIToMutate, categoryObj, user.token);
+
+    //Re-fetch the data for the category, since it may not be selected
+    mutate([URIToMutate, user.token]);
+
+    //Replace the updated category with the new category information
+    const categoryData = dataToDisplay.map(category => {
+      if ( category.id !== categoryId) {
+        return category;
+      }
+      else {
+        return {
+          ...category,
+          categoryName : categoryObj.categoryName,
+          description : categoryObj.description
+        };
+      }
+    });
+
+    //Also update the local category that is currently displaying all category cards
+
+    if ( catId ) {
+      //Need to update the child category data
+      const updatedSelection = {
+        ...selectedData,
+        childCategories: [...categoryData]
+      };
+
+      mutate([selectedURI, user.token], updatedSelection, false);
+    
+    }
+    else {
+      //Update the main category data
+      mutate([DEFAULT_URI, user.token], categoryData, false);
+    }
+
+
+  };
+
+  //Performs the deletion on the category
+  const deleteCategory = async (evt, categoryId) => {
+
+    console.log(categoryId);
+
+    evt.stopPropagation();
+
+    if (!window.confirm('Deleting this category will delete all subcategory & item data')) {
+      return;
+    }
+
+    try {
+      const itemsToDelete = await deleteWithToken(`${DEFAULT_CAT_URI}/${categoryId}`, user.token);
+      console.log('received items to delete:  ', itemsToDelete);
+
+      // remove selected if selected
+      if (categoryId === selected?.id) {
+        unsetSelCat();
+      }
+
+      //Now delete all the items
+      if (itemsToDelete && itemsToDelete.length) {
+        await postWithToken(`${DEFAULT_ITEM_URI}/deletemany`, { itemIds: itemsToDelete }, user.token);
+      }
+
+      //lastly, remove the category for the currently display category data
+      const categoryData = dataToDisplay.filter(category => category.id !== categoryId);
+
+      //Also update the local category that is currently displaying all category cards
+
+      if (catId) {
+        //Need to update the child category data
+        const updatedSelection = {
+          ...selectedData,
+          childCategories: [...categoryData]
+        };
+
+        mutate([selectedURI, user.token], updatedSelection, false);
+
+      }
+      else {
+        //Update the main category data
+        mutate([DEFAULT_URI, user.token], categoryData, false);
+      }
+
+
+    }
+    catch (err) {
+      console.log(err);
+      //TODO:  Throw up an error alert
+    }
+
+  };
+
+  //When user clicks ok on create/edit dialog, this is called
+  const performAction = (categoryObj) => {
+
+    if ( !itemForEdit ) {
+      createNewCategory(categoryObj);
+    }
+    else {
+      editExistingCategory(categoryObj);
+    }
+
+  };
+
 
   //Method used to toggle the modal create/edit dialog
-  const toggleCreateEdit = (isEdit) => {
+  const toggleCreateEdit = (evt, itemForEdit = null) => {
 
-    setIsEdit(isEdit);
+    if ( evt ) { //This allows the user to edit a category w/out selecting it
+      evt.stopPropagation();
+    }
+
+    if ( itemForEdit ) {
+      setItemForEdit({ ...itemForEdit });
+    }
+    else {
+      setItemForEdit(null);
+    }
+
     setCreateEditVisible(!createEditVisible);
   };
 
@@ -104,7 +233,9 @@ const populateCategoryView = (categoryData) =>  {
     return categoryData.map(category => 
       <CategoryListItem 
         key={category.id} 
-        data={category} 
+        data={category}
+        handleEdit={toggleCreateEdit}
+        deleteCategory={deleteCategory}
       />);
   }
   else {
@@ -116,7 +247,7 @@ const populateCategoryView = (categoryData) =>  {
     );
   }
 
-}
+};
 
   if ( allCategoriesError || selectedError ) {
     console.log('retrieves failed');
@@ -141,14 +272,13 @@ const populateCategoryView = (categoryData) =>  {
         </ul>
       </div>
       <div className={style.buttonDiv}>
-        <button onClick={() => toggleCreateEdit(false)} >New Category</button>
-        <button onClick={() => toggleCreateEdit(true)} >Edit Category</button>
+        <button onClick={(evt) => toggleCreateEdit(evt)} >New Category</button>
       </div>
       <CreateEditCategory
         visible={createEditVisible}
         toggle={toggleCreateEdit}
-        isEdit={isEdit}
-        performAction={handleCreate}
+        itemForEdit={itemForEdit}
+        performAction={performAction}
       /> {/* Hidden by default, this is a modal view */}
     </div>
   );

@@ -67,6 +67,7 @@ export async function deleteWithToken(URI, token) {
     }
   };
 
-  await axios.delete(URI, configs);
+  const result = await axios.delete(URI, configs);
+  return result.data;
 
 }

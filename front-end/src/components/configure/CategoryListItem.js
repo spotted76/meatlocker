@@ -8,7 +8,11 @@ import style from './styling/CategoryListItem.module.css';
 
 function CategoryListItem(props) {
 
-  const { data, configClicked, selected } = props;
+  const { data,
+          configClicked,
+          handleEdit, 
+          selected,
+          deleteCategory } = props;
 
   const liClassName = selected?.id === data.id ? `${style.mainLI} ${style.mainLI_selected}` : `${style.mainLI}`; 
 
@@ -18,9 +22,14 @@ function CategoryListItem(props) {
       <div className={style.content}>
         {data.categoryName}
       </div>
-      <div className={style.selectButton}>
-        <Link to={`/configure/category/${data.id}`}>subcategories</Link>
+      <div className={style.item_icons}>
+          <Link to={`/configure/category/${data.id}`}><i className="fas fa-sort-amount-down"></i></Link>
+          <i className='far fa-edit' onClick={(evt) => handleEdit(evt, data)}></i>
+          <i className='fas fa-times-circle' onClick={(evt) => deleteCategory(evt, data.id)}></i>
       </div>
+      {/* <div className={style.selectButton}>
+        <Link to={`/configure/category/${data.id}`}>subcategories</Link>
+      </div> */}
        
     </li>
   );

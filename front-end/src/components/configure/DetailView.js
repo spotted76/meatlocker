@@ -99,7 +99,6 @@ function DetailView (props) {
 
   //Edits an existing item
   const editExistingItem = async (itemDetails) => {
-    console.log(itemDetails);
 
     try {
       const putURI = `${DEFAULT_ITEM_URI}/${itemDetails.id}`;
@@ -140,7 +139,6 @@ function DetailView (props) {
 
   //Deletes a single item from the Detail View
   const handleDelete = async(deleteId) => {
-    console.log(deleteId);
     const delURI = `${DEFAULT_ITEM_URI}/${deleteId}`;
 
     if ( !window.confirm('Are you sure you want to delete this item?')) {
@@ -183,7 +181,7 @@ function DetailView (props) {
         {formatDetails()}
       </div>
       <div className={style.buttonDiv}>
-        <button class={style.newItem} disabled={configureSelected ? false : true} onClick={() => toggleCreateEdit()} >Add Item</button>
+        <button className={style.newItem} disabled={configureSelected ? false : true} onClick={() => toggleCreateEdit()} >Add Item</button>
       </div>
       <CreateEditItem
         visible={createEditVisible}

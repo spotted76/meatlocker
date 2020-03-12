@@ -17,7 +17,7 @@ function CreateEdit(props) {
   const {
     visible, //determines if panel is visible or not
     toggle, //method used to toggle that visibility
-    isEdit, //If this is an edit function, or a create/new
+    itemForEdit, //If this is an edit function, or a create/new
     performAction //Callback to perform creation or modification
   } = props;
 
@@ -27,10 +27,16 @@ function CreateEdit(props) {
   const descriptionRef = useRef();
  
 
-  const createEdit = isEdit ? 'Edit Category' : 'Create New Category';
+  const createEdit = itemForEdit ? 'Edit Category' : 'Create New Category';
   
   //Show or hide the dialog
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;
+
+  //This is an edit, populate the fields
+  if ( itemForEdit ) {
+    titleRef.current.value = itemForEdit.categoryName;
+    descriptionRef.current.value = itemForEdit.description;
+  }
 
   const onOk = async (evt) => {
 
@@ -57,17 +63,22 @@ function CreateEdit(props) {
         description: descriptionRef.current.value
       };
 
+      //If it's an edit, make sure to pass the existing ID along
+      if ( itemForEdit ) {
+        retObj.id = itemForEdit.id;
+      }
+
       performAction(retObj);
     }
     
     if ( createAndClose ) {
       clear();
-      toggle();
+      toggle(null);
     }
   };
 
   const onCancel = (evt) => {
-    toggle();
+    toggle(null);
     clear();
   };
 
