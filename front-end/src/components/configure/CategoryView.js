@@ -11,8 +11,13 @@ import CategoryListItem from './CategoryListItem';
 import CreateEditCategory from './CreateEditCategory';
 
 import useSWR, { mutate }  from 'swr';
-import { postWithToken, patchWithToken } from '../../services/genericServices';
-import { DEFAULT_URI, retrieveWithToken, DEFAULT_CAT_URI } from '../../services/fetchService';
+import { postWithToken, patchWithToken, deleteWithToken } from '../../services/genericServices';
+import { 
+  DEFAULT_URI, 
+  retrieveWithToken, 
+  DEFAULT_CAT_URI, 
+  DEFAULT_ITEM_URI 
+} from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
 
@@ -75,7 +80,7 @@ export function CategoryView(props) {
       dataToMutate = {
         ...selectedData,
         childCategories: selectedData.childCategories.concat(result)
-      }
+      };
     }
     else {
       URIToMutate = DEFAULT_URI;
@@ -114,7 +119,6 @@ export function CategoryView(props) {
       }
     });
 
-
     //Also update the local category that is currently displaying all category cards
 
     if ( catId ) {
@@ -134,6 +138,39 @@ export function CategoryView(props) {
 
 
   };
+
+    //Performs the deletion on the category
+    const deleteCategory = async(evt, categoryId) => {
+
+      console.log(categoryId);
+
+      evt.stopPropagation();
+
+      if ( !window.confirm('Deleting this category will delete all subcategory & item data') ) {
+        return;
+      }
+
+      try {
+        const itemsToDelete = await deleteWithToken(`${DEFAULT_CAT_URI}/${categoryId}`, user.token);
+        console.log('received items to delete:  ', itemsToDelete);
+
+        //Now delete all the items
+        if ( itemsToDelete ) {
+          await postWithToken(`${DEFAULT_ITEM_URI}/deletemany`, { itemIds: itemsToDelete }, user.token);
+        }
+
+        // //TODO - remove selected if selected
+        // if ( categoryId === configureSelected?.id) {
+        //   unsetSelCat();
+        // }
+
+      }
+      catch(err) {
+        console.log(err);
+        //TODO:  Throw up an error alert
+      }
+
+    };
 
   //When user clicks ok on create/edit dialog, this is called
   const performAction = (categoryObj) => {
@@ -176,6 +213,7 @@ const populateCategoryView = (categoryData) =>  {
         key={category.id} 
         data={category}
         handleEdit={toggleCreateEdit}
+        deleteCategory={deleteCategory}
       />);
   }
   else {

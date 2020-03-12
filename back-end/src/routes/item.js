@@ -111,4 +111,35 @@ itemRouter.delete('/:id', async(req, res) => {
 
 });
 
+/*
+
+REST API /api/item/deletemany
+
+POST - a bit of a hack, since this is a destructive post.  This call
+will delete all items by id that are passed in the request
+
+*/
+itemRouter.post('/deletemany', async(req, res) => {
+
+  const { itemIds } = req.body;
+
+  try {
+    await Item.deleteMany(
+      {
+        _id : {
+          $in: itemIds
+        }
+      }
+    );
+    res.status(200).end();
+  }
+  catch(err) {
+    console.log(err);
+    console.log('Error occurred deleting a block of item IDs');
+    res.status(500).json({ error:  'Error occurred deleting a block of item IDs' });
+  }
+
+
+});
+
 module.exports = itemRouter;
