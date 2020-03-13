@@ -5,7 +5,7 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { setConfigSel, unsetSelCat } from '../../reducers/configureSelected';
+import { unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEditCategory from './CreateEditCategory';
@@ -29,7 +29,6 @@ export function CategoryView(props) {
 
   const { 
     user, //Logged in user info
-    setConfigSel, //Data to store what is current selected in the category view 
     unsetSelCat, //Clears the selected value from the category view
     selected, //Currently selected category
     catId,
@@ -299,7 +298,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  setConfigSel, //Dispatch function to change the store of what is selected from the CategoryView
   unsetSelCat, //Dispatch function to unset or deselct, clearing the detail view
 };
 

@@ -1,14 +1,7 @@
 
 
 import style from './styling/CreateEditCategory.module.css';
-import React, { useState, useRef } from 'react';
-
-
-
-const options = [
-  { value: 'category', label: 'Category' },
-  { value: 'item', label: 'Item' }
-];
+import React, { useRef } from 'react';
 
 
 function CreateEdit(props) {

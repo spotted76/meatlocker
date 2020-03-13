@@ -5,7 +5,7 @@ import style from './styling/CategoryDetails.module.css';
 
 function DetailItem(props) {
 
-  const { detailDesc, detailData, handleDelete } = props;
+  const { detailDesc, detailData } = props;
 
   return (
     <div className={style.detailItem}>

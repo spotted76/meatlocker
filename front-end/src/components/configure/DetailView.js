@@ -160,11 +160,7 @@ function DetailView (props) {
       //Remove the item from the cached selected category to reflect the removed item
       const dataToMutate = {
         ...selectedData,
-        items: selectedData.items.filter(item => {
-          if ( item.id !== deleteId) {
-            return item;
-          }
-        })
+        items: selectedData.items.filter(item => item.id !== deleteId)
       }
       mutate([selectedURI, user.token], dataToMutate, false);
 
