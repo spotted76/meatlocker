@@ -9,6 +9,7 @@ import { unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEditCategory from './CreateEditCategory';
+import CrumbTrail from './CrumbTrail';
 
 import useSWR, { mutate }  from 'swr';
 import { postWithToken, patchWithToken, deleteWithToken } from '../../services/genericServices';
@@ -20,8 +21,6 @@ import {
 } from '../../services/fetchService';
 
 import PropTypes from 'prop-types';
-
-
 
 
 //Also export this function (non-connected to assist with unit testing)
@@ -57,9 +56,6 @@ export function CategoryView(props) {
   //Determines visibility of modal create/edit dialogs
   const [createEditVisible, setCreateEditVisible] = useState(false);
   const [itemForEdit, setItemForEdit] = useState(null); //Determines if modal dialog is edit or create
-
-
-  const categoryBanner = selectedData ? selectedData.categoryName : 'Category Browser';
 
 
   //Called from the hidden modal Create/Edit
@@ -264,7 +260,7 @@ const populateCategoryView = (categoryData) =>  {
 
   return (
     <div className="category_view">
-      <h2>{categoryBanner}</h2>
+      <CrumbTrail categoryId={catId} categoryData={selectedData} />
       <div className = {style.mainContainer}>
          <ul>
           {populateCategoryView(dataToDisplay)}
