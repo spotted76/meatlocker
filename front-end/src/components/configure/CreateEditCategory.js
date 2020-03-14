@@ -1,14 +1,10 @@
 
 
 import style from './styling/CreateEditCategory.module.css';
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
+import PropTypes from 'prop-types';
 
-
-const options = [
-  { value: 'category', label: 'Category' },
-  { value: 'item', label: 'Item' }
-];
 
 
 function CreateEdit(props) {
@@ -38,7 +34,7 @@ function CreateEdit(props) {
     descriptionRef.current.value = itemForEdit.description;
   }
 
-  const onOk = async (evt) => {
+  const onOk = async () => {
 
     let createAndClose = true;
     let retObj = {};
@@ -77,7 +73,7 @@ function CreateEdit(props) {
     }
   };
 
-  const onCancel = (evt) => {
+  const onCancel = () => {
     toggle(null);
     clear();
   };
@@ -108,5 +104,12 @@ function CreateEdit(props) {
   );
 
 }
+
+CreateEdit.propTypes = {
+    visible: PropTypes.bool,
+    toggle: PropTypes.func,
+    itemForEdit: PropTypes.object,
+    performAction: PropTypes.func
+};
 
 export default CreateEdit;

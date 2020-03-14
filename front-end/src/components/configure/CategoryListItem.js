@@ -27,10 +27,6 @@ function CategoryListItem(props) {
           <i className='far fa-edit' onClick={(evt) => handleEdit(evt, data)}></i>
           <i className='fas fa-times-circle' onClick={(evt) => deleteCategory(evt, data.id)}></i>
       </div>
-      {/* <div className={style.selectButton}>
-        <Link to={`/configure/category/${data.id}`}>subcategories</Link>
-      </div> */}
-       
     </li>
   );
 

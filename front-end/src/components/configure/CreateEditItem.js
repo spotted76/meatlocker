@@ -1,14 +1,10 @@
 
 
 import style from './styling/CreateEditItem.module.css';
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 
+import PropTypes from 'prop-types';
 
-
-const options = [
-  { value: 'category', label: 'Category' },
-  { value: 'item', label: 'Item' }
-];
 
 
 function CreateEdit(props) {
@@ -31,7 +27,6 @@ function CreateEdit(props) {
   const createEdit = itemForEdit ? 'Edit Item' : 'Create New Item';
 
   if ( itemForEdit ) {
-    console.log('is this logging:  ', itemForEdit);
     titleRef.current.value = itemForEdit.name;
     count.current.value  = itemForEdit.count;
     descriptionRef.current.value = itemForEdit.description;
@@ -40,7 +35,7 @@ function CreateEdit(props) {
   //Show or hide the dialog
   const mainDiv = visible ? `${style.mainDiv}` :  `${style.mainDiv} ${style.hide}`;
 
-  const onOk = async (evt) => {
+  const onOk = async () => {
 
     let createAndClose = true;
     let retObj = {};
@@ -75,7 +70,7 @@ function CreateEdit(props) {
     }
   };
 
-  const onCancel = (evt) => {
+  const onCancel = () => {
     toggle();
     clear();
   };
@@ -108,5 +103,12 @@ function CreateEdit(props) {
   );
 
 }
+
+CreateEdit.propTypes = {
+  visible: PropTypes.bool,
+  toggle: PropTypes.func,
+  itemForEdit: PropTypes.object,
+  performAction: PropTypes.func
+};
 
 export default CreateEdit;

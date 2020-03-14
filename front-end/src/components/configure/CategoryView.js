@@ -5,10 +5,11 @@ import React, { useState, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { setConfigSel, unsetSelCat } from '../../reducers/configureSelected';
+import { unsetSelCat } from '../../reducers/configureSelected';
 
 import CategoryListItem from './CategoryListItem';
 import CreateEditCategory from './CreateEditCategory';
+import CrumbTrail from './CrumbTrail';
 
 import useSWR, { mutate }  from 'swr';
 import { postWithToken, patchWithToken, deleteWithToken } from '../../services/genericServices';
@@ -22,14 +23,11 @@ import {
 import PropTypes from 'prop-types';
 
 
-
-
 //Also export this function (non-connected to assist with unit testing)
 export function CategoryView(props) {
 
   const { 
     user, //Logged in user info
-    setConfigSel, //Data to store what is current selected in the category view 
     unsetSelCat, //Clears the selected value from the category view
     selected, //Currently selected category
     catId,
@@ -58,9 +56,6 @@ export function CategoryView(props) {
   //Determines visibility of modal create/edit dialogs
   const [createEditVisible, setCreateEditVisible] = useState(false);
   const [itemForEdit, setItemForEdit] = useState(null); //Determines if modal dialog is edit or create
-
-
-  const categoryBanner = selectedData ? selectedData.categoryName : 'Category Browser';
 
 
   //Called from the hidden modal Create/Edit
@@ -265,7 +260,7 @@ const populateCategoryView = (categoryData) =>  {
 
   return (
     <div className="category_view">
-      <h2>{categoryBanner}</h2>
+      <CrumbTrail categoryId={catId} categoryData={selectedData} />
       <div className = {style.mainContainer}>
          <ul>
           {populateCategoryView(dataToDisplay)}
@@ -299,7 +294,6 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-  setConfigSel, //Dispatch function to change the store of what is selected from the CategoryView
   unsetSelCat, //Dispatch function to unset or deselct, clearing the detail view
 };
 
