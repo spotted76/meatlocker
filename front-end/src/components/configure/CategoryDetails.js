@@ -4,6 +4,8 @@ import React from 'react';
 import Item from './Item';
 import DetailItem from './DetailItem';
 
+import PropTypes from 'prop-types';
+
 
 function CategoryDetails(props) {
 
@@ -44,5 +46,11 @@ function CategoryDetails(props) {
   );
 
 }
+
+CategoryDetails.propTypes = {
+  catData: PropTypes.object,
+  handleEdit: PropTypes.func,
+  handleDelete: PropTypes.func
+};
 
 export default CategoryDetails;

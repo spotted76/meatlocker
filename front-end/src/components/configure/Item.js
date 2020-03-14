@@ -2,6 +2,9 @@
 import React from 'react';
 import style from './styling/Item.module.css';
 
+import PropTypes from 'prop-types';
+
+
 
 function Item(props) {
 
@@ -21,5 +24,11 @@ function Item(props) {
     </li>
   );
 }
+
+Item.propTypes = {
+  item: PropTypes.object,
+  handleEdit: PropTypes.func,
+  handleDelete: PropTypes.func
+};
 
 export default Item;

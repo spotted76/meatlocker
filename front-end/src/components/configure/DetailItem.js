@@ -2,6 +2,9 @@
 import React from 'react';
 import style from './styling/DetailItem.module.css';
 
+import PropTypes from 'prop-types';
+
+
 
 function DetailItem(props) {
 
@@ -22,5 +25,10 @@ function DetailItem(props) {
     </div>
   );
 }
+
+DetailItem.propTypes = {
+  detailDesc: PropTypes.string,
+  detailData: PropTypes.any
+};
 
 export default DetailItem;
