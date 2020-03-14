@@ -7,10 +7,9 @@ function CrumbTrail(props) {
   const { categoryId, categoryData } = props;
 
   //Determine if this is a sub category
-  if ( categoryId  && categoryData ) {
-    
+  if ( categoryId ) {
     //Is there a parent ID?
-    if ( categoryData.parent ) {
+    if ( categoryData?.parent ) {
       return (
         <div className={style.crumbTrail}>
           <h2>
@@ -30,7 +29,7 @@ function CrumbTrail(props) {
             <Link to={'/configure'}>
               {'... Primary > '}
             </Link>
-            {categoryData.categoryName}
+            {categoryData?.categoryName}
           </h2>
         </div>
       );

@@ -1,46 +1,9 @@
 
 import React from 'react';
 
-import style from './styling/CategoryDetails.module.css';
+import Item from './Item';
+import DetailItem from './DetailItem';
 
-function DetailItem(props) {
-
-  const { detailDesc, detailData } = props;
-
-  return (
-    <div className={style.detailItem}>
-      <div className={style.detailDescription}>
-        <div className={style.descriptionContent}>
-          {detailDesc}
-        </div>
-      </div>
-      <div className={style.detailData}>
-        <div className={style.detailDataContent}>
-          { detailData }
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Item(props) {
-
-  const { item, handleEdit, handleDelete } = props;
-  const count = item.count;
-
-
-  return (
-    <li className={style.itemProper}>
-      <div>
-        ({count}) : {item.name}
-      </div>
-      <div className={style.item_icons}>
-        <i onClick={() => handleEdit(item)} className='far fa-edit' ></i>
-        <i onClick={() => handleDelete(item.id)} className='fas fa-times-circle'></i>
-      </div> 
-    </li>
-  );
-}
 
 function CategoryDetails(props) {
 

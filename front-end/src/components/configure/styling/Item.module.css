@@ -1,0 +1,26 @@
+
+.itemProper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.item_icons {
+  display: none;
+  padding-right: .8em;
+}
+
+.item_icons i {
+  padding-left: .5em;
+}
+
+.item_icons:hover {
+  cursor: pointer;
+}
+
+.itemProper:hover {
+  font-weight: 700;
+}
+
+.itemProper:hover .item_icons {
+  display: block;
+}
