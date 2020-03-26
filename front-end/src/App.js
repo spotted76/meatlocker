@@ -2,13 +2,15 @@ import React from 'react';
 import Login from './components/Login';
 import Banner from './components/Banner';
 import Configure from './components/Configure';
+import Search from './components/Search';
 import PropTypes from 'prop-types';
 
 
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -33,13 +35,16 @@ function App(props) {
         
         <Switch>
           <Route exact path='/'>
-            <Placeholder />
+            <Redirect to='/search'></Redirect>
           </Route>
           <Route exact path='/configure'>
             <Configure />
           </Route>
           <Route path='/configure/category/:id'>
             <Configure />
+          </Route>
+          <Route path='/search'>
+            <Search />
           </Route>
         </Switch>
 
@@ -48,12 +53,6 @@ function App(props) {
   );
 }
 
-//For now, this is the "main" component page
-function Placeholder() {
-  return (
-    <h1>...Placeholder...</h1>
-  );
-}
 
 //Set the PropTypes for the App
 App.propTypes = {
