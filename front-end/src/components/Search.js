@@ -10,6 +10,8 @@ import {
   Redirect
 } from 'react-router-dom';
 
+import SearchPage from './search/SearchPage';
+
 function Search() {
 
   const { path, url } = useRouteMatch();
@@ -92,12 +94,5 @@ function ByCategory() {
   );
 }
 
-function SearchPage() {
-  return (
-    <div>
-      <h1>Search</h1>
-    </div>
-  );
-}
 
 export default Search;

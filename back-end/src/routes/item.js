@@ -50,6 +50,17 @@ itemRouter.get('/', async (req, res) => {
 
 });
 
+/*
+  REST API /api/item/search
+
+  Performs a query on whatever parameters are passed to the search query
+*/
+itemRouter.get('/search', async(req, res) => {
+
+  console.log('item:  ',req.query);
+  res.status(200).end();
+});
+
 
 /**
  * /api/item/$id
@@ -73,6 +84,7 @@ itemRouter.get('/:id', async (req, res) => {
 
 
 });
+
 
 /*
   REST API /api/item/:id
