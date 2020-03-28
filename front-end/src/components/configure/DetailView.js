@@ -126,6 +126,7 @@ function DetailView (props) {
     if (!itemForEdit) {
       //Create new
       newObj.category = configureSelected.id;
+      newObj.memberCategories = selectedData.memberCategories.concat(selectedData.id);
       createNewItem(newObj);
     }
     else {
