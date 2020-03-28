@@ -19,15 +19,16 @@ function SearchPage(props) {
   const { user } = props;
 
   //Whatever user types into the search box
-  const [searchString, setSearchString] = useState('');
+  const [inputString, setinputString] = useState('');
+  const [searchString, setSearchString] = useState(null);
 
   //Category Search Data
   const { data: catResults, error: catSearchErrors } = 
-  useSWR( searchString === '' ? null :  [`${DEFAULT_CAT_URI}/search/?categoryName=${searchString}`, user.token], retrieveWithToken);
+  useSWR( !searchString ? null :  [`${DEFAULT_CAT_URI}/search/?categoryName=${searchString}`, user.token], retrieveWithToken);
 
   //Item Search Data
   const { data: itemResults, error: itemSearchErrors } = 
-  useSWR( searchString === '' ? null :  [`${DEFAULT_ITEM_URI}/search/?name=${searchString}`, user.token], retrieveWithToken);
+  useSWR( !searchString ? null :  [`${DEFAULT_ITEM_URI}/search/?name=${searchString}`, user.token], retrieveWithToken);
 
   /*
     kicks off a search for category & items based on user typing
@@ -36,26 +37,27 @@ function SearchPage(props) {
     
     const typedValue = evt.target.value;
 
-    if (!(typedValue.length < searchString.length && searchString.includes(typedValue) )) {
+    if (!(typedValue.length < inputString.length && inputString.includes(typedValue) )) {
       //Kick off the searches
+      setSearchString(typedValue);
     }
     else {
       console.log('this is a deletion');
     }
 
-    setSearchString(evt.target.value);
+    setinputString(evt.target.value);
   };
 
   return (
     <div>
-      <input  value={searchString} onChange={searchChanged} />
+      <input  value={inputString} onChange={searchChanged} />
     </div>
   );
 }
 
 SearchPage.propTypes = {
   user: PropTypes.object
-}
+};
 
 //From the connected object, this will insert state data into props
 const mapStateToProps = (state) => {

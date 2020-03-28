@@ -58,7 +58,18 @@ itemRouter.get('/', async (req, res) => {
 itemRouter.get('/search', async(req, res) => {
 
   console.log('item:  ',req.query);
-  res.status(200).end();
+  const { name } = req.query;
+
+  try {
+    const results = await Item.find({ 'name': { $regex: name, $options: 'i' } });
+    console.log(results);
+    res.status(200).json(results);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).json({ error: 'Error encountered searching for items' });
+  }
+
 });
 
 

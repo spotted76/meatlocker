@@ -81,9 +81,16 @@ categoryRouter.get('/', async (req, res) => {
 */
 categoryRouter.get('/search', async(req, res) => {
 
-  console.log('category:  ', req.query);
-
-  res.status(200).end();
+  const { categoryName } = req.query;
+  try {
+    const results = await Category.find({ 'categoryName': { $regex: categoryName, $options: 'i' } });
+    res.status(200).json(results);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).json({ error: 'Error searching for category names' });
+  }
+  
 });
 
 //REST API /api/category/
