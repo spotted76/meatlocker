@@ -26,6 +26,10 @@ const categorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category'
   }],
+  memberCategories: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category'
+  }],
   items:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Item'

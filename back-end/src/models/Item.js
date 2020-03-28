@@ -16,6 +16,10 @@ const itemSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Category'
   },
+  memberCategories: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Category'
+  }],
   image: {
     type: String,
   }
