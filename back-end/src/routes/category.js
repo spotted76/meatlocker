@@ -22,7 +22,8 @@ categoryRouter.post('/', async (req, res) => {
     categoryName: body.categoryName,
     description: body.description,
     isMajor: body.isMajor,
-    parent: body.parent
+    parent: body.parent,
+    memberCategories: body.memberCategories
   });
 
   let newCategory;
