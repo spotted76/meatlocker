@@ -66,6 +66,11 @@ export function CategoryView(props) {
     newObj.parent = catId ? catId : null;
     newObj.isMajor = catId ? false : true;
 
+    //Add an parent category information
+    if ( selectedData) {
+      newObj.memberCategories = selectedData.memberCategories.concat(selectedData.id);
+    }
+
     const result = await postWithToken(DEFAULT_URI, newObj, user.token);
 
     let URIToMutate;
