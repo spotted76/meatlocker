@@ -48,9 +48,35 @@ function SearchPage(props) {
     setinputString(evt.target.value);
   };
 
+  const displayCategories = () => {
+    if ( catResults )
+    {
+      return catResults.map(category => <li key={category.id}>{category.categoryName}</li>);
+    }
+  };
+
+  const displayItems = () => {
+    if ( itemResults ) {
+      return itemResults.map(item => <li key={item.id}>{item.name}</li>);
+    }
+  };
+
   return (
     <div>
       <input  value={inputString} onChange={searchChanged} />
+      <div className="categories">
+        <h3>Categories</h3>
+        <ul>
+          {displayCategories()}
+        </ul>
+
+      </div>
+      <div className="items">
+        <h3>Items</h3>
+        <ul>
+          {displayItems()}
+        </ul>
+      </div>
     </div>
   );
 }

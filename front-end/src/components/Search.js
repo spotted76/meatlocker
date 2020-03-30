@@ -81,7 +81,7 @@ function SearchType() {
 function ByItem() {
   return (
     <div>
-      <h1>By Item</h1>
+      <h1>Browse By Item</h1>
     </div>
   );
 }
@@ -89,7 +89,7 @@ function ByItem() {
 function ByCategory() {
   return (
     <div>
-      <h1>By Category</h1>
+      <h1>Browse By Category</h1>
     </div>
   );
 }
