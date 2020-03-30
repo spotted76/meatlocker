@@ -1,0 +1,27 @@
+
+
+.main_view {
+  display: grid;
+  grid-template-rows: auto;
+  gap: 20px;
+}
+
+.nav_type {
+  margin-top: 15px;
+}
+
+.nav_type ul {
+  list-style: none;
+  display: flex;
+}
+
+.nav_type ul > li {
+  font-size: 1.5em;
+  padding: 10px;
+}
+
+a { 
+  text-decoration: none;
+  color: black;
+}
+

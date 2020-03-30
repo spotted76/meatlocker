@@ -10,6 +10,8 @@ import {
   Redirect
 } from 'react-router-dom';
 
+import style from './styling/Search.module.css';
+
 import SearchPage from './search/SearchPage';
 
 function Search() {
@@ -20,8 +22,8 @@ function Search() {
 
   return (
 
-    <div>
-      <div className="search_bar"> 
+    <div className={style.main_view}>
+      <div className={style.nav_type}> 
         <ul>
           <li>
             <Link to={`${url}`}>Search</Link>

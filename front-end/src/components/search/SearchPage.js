@@ -1,8 +1,9 @@
-
+import style from './styling/SearchPage.module.css';
 import React, { useState } from 'react';
 import useSWR from 'swr';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import CategoryResult from './CategoryResult';
 
 
 
@@ -51,7 +52,7 @@ function SearchPage(props) {
   const displayCategories = () => {
     if ( catResults )
     {
-      return catResults.map(category => <li key={category.id}>{category.categoryName}</li>);
+      return catResults.map(category => <li key={category.id}><CategoryResult catData={category} /></li>);
     }
   };
 
@@ -62,16 +63,17 @@ function SearchPage(props) {
   };
 
   return (
-    <div>
-      <input  value={inputString} onChange={searchChanged} />
-      <div className="categories">
-        <h3>Categories</h3>
-        <ul>
-          {displayCategories()}
-        </ul>
-
+    <div className={style.user_search}>
+      <div className={style.query}>
+        <input value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
+        <div className={style.categories}>
+          <h3>Categories</h3>
+          <ul>
+            {displayCategories()}
+          </ul>
+        </div>
       </div>
-      <div className="items">
+      <div className={style.items}>
         <h3>Items</h3>
         <ul>
           {displayItems()}
