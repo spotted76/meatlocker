@@ -1,0 +1,13 @@
+
+
+.category_result
+{
+  background: darkred;
+  color: white;
+  font-size: x-small;
+  font-weight: 700;
+  border: 1px solid white;
+  padding: 3px 3px;
+  border-radius: 2px;
+  margin: 0 2px;
+}

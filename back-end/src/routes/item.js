@@ -61,7 +61,7 @@ itemRouter.get('/search', async(req, res) => {
   const { name } = req.query;
 
   try {
-    const results = await Item.find({ 'name': { $regex: name, $options: 'i' } });
+    const results = await Item.find({ 'name': { $regex: name, $options: 'i' } }).populate('memberCategories', 'categoryName');
     console.log(results);
     res.status(200).json(results);
   }

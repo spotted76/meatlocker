@@ -4,6 +4,9 @@ import useSWR from 'swr';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CategoryResult from './CategoryResult';
+import ItemCard from './ItemCard';
+import categoryResultStyle from './styling/CategoryResult.module.css';
+
 
 
 
@@ -52,13 +55,14 @@ function SearchPage(props) {
   const displayCategories = () => {
     if ( catResults )
     {
-      return catResults.map(category => <li key={category.id}><CategoryResult catData={category} /></li>);
+      return catResults.map(category => <li key={category.id}><CategoryResult catData={category} style={categoryResultStyle} /></li>);
     }
   };
 
   const displayItems = () => {
     if ( itemResults ) {
-      return itemResults.map(item => <li key={item.id}>{item.name}</li>);
+      // return itemResults.map(item => <li key={item.id}>{item.name}</li>);
+      return itemResults.map(item => <li key={item.id}><ItemCard item={item} /></li>);
     }
   };
 
