@@ -8,4 +8,9 @@
   padding: 10px 10px;
   border-radius: 5px;
   margin: 0 3px;
+  user-select: none;
+}
+
+.category_result:hover {
+  cursor: pointer;
 }

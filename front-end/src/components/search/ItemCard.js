@@ -10,7 +10,6 @@ import itemResultStyle from './styling/CategoryResult_Item.module.css';
 function ItemCard({ item }) {
 
   const displayCategories = () => {
-    console.log(item.memberCategories);
     return item.memberCategories.map(category => <CategoryResult key={category.id} catData={category} style={itemResultStyle} />);
   };
 

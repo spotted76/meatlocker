@@ -25,6 +25,7 @@ function SearchPage(props) {
   //Whatever user types into the search box
   const [inputString, setinputString] = useState('');
   const [searchString, setSearchString] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   //Category Search Data
   const { data: catResults, error: catSearchErrors } = 
@@ -34,6 +35,13 @@ function SearchPage(props) {
   const { data: itemResults, error: itemSearchErrors } = 
   useSWR( !searchString ? null :  [`${DEFAULT_ITEM_URI}/search/?name=${searchString}`, user.token], retrieveWithToken);
 
+  //Search for all items that are part of a specific category
+  const { data: itemsByCategory, error: itemsByCategoryErrors } = 
+  useSWR( !selectedCategory ? null :  [`${DEFAULT_ITEM_URI}/search/?memberCategories=${selectedCategory}`, user.token], retrieveWithToken);
+  
+
+  let filteredItems = itemsByCategory ? itemsByCategory : itemResults;
+
   /*
     kicks off a search for category & items based on user typing
   */
@@ -41,28 +49,37 @@ function SearchPage(props) {
     
     const typedValue = evt.target.value;
 
-    if (!(typedValue.length < inputString.length && inputString.includes(typedValue) )) {
-      //Kick off the searches
-      setSearchString(typedValue);
-    }
-    else {
-      console.log('this is a deletion');
-    }
+    // if (!(typedValue.length < inputString.length && inputString.includes(typedValue) )) {
+    //   //Kick off the searches
+    //   setSearchString(typedValue);
+    //   setSelectedCategory(null);
+    // }
+    // else {
+    //   console.log('this is a deletion');
+    // }
 
+    //Clean this up, I believe there can be one less state variable used.
+
+    setSelectedCategory(null);
     setinputString(evt.target.value);
+    setSearchString(typedValue);
+
+  };
+
+  const categoryClicked = (categoryId) => {
+    setSelectedCategory(categoryId);
   };
 
   const displayCategories = () => {
     if ( catResults )
     {
-      return catResults.map(category => <li key={category.id}><CategoryResult catData={category} style={categoryResultStyle} /></li>);
+      return catResults.map(category => <li key={category.id}><CategoryResult catData={category} style={categoryResultStyle} onClick={categoryClicked} /></li>);
     }
   };
 
   const displayItems = () => {
-    if ( itemResults ) {
-      // return itemResults.map(item => <li key={item.id}>{item.name}</li>);
-      return itemResults.map(item => <li key={item.id}><ItemCard item={item} /></li>);
+    if ( filteredItems ) {
+      return filteredItems.map(item => <li key={item.id}><ItemCard item={item} /></li>);
     }
   };
 

@@ -58,12 +58,20 @@ itemRouter.get('/', async (req, res) => {
 itemRouter.get('/search', async(req, res) => {
 
   console.log('item:  ',req.query);
-  const { name } = req.query;
 
   try {
-    const results = await Item.find({ 'name': { $regex: name, $options: 'i' } }).populate('memberCategories', 'categoryName');
-    console.log(results);
-    res.status(200).json(results);
+    if (req.query.name) {
+      const results = await Item.find({ 'name': { $regex: req.query.name, $options: 'i' } }).populate('memberCategories', 'categoryName');
+      res.status(200).json(results);
+    }
+    else if (req.query.memberCategories) {
+      const results = await Item.find({ 'memberCategories': req.query.memberCategories }).populate('memberCategories', 'categoryName');
+      console.log('found data with member category', results);
+      res.status(200).json(results);
+    }
+    else {
+      res.status(500).json({ error: 'Unknown search request type' });
+    }
   }
   catch(err) {
     console.log(err);
