@@ -24,16 +24,15 @@ function SearchPage(props) {
 
   //Whatever user types into the search box
   const [inputString, setinputString] = useState('');
-  const [searchString, setSearchString] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   //Category Search Data
   const { data: catResults, error: catSearchErrors } = 
-  useSWR( !searchString ? null :  [`${DEFAULT_CAT_URI}/search/?categoryName=${searchString}`, user.token], retrieveWithToken);
+  useSWR( !inputString ? null :  [`${DEFAULT_CAT_URI}/search/?categoryName=${inputString}`, user.token], retrieveWithToken);
 
   //Item Search Data
   const { data: itemResults, error: itemSearchErrors } = 
-  useSWR( !searchString ? null :  [`${DEFAULT_ITEM_URI}/search/?name=${searchString}`, user.token], retrieveWithToken);
+  useSWR( !inputString ? null :  [`${DEFAULT_ITEM_URI}/search/?name=${inputString}`, user.token], retrieveWithToken);
 
   //Search for all items that are part of a specific category
   const { data: itemsByCategory, error: itemsByCategoryErrors } = 
@@ -42,27 +41,16 @@ function SearchPage(props) {
 
   let filteredItems = itemsByCategory ? itemsByCategory : itemResults;
 
+  const catHeader = catResults ? 'Matching Category Filter' : '';
+  const itemHeader = (filteredItems && filteredItems.length) ? 'Items' : '';
+
   /*
     kicks off a search for category & items based on user typing
   */
   const searchChanged = (evt) => {
     
-    const typedValue = evt.target.value;
-
-    // if (!(typedValue.length < inputString.length && inputString.includes(typedValue) )) {
-    //   //Kick off the searches
-    //   setSearchString(typedValue);
-    //   setSelectedCategory(null);
-    // }
-    // else {
-    //   console.log('this is a deletion');
-    // }
-
-    //Clean this up, I believe there can be one less state variable used.
-
     setSelectedCategory(null);
     setinputString(evt.target.value);
-    setSearchString(typedValue);
 
   };
 
@@ -88,14 +76,14 @@ function SearchPage(props) {
       <div className={style.query}>
         <input value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
         <div className={style.categories}>
-          <h3>Categories</h3>
+          <h3>{catHeader}</h3>
           <ul>
             {displayCategories()}
           </ul>
         </div>
       </div>
       <div className={style.items}>
-        <h3>Items</h3>
+        <h3>{itemHeader}</h3>
         <ul>
           {displayItems()}
         </ul>
