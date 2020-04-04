@@ -50,6 +50,36 @@ itemRouter.get('/', async (req, res) => {
 
 });
 
+/*
+  REST API /api/item/search
+
+  Performs a query on whatever parameters are passed to the search query
+*/
+itemRouter.get('/search', async(req, res) => {
+
+  console.log('item:  ',req.query);
+
+  try {
+    if (req.query.name) {
+      const results = await Item.find({ 'name': { $regex: req.query.name, $options: 'i' } }).populate('memberCategories', 'categoryName');
+      res.status(200).json(results);
+    }
+    else if (req.query.memberCategories) {
+      const results = await Item.find({ 'memberCategories': req.query.memberCategories }).populate('memberCategories', 'categoryName');
+      console.log('found data with member category', results);
+      res.status(200).json(results);
+    }
+    else {
+      res.status(500).json({ error: 'Unknown search request type' });
+    }
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).json({ error: 'Error encountered searching for items' });
+  }
+
+});
+
 
 /**
  * /api/item/$id
@@ -73,6 +103,7 @@ itemRouter.get('/:id', async (req, res) => {
 
 
 });
+
 
 /*
   REST API /api/item/:id

@@ -75,6 +75,25 @@ categoryRouter.get('/', async (req, res) => {
 
 });
 
+/*
+  REST API /api/category/search
+
+  performs a query on whatever parameters are passed
+*/
+categoryRouter.get('/search', async(req, res) => {
+
+  const { categoryName } = req.query;
+  try {
+    const results = await Category.find({ 'categoryName': { $regex: categoryName, $options: 'i' } });
+    res.status(200).json(results);
+  }
+  catch(err) {
+    console.log(err);
+    res.status(500).json({ error: 'Error searching for category names' });
+  }
+  
+});
+
 //REST API /api/category/
 /*
   Request to get a specific category based on the passed ID
@@ -100,6 +119,7 @@ categoryRouter.get('/:id', async (req, res) => {
   }
 
 });
+
 
 /*
   REST API /api/category/:id
