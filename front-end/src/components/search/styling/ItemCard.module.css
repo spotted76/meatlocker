@@ -54,3 +54,25 @@
 .count > p {
   font-weight: 700;
 }
+
+.item_card .subtle_category {
+  color: blakck;
+  color: rgba(211,211,211,0.2);
+  -webkit-text-stroke: rgba(0, 0, 0, 0.2) 1px;
+  font-size: 3em;
+  justify-content: right;
+  z-index: -1;
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  font-family: 'Coda Caption', sans-serif;
+  font-weight: 600;
+}
+
+.minus {
+  color: rgba(80,7,4, 0.8);
+}
+
+.plus {
+  color: rgba(39, 80, 4, 0.8);
+}

@@ -5,6 +5,7 @@ import React from 'react';
 import CategoryResult from './CategoryResult';
 
 import itemResultStyle from './styling/CategoryResult_Item.module.css';
+import { stripVowels } from '../../utils/helpers';
 
 
 function ItemCard({ item }) {
@@ -22,8 +23,15 @@ function ItemCard({ item }) {
         {displayCategories()}
       </div>
       <div className={style.plus_minus}>
-        <i className="fas fa-minus"></i>
-        <i className="fas fa-plus"></i>
+        <div className={style.minus}>
+          <i className="fas fa-minus"></i>
+        </div>
+        <div className={style.plus}>
+          <i className="fas fa-plus"></i>
+        </div>
+      </div>
+      <div className={style.subtle_category}>
+        { stripVowels(item.memberCategories[0].categoryName) }
       </div>
       <div className={style.count}>
         {item.count}
