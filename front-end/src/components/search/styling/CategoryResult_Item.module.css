@@ -4,10 +4,12 @@
 {
   background: darkred;
   color: white;
-  font-size: x-small;
+  font-size: medium;
   font-weight: 700;
   border: 1px solid white;
-  padding: 3px 3px;
-  border-radius: 2px;
+  padding: 4px;
+  border-radius: 5px;
   margin: 0 2px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+
 }

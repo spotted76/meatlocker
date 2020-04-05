@@ -21,6 +21,10 @@ function ItemCard({ item }) {
       <div className={style.cat_list}>
         {displayCategories()}
       </div>
+      <div className={style.plus_minus}>
+        <i className="fas fa-minus"></i>
+        <i className="fas fa-plus"></i>
+      </div>
       <div className={style.count}>
         {item.count}
       </div>
