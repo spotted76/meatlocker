@@ -74,7 +74,7 @@ function SearchPage(props) {
   return (
     <div className={style.user_search}>
       <div className={style.query}>
-        <input value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
+        <input type='search' value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
         <div className={style.categories}>
           <h3>{catHeader}</h3>
           <ul>
