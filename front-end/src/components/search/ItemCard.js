@@ -1,18 +1,21 @@
 
 import style from './styling/ItemCard.module.css';
 
-import React from 'react';
+import React, { useState } from 'react';
 import CategoryResult from './CategoryResult';
 
 import itemResultStyle from './styling/CategoryResult_Item.module.css';
 import { stripVowels } from '../../utils/helpers';
 
-import useSWR from 'swr';
 import { patchWithToken, DEFAULT_ITEM_URI } from '../../services/genericServices';
 import { connect } from 'react-redux';
 
 function ItemCard({ item, user }) {
+  
+  console.log('item card render');
 
+  const [itemCount, setItemCount] = useState(item.count);
+  
   const displayCategories = () => {
     return item.memberCategories.map(category => <CategoryResult key={category.id} catData={category} style={itemResultStyle} />);
   };
@@ -23,12 +26,13 @@ function ItemCard({ item, user }) {
     console.log('incrementing');
 
     const newCount = {
-      count: item.count + 1
+      count: itemCount + 1
     };
 
     try {
       const URI = `${DEFAULT_ITEM_URI}/${item.id}`;
       await patchWithToken(URI, newCount, user.token);
+      setItemCount(itemCount + 1);
     }
     catch(err) {
       console.log('error encountered incrementing item count:  ', err);
@@ -41,15 +45,16 @@ function ItemCard({ item, user }) {
   //Patch to decrement if > 0
   const decrement = async () => {
 
-    if ( item.count > 0 )
+    if ( itemCount > 0 )
     {
       const newCount = {
-        count: item.count + -1
+        count: itemCount -1
       };
 
       try {
         const URI = `${DEFAULT_ITEM_URI}/${item.id}`;
         await patchWithToken(URI, newCount, user.token);
+        setItemCount(itemCount - 1);
       }
       catch(err) {
         console.log('error encountered decrementing item count:  ', err);
@@ -82,7 +87,7 @@ function ItemCard({ item, user }) {
         { stripVowels(item.memberCategories[0].categoryName) }
       </div>
       <div className={style.count}>
-        {item.count}
+        {itemCount}
       </div>
     </div>
   );

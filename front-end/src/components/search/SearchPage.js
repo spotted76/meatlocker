@@ -54,6 +54,9 @@ function SearchPage(props) {
 
   };
 
+  /*
+    Filter item search results based on the clicked category
+  */
   const categoryClicked = (categoryId) => {
     setSelectedCategory(categoryId);
   };
