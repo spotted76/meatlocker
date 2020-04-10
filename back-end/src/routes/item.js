@@ -62,11 +62,13 @@ itemRouter.get('/search', async(req, res) => {
   try {
     if (req.query.name) {
       const results = await Item.find({ 'name': { $regex: req.query.name, $options: 'i' } }).populate('memberCategories', 'categoryName');
+      res.set('Cache-Control', 'no-store');
       res.status(200).json(results);
     }
     else if (req.query.memberCategories) {
       const results = await Item.find({ 'memberCategories': req.query.memberCategories }).populate('memberCategories', 'categoryName');
       console.log('found data with member category', results);
+      res.set('Cache-Control', 'no-store');
       res.status(200).json(results);
     }
     else {
@@ -170,6 +172,27 @@ itemRouter.post('/deletemany', async(req, res) => {
     res.status(500).json({ error:  'Error occurred deleting a block of item IDs' });
   }
 
+
+});
+
+/*
+  REST API /api/category/:id
+
+  Patch, will replace a portion of the existing item data 
+  at :id
+*/
+itemRouter.patch('/:id', async (req, res) => {
+
+  try {
+    const result = await Item.updateOne({ _id: req.params.id }, req.body);
+    const status = result.nModified > 0 ? 200 : 400;
+    res.status(status).end();
+  }
+  catch (err) {
+    console.log(err);
+    console.log(`Error occured patching item ${req.params.id}`);
+    res.status(500).json({ error: `Error occured patching item ${req.params.id}` });
+  }
 
 });
 
