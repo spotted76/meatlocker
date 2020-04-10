@@ -15,6 +15,9 @@ function ItemCard({ item, user }) {
   console.log('item card render');
 
   const [itemCount, setItemCount] = useState(item.count);
+
+  //Color differs for count based on number
+  const countColorStyle = itemCount > 0 ? `${style.count} ${style.positive}` : `${style.count} ${style.zero}`;
   
   const displayCategories = () => {
     return item.memberCategories.map(category => <CategoryResult key={category.id} catData={category} style={itemResultStyle} />);
@@ -86,7 +89,7 @@ function ItemCard({ item, user }) {
       <div className={style.subtle_category}>
         { stripVowels(item.memberCategories[0].categoryName) }
       </div>
-      <div className={style.count}>
+      <div className={countColorStyle}>
         {itemCount}
       </div>
     </div>
