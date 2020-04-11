@@ -1,10 +1,12 @@
 import style from './styling/SearchPage.module.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import CategoryResult from './CategoryResult';
 import ItemCard from './ItemCard';
 import categoryResultStyle from './styling/CategoryResult.module.css';
+
+import useFetch from '../../hooks/useFetch';
 
 
 
@@ -23,58 +25,47 @@ function SearchPage(props) {
 
   //Whatever user types into the search box
   const [inputString, setinputString] = useState('');
+
+  //Filter based on user selected category
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const [catResults, setCatResults] = useState([]);
-  const [itemResults, setItemResults] = useState([]);
+  //Retrieves items based on search
+  const [itemResults, itemError] = useFetch(
+    !inputString ? null : [`${DEFAULT_ITEM_URI}/search/?name=${inputString}`, user.token],
+    retrieveWithToken 
+  );
+
+  //Retrieves categories based on search
+  const [catResults, catResultsError] = useFetch(
+    !inputString ? null : [`${DEFAULT_CAT_URI}/search/?categoryName=${inputString}`, user.token],
+    retrieveWithToken
+  );
+
+  //Retrieves a subset of items based on selected categories
+  const [filteredItemData, filteredItemErrors] = useFetch(
+    !selectedCategory ? null : [`${DEFAULT_ITEM_URI}/search/?memberCategories=${selectedCategory}`, user.token],
+    retrieveWithToken 
+  );
+
+
+  if (itemError) {
+    console.log('Error encountered fetching items');
+  }
+
+  if ( catResultsError) {
+    console.log('Error encountered fetching category data');
+  }
+
+  if ( filteredItemErrors ) {
+    console.log('Error encountered fetching category filtered item data');
+  }
+  
 
   // let filteredItems = itemsByCategory ? itemsByCategory : itemResults;
-  const filteredItems = itemResults;
+  const filteredItems = filteredItemData ? filteredItemData : itemResults;
 
   const catHeader = catResults ? 'Matching Category Filter' : '';
   const itemHeader = (filteredItems && filteredItems.length) ? 'Items' : '';
-
-  useEffect(() => {
-
-    const fetchCategorys = () => {
-      console.log('fetchCategories');
-      const catString = `${DEFAULT_CAT_URI}/search/?categoryName=${inputString}`;
-      return retrieveWithToken(catString, user.token);
-    };
-
-    const fetchItems = () => {
-      console.log('fetchItems');
-      const itemString = `${DEFAULT_ITEM_URI}/search/?name=${inputString}`;
-      return retrieveWithToken(itemString, user.token);
-    };
-
-    const fetchFilteredItems = () => {
-      console.log('filtered items');
-      const filterString = `${DEFAULT_ITEM_URI}/search/?memberCategories=${selectedCategory}`;
-      return retrieveWithToken(filterString, user.token);
-    };
-
-
-    if ( inputString ) {
-      fetchCategorys().then(result => {
-        setCatResults(result);
-      });
-
-
-      if ( selectedCategory ) {
-        fetchFilteredItems().then(result => {
-          setItemResults(result);
-        });
-      }
-      else {
-        fetchItems().then(result => {
-          setItemResults(result);
-        });
-      }
-      
-    }
-
-  }, [inputString, user.token, selectedCategory]);
 
   /*
     kicks off a search for category & items based on user typing
