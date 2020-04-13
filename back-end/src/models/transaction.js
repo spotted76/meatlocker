@@ -5,11 +5,6 @@ const paginate = require('mongoose-paginate-v2');
 
 const transactionSchema = new mongoose.Schema({
 
-  date: {
-    type: mongoose.Schema.Types.Date,
-    default: Date.now
-  },
-
   type: {
     type: String,
     enum: ['add', 'subtract']
@@ -24,7 +19,7 @@ const transactionSchema = new mongoose.Schema({
     ref: 'Item'
   }
 
-});
+}, { timestamps: true });
 
 transactionSchema.plugin(paginate);
 

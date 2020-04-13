@@ -38,11 +38,13 @@ transactionRouter.post('/', async (req, res) => {
  */
 transactionRouter.get('/recents', async (req, res) => {
 
+  console.log(req.authUser.username);
+
   const numRecents = 6;
 
-  const query   = {};
+  const query   = { user: req.authUser.username };
   const options = {
-      sort:     { date: -1 },
+      sort:     { updatedAt: -1 },
       lean:     true,
       page:     1,
       limit:    numRecents
@@ -80,7 +82,9 @@ transactionRouter.get('/recents', async (req, res) => {
       _id: { 
         $in: resultIds 
       }
-    }).populate('memberCategories', 'categoryName');
+    })
+    .sort({ updatedAt: -1 })
+    .populate('memberCategories', 'categoryName');
 
     res.status(200).json(itemList);
   }
