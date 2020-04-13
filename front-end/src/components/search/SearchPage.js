@@ -81,6 +81,9 @@ function SearchPage(props) {
 
   const catHeader = catResults ? 'Matching Category Filter' : '';
 
+  //If the user has not typed anything, collapse category portion of the search results
+  const searchStyle = inputString ? `${style.query} ${style.shown}` : `${style.query} ${style.collapsed}`;
+
   /*
     kicks off a search for category & items based on user typing
   */
@@ -113,7 +116,7 @@ function SearchPage(props) {
 
   return (
     <div className={style.user_search}>
-      <div className={style.query}>
+      <div className={searchStyle}>
         <input type='search' value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
         <div className={style.categories}>
           <h3>{catHeader}</h3>
