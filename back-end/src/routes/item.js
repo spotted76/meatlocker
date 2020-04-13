@@ -1,6 +1,7 @@
 
 const itemRouter = require('express').Router();
 const Item = require('../models/Item');
+const Transaction = require('../models/transaction');
 
 /**
  * /api/item
@@ -57,8 +58,6 @@ itemRouter.get('/', async (req, res) => {
 */
 itemRouter.get('/search', async(req, res) => {
 
-  console.log('item:  ',req.query);
-
   try {
     if (req.query.name) {
       const results = await Item.find({ 'name': { $regex: req.query.name, $options: 'i' } }).populate('memberCategories', 'categoryName');
@@ -92,7 +91,6 @@ itemRouter.get('/search', async(req, res) => {
  */
 itemRouter.get('/:id', async (req, res) => {
 
-  console.log('looking for', req.params.id);
 
   try {
     const result = await Item.findById(req.params.id);
@@ -175,8 +173,45 @@ itemRouter.post('/deletemany', async(req, res) => {
 
 });
 
+
 /*
-  REST API /api/category/:id
+  REST API /api/item/:id/count
+
+  Patch, will replace a portion of the existing item data 
+  at :id.  This is a count increment / decrement, and is expected to have
+  a query specifying increment or decrement as well
+*/
+itemRouter.patch('/:id/count', async (req, res) => {
+
+  try {
+    const result = await Item.updateOne({ _id: req.params.id }, req.body);
+    const status = result.nModified > 0 ? 200 : 400;
+
+    if ( req.query && (status === 200) ) {
+      //Modification successful, log the transaction
+      const transaction = new Transaction({
+        type: req.query.type,
+        user: req.authUser.username,
+        item: req.params.id
+      });
+
+      await transaction.save();
+
+    }
+
+    res.status(status).end();
+  }
+  catch (err) {
+    console.log(err);
+    console.log(`Error occured patching item ${req.params.id}`);
+    res.status(500).json({ error: `Error occured patching item ${req.params.id}` });
+  }
+
+});
+
+
+/*
+  REST API /api/item/:id
 
   Patch, will replace a portion of the existing item data 
   at :id
@@ -195,5 +230,6 @@ itemRouter.patch('/:id', async (req, res) => {
   }
 
 });
+
 
 module.exports = itemRouter;

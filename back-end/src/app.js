@@ -13,6 +13,7 @@ const userRouter = require('./routes/user');
 const loginRouter = require('./routes/login');
 const categoryRouter = require('./routes/category');
 const itemRouter = require('./routes/item');
+const transactionRouter = require('./routes/transaction');
 
 //Instantiate main express app
 const app = express();
@@ -35,5 +36,6 @@ app.use('/api/user', userRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/item', itemRouter);
+app.use('/api/transaction', transactionRouter);
 
 module.exports = app;

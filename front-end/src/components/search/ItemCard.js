@@ -33,7 +33,7 @@ function ItemCard({ item, user }) {
     };
 
     try {
-      const URI = `${DEFAULT_ITEM_URI}/${item.id}`;
+      const URI = `${DEFAULT_ITEM_URI}/${item.id}/count/?type=add`;
       await patchWithToken(URI, newCount, user.token);
       setItemCount(itemCount + 1);
     }
@@ -55,7 +55,7 @@ function ItemCard({ item, user }) {
       };
 
       try {
-        const URI = `${DEFAULT_ITEM_URI}/${item.id}`;
+        const URI = `${DEFAULT_ITEM_URI}/${item.id}/count/?type=subtract`;
         await patchWithToken(URI, newCount, user.token);
         setItemCount(itemCount - 1);
       }

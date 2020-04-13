@@ -14,7 +14,8 @@ import useFetch from '../../hooks/useFetch';
 import {
   retrieveWithToken, 
   DEFAULT_ITEM_URI,
-  DEFAULT_CAT_URI
+  DEFAULT_CAT_URI,
+  DEFAULT_TRANS_URI
  } from '../../services/fetchService';
 
 
@@ -47,6 +48,12 @@ function SearchPage(props) {
     retrieveWithToken 
   );
 
+  //Retrieves the most recently used / interacted items in 
+  const [recentItems, recentItemsErrors] = useFetch(
+    inputString ? null : [`${DEFAULT_TRANS_URI}/recents`, user.token],
+    retrieveWithToken
+  );
+
 
   if (itemError) {
     console.log('Error encountered fetching items');
@@ -59,13 +66,23 @@ function SearchPage(props) {
   if ( filteredItemErrors ) {
     console.log('Error encountered fetching category filtered item data');
   }
+
+  if ( recentItemsErrors ) {
+    console.log('Error encountered fetcing recent items');
+  }
   
 
-  // let filteredItems = itemsByCategory ? itemsByCategory : itemResults;
-  const filteredItems = filteredItemData ? filteredItemData : itemResults;
+  let filteredItems = filteredItemData ? filteredItemData : itemResults;
+  let itemHeader = (filteredItems && filteredItems.length) ? 'Items' : '';
+
+  //If there are no filtered items, check recents, there is no active search
+  itemHeader = (!itemHeader && recentItems) ? 'Recent Items' : itemHeader;
+  filteredItems = filteredItems ? filteredItems : recentItems;
 
   const catHeader = catResults ? 'Matching Category Filter' : '';
-  const itemHeader = (filteredItems && filteredItems.length) ? 'Items' : '';
+
+  //If the user has not typed anything, collapse category portion of the search results
+  const searchStyle = inputString ? `${style.query} ${style.shown}` : `${style.query} ${style.collapsed}`;
 
   /*
     kicks off a search for category & items based on user typing
@@ -99,7 +116,7 @@ function SearchPage(props) {
 
   return (
     <div className={style.user_search}>
-      <div className={style.query}>
+      <div className={searchStyle}>
         <input type='search' value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
         <div className={style.categories}>
           <h3>{catHeader}</h3>

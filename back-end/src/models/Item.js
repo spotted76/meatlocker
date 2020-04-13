@@ -23,7 +23,7 @@ const itemSchema = new mongoose.Schema({
   image: {
     type: String,
   }
-});
+}, { timestamps: true });
 
 itemSchema.plugin(validator);
 
