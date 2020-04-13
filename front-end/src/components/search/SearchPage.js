@@ -14,7 +14,8 @@ import useFetch from '../../hooks/useFetch';
 import {
   retrieveWithToken, 
   DEFAULT_ITEM_URI,
-  DEFAULT_CAT_URI
+  DEFAULT_CAT_URI,
+  DEFAULT_TRANS_URI
  } from '../../services/fetchService';
 
 
@@ -47,6 +48,12 @@ function SearchPage(props) {
     retrieveWithToken 
   );
 
+  //Retrieves the most recently used / interacted items in 
+  const [recentItems, recentItemsErrors] = useFetch(
+    inputString ? null : [`${DEFAULT_TRANS_URI}/recents`, user.token],
+    retrieveWithToken
+  );
+
 
   if (itemError) {
     console.log('Error encountered fetching items');
@@ -59,13 +66,20 @@ function SearchPage(props) {
   if ( filteredItemErrors ) {
     console.log('Error encountered fetching category filtered item data');
   }
+
+  if ( recentItemsErrors ) {
+    console.log('Error encountered fetcing recent items');
+  }
   
 
-  // let filteredItems = itemsByCategory ? itemsByCategory : itemResults;
-  const filteredItems = filteredItemData ? filteredItemData : itemResults;
+  let filteredItems = filteredItemData ? filteredItemData : itemResults;
+  let itemHeader = (filteredItems && filteredItems.length) ? 'Items' : '';
+
+  //If there are no filtered items, check recents, there is no active search
+  itemHeader = (!itemHeader && recentItems) ? 'Recent Items' : itemHeader;
+  filteredItems = filteredItems ? filteredItems : recentItems;
 
   const catHeader = catResults ? 'Matching Category Filter' : '';
-  const itemHeader = (filteredItems && filteredItems.length) ? 'Items' : '';
 
   /*
     kicks off a search for category & items based on user typing
