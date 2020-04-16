@@ -22,10 +22,10 @@ class Configs {
 
   get expressPort() {
     if ( this.env === 'development' ) {
-      return process.env.DEV_EXPRESS_PORT;
+      return process.env.PORT || process.env.DEV_EXPRESS_PORT || 3001;
     }
     else {
-      return process.env.REL_EXPRESS_PORT;
+      return process.env.PORT || process.env.REL_EXPRESS_PORT || 3001;
     }
   }
 
