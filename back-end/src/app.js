@@ -17,6 +17,8 @@ const transactionRouter = require('./routes/transaction');
 
 //Instantiate main express app
 const app = express();
+
+//Comment for deploy
 app.use(cors());
 
 //Use morgan for debug
@@ -30,6 +32,11 @@ app.use(bodyParser.json());
 app.use(bearerToken());
 app.use(authUser);
 app.use(checkPrivs);
+
+//Serve the front end
+
+//Uncomment for deploy
+//app.use(express.static('build'));
 
 //Setup routes
 app.use('/api/user', userRouter);

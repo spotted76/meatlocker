@@ -10,7 +10,9 @@
 function checkPrivs(req, res, next) {
 
   //Add any whitelisted APIs here
-  if ( req.url === '/api/login' ||
+  if ( req.url === '/' ||
+       req.url.startsWith('/static') ||
+       req.url === '/api/login' ||
        req.url === '/api/user') {
     return next();
   }
@@ -18,7 +20,8 @@ function checkPrivs(req, res, next) {
   //Validate against an authenticated user
   //Determine if the user is authenticated
   if ( !req.authUser ) {
-    return res.status(401).json({ error: 'unauthenticated user' });
+    return res.status(401).redirect('/');
+    
   }
 
   //Made it here, must be authenticated.
