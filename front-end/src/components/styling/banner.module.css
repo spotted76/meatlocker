@@ -1,10 +1,11 @@
 
-:root {
+.banner {
   --main-bg-color: #960c11;
   --muted-bg-color: #b1363a;
   --main-text-color: white;
   --main-font: 'Roboto';
   --selected-color: rgb(242, 231, 228);
+  font-size: 1rem;
 }
 
 /* Remove all outlines from links */
@@ -14,7 +15,7 @@ a {
 
 /* Main Header, is not visible when the user is not logged in */
 .header {
-  height: 4rem;
+  height: 4em;
   width: 100%;
   text-align: right;
   display: inline-flex;
@@ -59,4 +60,10 @@ a {
 
 .hidden_menu {
   font-family: var(--main-font);
+}
+
+@media only screen and (max-width: 479px) {
+  .banner {
+    font-size: .7rem;
+  }
 }

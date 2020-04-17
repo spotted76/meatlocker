@@ -56,7 +56,7 @@
   font-size: .9em;
 }
 
-@media screen and (max-width: 479px) {
+@media only screen and (max-width: 479px) {
   /* start of medium tablet styles */
   .input_form {
     width: 85%;
