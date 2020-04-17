@@ -6,19 +6,19 @@
 .input_banner {
   font-family: 'Lobster', cursive;
   font-weight: 700;
-  font-size: 3em;
+  font-size: 3rem;
   text-align: center;
   color: var(--main-bg-color);
 }
 
 .input_banner > p {
-  margin: .5em 0 .2em 0;
+  margin: .5rem 0 .2rem 0;
 }
 
 .input_form {
   border: solid	#F0F0F0;
   box-shadow: 1px 1px 5px var(--main-bg-color);
-  border-radius: .2em;
+  border-radius: .2rem;
   max-width: 450px;
   width: 100%;
   position: fixed;
@@ -28,7 +28,7 @@
   transform: translate(-50%, -50%);
 
   /* Set the font size so everything can be scaled smaller with one value */
-  font-size: 1em;
+  font-size: 1rem;
 
 }
 
@@ -39,28 +39,27 @@
 
 .if_form input {
   height: 2.2rem;
-  margin: 1em;
-  padding-left: .8em;
+  margin: 1rem;
+  padding-left: .8rem;
   background-color: #f0f0f0;
   font-family: var(--main-font);
-  font-size: .9em;
+  font-size: .9rem;
 }
 
 .if_form button {
-  margin: 0em .5em 1em .5em;
-  height: 2.5em;
+  margin: 0rem .5rem 1rem .5rem;
+  height: 2.5rem;
   background-color: var(--main-bg-color);
   color: white;
-  border-radius: .5em;
+  border-radius: .5rem;
   font-family: var(--main-font);
-  font-size: .9em;
+  font-size: .9rem;
 }
 
 @media only screen and (max-width: 479px) {
-  /* start of medium tablet styles */
+  
   .input_form {
     width: 85%;
-    font-size: .75em;
     min-width: 250px;
   }
 

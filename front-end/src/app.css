@@ -1,4 +1,8 @@
 
+:root {
+  font-size: 16px;
+}
+
 .main_div {
   margin-left:10%;
   margin-right:10%;
@@ -9,4 +13,8 @@
     margin-left:3%;
     margin-right:3%;
   } 
+
+  :root {
+    font-size: 12px;
+  }
 }
