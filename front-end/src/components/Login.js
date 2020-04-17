@@ -10,7 +10,8 @@ import Config from '../utils/config';
 import { userAdd } from '../reducers/userReducer';
 
 
-import  './styling/dialogs.css';
+// import  './styling/dialogs.css';
+import style from './styling/dialog.module.css';
 
 function Login(props) {
 
@@ -76,16 +77,16 @@ function Login(props) {
 
   return (
     <div>
-      <div className="input_form">
+      <div className={style.input_form}>
 
-        <div id="input_banner">
+        <div className={style.input_banner}>
           <p>Meatlocker</p>
         </div>
 
-        <form onSubmit={onSubmit} className="if_form">
+        <form onSubmit={onSubmit} className={style.if_form}>
           <input name="username" id="username" data-testid="username_input" placeholder="username" {...username} required />
           <input name="password" id="password" data-testid="password_input" placeholder="password" {...password} required />
-          <button className="login_submit">Submit</button>
+          <button className={style.login_submit}>Submit</button>
         </form>
 
       </div> {/* input_form */}

@@ -1,9 +1,9 @@
-:root {
+.input_form {
   --main-bg-color: #960c11;
   --main-font: 'Roboto';
 }
 
-#input_banner {
+.input_banner {
   font-family: 'Lobster', cursive;
   font-weight: 700;
   font-size: 3em;
@@ -11,7 +11,7 @@
   color: var(--main-bg-color);
 }
 
-#input_banner > p {
+.input_banner > p {
   margin: .5em 0 .2em 0;
 }
 
@@ -19,12 +19,16 @@
   border: solid	#F0F0F0;
   box-shadow: 1px 1px 5px var(--main-bg-color);
   border-radius: .2em;
-  width: 450px;
+  max-width: 450px;
+  width: 100%;
   position: fixed;
   top: 50%;
   left: 50%;
   /* bring your own prefixes */
   transform: translate(-50%, -50%);
+
+  /* Set the font size so everything can be scaled smaller with one value */
+  font-size: 1em;
 
 }
 
@@ -39,6 +43,7 @@
   padding-left: .8em;
   background-color: #f0f0f0;
   font-family: var(--main-font);
+  font-size: .9em;
 }
 
 .if_form button {
@@ -48,4 +53,15 @@
   color: white;
   border-radius: .5em;
   font-family: var(--main-font);
+  font-size: .9em;
+}
+
+@media screen and (max-width: 479px) {
+  /* start of medium tablet styles */
+  .input_form {
+    width: 85%;
+    font-size: .75em;
+    min-width: 250px;
+  }
+
 }
