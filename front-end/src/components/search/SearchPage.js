@@ -119,14 +119,14 @@ function SearchPage(props) {
       <div className={searchStyle}>
         <input type='search' value={inputString} onChange={searchChanged} placeholder='Search for items or categories' />
         <div className={style.categories}>
-          <h3>{catHeader}</h3>
+          <p>{catHeader}</p>
           <ul>
             {displayCategories()}
           </ul>
         </div>
       </div>
       <div className={style.items}>
-        <h3>{itemHeader}</h3>
+        <p>{itemHeader}</p>
         <ul>
           {displayItems()}
         </ul>

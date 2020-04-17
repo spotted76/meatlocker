@@ -56,8 +56,6 @@ function Search() {
 function SearchType() {
   const { topicId : page } = useParams();
 
-  console.log(page);
-  console.log(typeof page);
 
   switch(page) {
     case 'bycategory':

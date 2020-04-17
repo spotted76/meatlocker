@@ -1,28 +1,32 @@
 
-:root {
-  --query-row-height: 200px;
+.user_search {
+  --query-row-height: 7.5rem;
+}
+
+.user_search p {
+  font-size: 2rem;
 }
 
 .query {
   border-radius: 5px;
-  gap: 5px;
+  gap: .5rem;
   padding: 10px;
   display: grid;
-  grid-template-rows: 60px var(--query-row-height);
+  grid-template-rows: 2.5rem var(--query-row-height);
 }
 
 .shown {
-  --query-row-height: 200px;
+  --query-row-height: 10rem;
 }
 
 .collapsed {
-  --query-row-height: 10px;
+  --query-row-height: .1rem;
 }
 
 .query > input {
   width: 100%;
   justify-self: center;
-  border-radius: 5px;
+  border-radius: .25rem;
 }
 
 
@@ -30,14 +34,14 @@
   display: flex;
   list-style: none;
   flex-wrap: wrap;
-  gap: 5px;
 }
 
 .items > ul {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  gap: 2rem;
 }
+
 
 
