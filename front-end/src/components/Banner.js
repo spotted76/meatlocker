@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 import { MenuItem, MenuGlyph, HiddenMenu } from './MenuItem';
 
-import './styling/banner.css';
+import style from './styling/banner.module.css';
 
 
 function Banner(props) {
@@ -43,15 +43,15 @@ function Banner(props) {
   }
   
   return (
-    <div>
-      <div className='header'>
-        <div className='header_text'>
+    <div className={style.banner}>
+      <div className={style.header}>
+        <div className={style.header_text}>
           <Link to='/'><p>Meatlocker</p></Link>
         </div>
         <ul>
           <li>
             <MenuItem visible={visible}>
-              <MenuGlyph glyphClass={'menu_glyph_style'}>
+              <MenuGlyph glyphClass={style.menu_glyph_style}>
                 {userData?.name}
                 <i className='fas fa-user-circle fa-2x'></i>
               </MenuGlyph>

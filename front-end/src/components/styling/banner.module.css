@@ -1,5 +1,5 @@
 
-:root {
+.banner {
   --main-bg-color: #960c11;
   --muted-bg-color: #b1363a;
   --main-text-color: white;
@@ -27,8 +27,8 @@ a {
 .header_text {
   color: var(--main-text-color);
   font-family: 'Lobster', cursive;
-  font-size: 2em;
-  padding-left: 1em;
+  font-size: 2rem;
+  padding-left: 1rem;
 }
 
 /* Don't color any links in the drop downs */
@@ -46,7 +46,7 @@ a {
 /* Refactor this..  This is text/icon for the menu item */
 .menu_glyph_style {
   display: inline-block;
-  padding-right: 1em;
+  padding-right: 1rem;
   color: var(--main-text-color);
   font-weight: 700;
   visibility: visible;
@@ -54,9 +54,15 @@ a {
 }
 
 .menu_glyph_style i {
-  margin-left: .4em;
+  margin-left: .4rem;
 }
 
 .hidden_menu {
   font-family: var(--main-font);
 }
+
+/* @media only screen and (max-width: 479px) {
+  .banner {
+    font-size: .7rem;
+  }
+} */

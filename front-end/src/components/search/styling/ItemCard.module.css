@@ -2,42 +2,41 @@
 
 .item_card {
   display: grid;
-  font-size: 1.5em;
-  grid-template-rows: 1fr 1fr 50px;
+  grid-template-rows: 1fr 1fr 25%;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  height: 225px;
+  height: 16rem;
   box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
   font-family: 'Roboto', sans-serif;
   position: relative;
-  border-radius: 5px;
+  border-radius: .3rem;
 }
 
 .item_card > .name {
-  padding: 20px 20px 0px 20px;
-  font-size: 35px;
+  padding: 1.2rem 1.2rem 0rem 1.2rem;
+  font-size: 2rem;
   font-family: 'Coda Caption', sans-serif;
 }
 
 .item_card .cat_list {
   display: flex;
   align-items: flex-end;
-  padding: 5px;  
+  padding: .3rem;  
 }
 
 .item_card .plus_minus {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 10px 10px 10px;
-  font-size: 30px;
+  padding: 0 .6rem .6rem .6rem;
+  font-size: 2rem;
 }
 
 
 .item_card .count {
   align-self: center;
   text-align: center;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   color: white;
   display: flex;
   justify-content: center;
@@ -45,8 +44,8 @@
   border-radius: 50%;
   border: 2px solid white;
   position: absolute;
-  top: -20px;
-  right: -20px;
+  top: -1.25rem;
+  right: -1.25rem;
   box-shadow: 2px 2px 10px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -69,12 +68,12 @@
   color: black;
   color: rgba(211,211,211,0.1);
   -webkit-text-stroke: rgba(0, 0, 0, 0.2) 1px;
-  font-size: 3em;
+  font-size: 3rem;
   justify-content: right;
   z-index: -1;
   position: absolute;
-  top: 25px;
-  right: 20px;
+  top: 2rem;
+  right: 1.5rem;
   font-family: 'Coda Caption', sans-serif;
   font-weight: 600;
 }
