@@ -20,6 +20,7 @@ function authUser(req, res, next) {
     }
     catch(err) {
       console.log(`invalid token:  ${err}`);
+      //PSF - put a return statement here
     }
   }
 

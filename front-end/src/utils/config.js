@@ -4,7 +4,7 @@ class Config {
 
   //Returns the session duration in days
   static get sessionDuration() {
-    return 1;
+    return 29; //29 days
   }
 
   //Returns the name of the session to store
